@@ -1,11 +1,11 @@
 <template>
 	<div class="fixed-header">
-		<div class="navi-wrapper">
-			<div class="navi-container">
-				<div class="left-navi-btn-selected" id="left-tab" @click="clickLeftTab()">
+		<div class="navi-wrapper container">
+			<div class="navi-container row">
+				<div class="left-navi-btn-selected col-md-6 col-sm-6 col-xs-6" id="left-tab" @click="clickLeftTab()">
 					<p id="left-tab-text">{{leftTabText}}</p>
 				</div>
-				<div class="right-navi-btn-unselected" id="right-tab" @click="clickRightTab()">
+				<div class="right-navi-btn-unselected col-md-6 col-sm-6 col-xs-6" id="right-tab" @click="clickRightTab()">
 					<p id="right-tab-text">{{rightTabText}}</p>
 				</div>
 			</div>
@@ -75,7 +75,6 @@
 	}
 	
 	.left-navi-btn-selected {
-		width: 50%;
 		height: 30px;
 		display: inline-block;
 		background: #f8575c;
@@ -83,14 +82,12 @@
 	}
 	
 	.left-navi-btn-unselected {
-		width: 49%;
 		height: 30px;
 		display: inline-block;
 		color: #f8575c;
 	}
 	
 	.right-navi-btn-selected {
-		width: 50%;
 		height: 30px;
 		display: inline-block;
 		background: #f8575c;
@@ -98,7 +95,6 @@
 	}
 	
 	.right-navi-btn-unselected {
-		width: 49%;
 		height: 30px;
 		display: inline-block;
 		color: #f8575c;
