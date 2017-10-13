@@ -20,19 +20,32 @@
 		data () {
 			return {
 				products:[
-					{img: "/static/images/20172001.jpg"},
+					{id: 1,img: "/static/images/20172001.jpg"},
 				]
 			}
 		},
+		created() {
+			this.initProduct();
+		},
 		methods: {
 			gotoProduct(index){
-				
+				var pId = this.products[index].id;
+				alert(pId);
+				this.$router.push("/product/"+pId);
+			},
+			initProduct(){
+				if(this.$route.params.id == "" || this.$route.params.id == undefined){
+					//do something
+				}else{
+					//do something
+				}
 			}
 		},
 		watch: {
+			//监听路由参数变化
 			'$route'(to, from){
 				if(this.$route.params.id == 1){
-					//this.products.push({img: "/static/images/20172001.jpg"});
+					//do something
 				}
 			}
 		}

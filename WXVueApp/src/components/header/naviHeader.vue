@@ -1,14 +1,14 @@
 <template>
 	<div class="fixed-header">
-		<div class="navi-wrapper container">
-			<div class="navi-container row">
+		<div class="navi-wrapper">
+			<div class="navi-container">
 				<div class="left-navi-btn-selected col-md-6 col-sm-6 col-xs-6" id="left-tab" @click="clickLeftTab()">
-					<p id="left-tab-text">{{leftTabText}}</p>
+					{{leftTabText}}
 				</div>
 				<div class="right-navi-btn-unselected col-md-6 col-sm-6 col-xs-6" id="right-tab" @click="clickRightTab()">
-					<p id="right-tab-text">{{rightTabText}}</p>
+					{{rightTabText}}
 				</div>
-			</div>
+			</div>	
 		</div>
 	</div>
 </template> 
@@ -25,13 +25,12 @@
 			clickLeftTab(){
 				$("#right-tab").removeClass("right-navi-btn-selected").addClass("right-navi-btn-unselected");
 				$("#left-tab").removeClass("left-navi-btn-unselected").addClass("left-navi-btn-selected");
-				this.$router.push({path: "/product/tea", params: {id: "1"}});
+				this.$router.push({path: "/plist/tea"});
 			},
 			clickRightTab(){
-				const id = 1;
 				$("#left-tab").removeClass("left-navi-btn-selected").addClass("left-navi-btn-unselected");
 				$("#right-tab").removeClass("right-navi-btn-unselected").addClass("right-navi-btn-selected");
-				this.$router.push({path: "/product/tao"});
+				this.$router.push({path: "/plist/tao"});
 			}
 		}
 	}
@@ -53,25 +52,18 @@
 	}
 	
 	.navi-wrapper {
-		width: 50%;
+		width: 60%;
 		height: auto;
 		display: table-cell;
 		vertical-align: middle;
-		margin: 0px auto;
 	}
 	
 	.navi-container {
-		width: 50%;
+		width: 60%;
 		height: 32px;
 		display: inline-block;
-		margin: 0px auto;
 		border: 1px solid #f8575c;
 		border-radius: 5px;
-	}
-	
-	.navi-container p {
-		margin-top: 5px;
-		font-size: 16px;
 	}
 	
 	.left-navi-btn-selected {
@@ -79,12 +71,14 @@
 		display: inline-block;
 		background: #f8575c;
 		color: #ffffff;
+		padding-top: 5px;
 	}
 	
 	.left-navi-btn-unselected {
 		height: 30px;
 		display: inline-block;
 		color: #f8575c;
+		padding-top: 5px;
 	}
 	
 	.right-navi-btn-selected {
@@ -92,11 +86,13 @@
 		display: inline-block;
 		background: #f8575c;
 		color: #ffffff;
+		padding-top: 5px;
 	}
 	
 	.right-navi-btn-unselected {
 		height: 30px;
 		display: inline-block;
 		color: #f8575c;
+		padding-top: 5px;
 	}
 </style>
