@@ -1,48 +1,49 @@
 <template>
 	<div>
-		<transition name="popup-window-transition">
-			<div class="popup-window-modal-mask">
+		<transition name="popup">
+			<div class="popup-window-modal-mask" v-if="show">
 				<div class="popup-window-modal-wrapper">
 					<div class="popup-window-modal-container">
 						<div class="product-detail container">
-							<slot name="product-detail">
-								<div class="row">
-									<div class="product-img-pop col-md-2 col-sm-2 col-xs-3">
-										<img :src="productitem.imgurl" />
-									</div>
-									<div class="product-price-name col-md-9 col-sm-9 col-xs-7">
-										<p>{{productitem.name}}</p>
-										<p>{{productitem.price}}</p>
-									</div>
-									<div class="product-pop-remove col-md-1 col-sm-1 col-xs-1">
-										<button @click="$emit('close')"><i class="icon-remove"></i></button>
-									</div>
+							<div class="row">
+								<div class="product-img-pop col-md-2 col-sm-2 col-xs-3">
+									<img :src="loadProduct.imgIndex" />
 								</div>
-							</slot>
+								<div class="product-price-name col-md-9 col-sm-9 col-xs-7">
+									<p>{{loadProduct.name}}</p>
+									<p>{{loadProduct.price}}</p>
+								</div>
+								<div class="product-pop-remove col-md-1 col-sm-1 col-xs-1">
+									<button @click="$emit('close')"><i class="icon-remove"></i></button>
+								</div>
+							</div>
 						</div>
 						<div class="product-standard-pop">
 							<p>规格:</p>
 							<div class="product-standard-ul">
 								<ul>
-									<li v-for="(label,index) in productMessage.labels" :key="label.id" v-on:click="chooseLabel(index)" :class="{'product-standard-choosed' : label.isChoosed, 'product-standard-unchoosed' : !label.isChoosed}">
-										{{label.label}}
+									<li v-for="(std,index) in loadProduct.standards" 
+										:key="std.id" 
+										@click="chooseStandard(index)" 
+										:class="{'product-standard-choosed' : std.isChoosed, 'product-standard-unchoosed' : !std.isChoosed}">
+										{{std.standard}}
 									</li>
 								</ul>
 							</div>
 						</div>
 						<div class="product-sale-count">
-							<p>数量:</p>
+							<p class="product-sale-count-p">数量:</p>
 							<div class="product-count-caculator">
-								<p onclick="subCount()">-</p>
-								<p>{{productitem.count}}</p>
-								<p onclick="addCount()">+</p>
+								<p @click="subCount()">-</p>
+								<p>{{product.count}}</p>
+								<p @click="addCount()">+</p>
 							</div>
 						</div>
 						<div class="product-operator">
-							<div id="add-cart-btn" class="product-add-shopcart product-operator-half-width" onclick="addShopCart()">
+							<div id="add-cart-btn" class="product-add-shopcart product-operator-half-width" @click="addShopCart()">
 								<p>加入购物车</p>
 							</div>
-							<div class="product-buy-now product-operator-half-width" onclick="buyNow()">
+							<div class="product-buy-now product-operator-half-width" @click="buyNow()">
 								<p>购买</p>
 							</div>
 						</div>
@@ -54,31 +55,101 @@
 </template>
 
 <script>
-	import {mapState} from 'vuex'
+	import {mapState, mapMutations} from 'vuex'
 	export default {
 		data () {
 			return {
 				product: {}
 			}
 		},
+		props: {
+			showWindow: {
+				type: Boolean,
+				default: false
+			}
+		},
 		computed: {
 			...mapState([
 				"productDetail"
 			]),
-			initProduct(){
+			loadProduct(){
 				this.product = this.productDetail;
+				return this.product;
+			},
+			show() {
+				return this.showWindow;
+			}
+		},
+		methods: {
+			...mapMutations([
+				"ADD_ORDER", "CLEAR_ORDER"
+			]),
+			chooseStandard(index){
+				var length = this.product.standards.length;
+				for(var i = 0;i < length;++i){
+					var std;
+					if(i == index){
+						this.product.standards[i].isChoosed = true;
+						this.product.price = this.product.standards[i].price;
+					} else {
+						this.product.standards[i].isChoosed = false;
+					}
+				}
+			},
+			addCount(){
+				if(this.product.count < 100){
+					this.product.count++;
+				}else{
+					alert("不能买更多了~");
+				}
+			},
+			subCount(){
+				if(this.product.count > 1){
+					this.product.count--;
+				}
+			},
+			addShopCart(){
+				
+			},
+			buyNow(){
+				var std,standard,price,sid,isChooseStd;
+				isChooseStd = false;
+				for(var i=0;i<this.product.standards.length;++i){
+					std = this.product.standards[i];
+					if(std.isChoosed){
+						sid = std.sid;
+						price = std.price;
+						standard = std.standard;
+						isChooseStd = true;
+						break;
+					}
+				}
+				if(!isChooseStd){
+					alert("请选择规格");
+					return;
+				}
+				var order = {
+					"pId": this.product.pId,
+					"image": this.product.imgIndex,
+					"name": this.product.name,
+					"sid": sid,
+					"price": price,
+					"standard": standard
+				};
+				this.CLEAR_ORDER();
+				this.ADD_ORDER(order);
 			}
 		}
 	}
 </script>
 
 <style>
-	/*
+	/**
 	 * popupwindow外部底部样式
-	 * */
+	 */
 	.popup-window-modal-mask {
 		position: fixed;
-		z-index: 999;
+		z-index: 99;
 		top: 0;
 		left: 0;
 		height: 100%;
@@ -116,22 +187,15 @@
 		border-bottom: 1px solid #CCCCCC;
 	}
 	
-	.product-img-pop {
-		padding: 2% 0 0 3%;
-	}
-	
 	.product-img-pop img {
 		width: 100%;
 		height: 100%;
 	}
 	
-	.product-price-name {
-		padding: 0 0 0 3%;
-	}
-	
 	.product-price-name p {
 		font-size: 15px;
 		margin-top: 5px;
+		text-align: left;
 	}
 	
 	.product-pop-remove {
@@ -152,9 +216,16 @@
 		border-bottom: 1px solid #CCCCCC;
 	}
 	
+	.product-standard-pop p {
+		text-align: left;
+		margin-left: 2%;
+	}
+	
 	.product-standard-ul ul {
 		list-style: none;
 		padding: 0;
+		text-align: left;
+		margin-left: 2%;
 	}
 	
 	.product-standard-ul li {
@@ -174,6 +245,9 @@
 	}
 	
 	.product-sale-count {
+		width: 100%;
+		height: auto;
+		display: inline-block;
 		padding: 2% 2% 1% 3%;
 		border-bottom: 1px solid #CCCCCC;
 	}
@@ -183,6 +257,11 @@
 		line-height: 30px;
 		font-size: 16px;
 		display: inline-block;
+	}
+	
+	.product-sale-count-p {
+		margin-left: 2%;
+		float: left;
 	}
 	
 	.product-count-caculator {
@@ -202,6 +281,7 @@
 	.product-operator {
 		width: 100%;
 		height: 50px;
+		display: inline-block;
 		margin-top: 1%;
 	}
 	
@@ -233,5 +313,22 @@
 		color: #FFFFFF;
 		font-weight: 500;
 		float: right;
+	}
+	/*
+	 * popupwindow动画
+	 * */
+	.popup-enter {
+		opacity: 0;
+	}
+	.popup-leave-active {
+		opacity: 0;
+	}
+	.popup-enter-active .popup-window-modal-container, .popup-leave-active .popup-window-modal-container{
+		transform: scale(1.1);
+		-webkit-transform: translateY(40%);
+	}
+	
+	.popup-enter-active, .popup-leave-active {
+		transition: opacity .5s
 	}
 </style>

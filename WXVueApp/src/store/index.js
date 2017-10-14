@@ -4,15 +4,28 @@ import mutations from './mutations'
 import * as actions from './actions'
 import * as getters from './getters'
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 const state = {
-	productDetail: {}
+	productDetail: {
+		id:"",
+		pId:"",
+		name:"",
+		describe:"",
+		price:"",
+		saleVolum:"",
+		count:1,
+		imgIndex:"",
+		imgDesc:{},
+		imgTurn:{},
+		standards:{}
+	},
+	orderList:[]
 }
 
 export default new Vuex.Store({
 	state,
-	mutations,
 	actions,
-	getters
+	getters,
+	mutations,
 })

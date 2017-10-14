@@ -1,1 +1,3 @@
 export const SET_PRODUCT_DETAIL = "SET_PRODUCT_DETAIL"
+export const ADD_ORDER = "ADD_ORDER"
+export const CLEAR_ORDER = "CLEAR_ORDER"

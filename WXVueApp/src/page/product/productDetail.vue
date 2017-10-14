@@ -6,28 +6,28 @@
 			<div class="product-wrapper">
 				<div class="slide" id="product-image-turn">
 					<ul>
-						<li v-for="imgurl in imgturn" :key="imgurl.id">
-							<img :src="imgurl.img" />
+						<li v-for="img in product.imgTurn" :key="img.id">
+							<img :src="img.img" />
 						</li>
 					</ul>
 				</div>
 				<div class="product-price-label">
 					<p class="price-text-small">￥</p>
-					<p class="price-text-large">{{productDetail.price}}</p>
+					<p class="price-text-large">{{product.price}}</p>
 				</div>
 				<div class="product-name-label">
-					<p>{{productDetail.describe}}</p>
+					<p>{{product.describe}}</p>
 				</div>
 				<div class="product-sales-volume">
 					<div class="product-transport-fare">
-						<p>运费：</p><p>{{productDetail.delivery}}</p>
+						<p>运费：</p><p>{{product.delivery}}</p>
 					</div>
 					<div class="product-sales-fare">
-						<p>销量：</p><p>{{productDetail.saleVolume}}</p>
+						<p>销量：</p><p>{{product.saleVolume}}</p>
 					</div>
 				</div>
-				<div class="product-standard">
-					<div @click="showPopupWindow()">
+				<div class="product-standard" @click="chooseStandard()">
+					<div>
 						<p>选择：规格</p>
 						<i class="icon-angle-right icon-large"></i>
 					</div>
@@ -43,7 +43,7 @@
 					<div class="product-detail-appraise-container">
 						<div class="product-detail-container">
 							<ul>
-								<li v-for="img in imgurls" :key="img.id">
+								<li v-for="img in product.imgDesc" :key="img.id">
 									<img :src="img.img"/>
 								</li>
 							</ul>
@@ -84,38 +84,72 @@
 						<p>购物车</p>
 					</div>
 					<div class="footer-tab-btn3">
-						<p @click="showPopupWindow()">立即购买</p>
+						<p @click="chooseStandard()">立即购买</p>
 					</div>
 					<div class="footer-tab-btn2">
-						<p @click="showPopupWindow()">加入购物车</p>
+						<p @click="chooseStandard()">加入购物车</p>
 					</div>
 				</div>
 			</footer>
 		</div>
+		<productStd :showWindow="showStdWindow" @close="removeWindow()"></productStd>
 	</div>
 	
 </template>
 
 <script>
+	import {mapMutations} from 'vuex'
 	import backHeader from '../../components/header/backHeader'
+	import productStd from './productStandard'
 	export default {
 		data () {
 			return {
 				title: "产品",
-				productDetail: {
-					productId: "",
-					name: "红茶二",
-					price: "0.00",
-					describe: "红茶二",
-					delivery: "",
-					saleVolume: 0
-				},
-				imgurls: [],
-				imgturn: [],
+				showStdWindow: false,
+				product: {}
 			}
 		},
+		created(){
+			this.initProduct();
+		},
 		components: {
-			backHeader
+			backHeader,
+			productStd
+		},
+		methods: {
+			...mapMutations([
+				"SET_PRODUCT_DETAIL"
+			]),
+			initProduct(){
+				this.product = {
+					id:"123",
+					pId:"2312",
+					name:"红茶",
+					describe:"红茶儿",
+					price:"99",
+					saleVolume:"22",
+					delivery: "快递发货",
+					count:1,
+					imgIndex:"/static/images/20172001.jpg",
+					imgDesc:[{"img": "/static/images/20172001.jpg"},{"img": "/static/images/20172001.jpg"}],
+					imgTurn:[{"img": "/static/images/20172001.jpg"},{"img": "/static/images/20172001.jpg"}],
+					standards:[
+						{"sid": 1,"price": 120, "standard": "100克", "isChoosed": false},
+						{"sid": 2,"price": 220, "standard": "120克", "isChoosed": false},
+						{"sid": 3,"price": 320, "standard": "150克", "isChoosed": false}
+					]
+				};
+				this.SET_PRODUCT_DETAIL(this.product);
+				setTimeout(function(){
+	    			$("#product-image-turn").swipeSlide();
+	    		},1500);
+			},
+			chooseStandard(){
+				this.showStdWindow = true;
+			},
+			removeWindow(){
+				this.showStdWindow = false;
+			}
 		}
 	}
 </script>
