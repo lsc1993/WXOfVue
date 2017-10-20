@@ -1,0 +1,258 @@
+<template>
+	<!--"我的"页面-->
+	<div class="mine-page">
+		<!--"我的"页面头部-用户信息-->
+		<div class="user-message">
+			<div class="user-img">
+				<img :src="user.userImg" />
+			</div>
+			<div class="user-name">
+				<p>{{user.username}}</p>
+			</div>
+		</div>
+		<div class="my-order-operator">
+			<div class="my-order-state-container">
+				<ul>
+					<li>
+						<a href="order-list.html?tab=0">
+							<i class="icon-indent-right icon-large"></i>
+							<p>待付款</p>
+						</a>
+					</li>
+					<li>
+						<a href="order-list.html?tab=1">
+							<i class="icon-tasks icon-large"></i>
+							<p>待发货</p>
+						</a>
+					</li>
+					<li>
+						<a href="order-list.html?tab=2">
+							<i class="icon-inbox icon-large"></i>
+							<p>待收货</p>
+						</a>
+					</li>
+					<li>
+						<a href="order-list.html?tab=3">
+							<i class="icon-truck icon-large"></i>
+							<p>已完成</p>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="my-order-list">
+				<a href="order-list.html?tab=1">
+					<div class="container">
+						<i class="icon-angle-right icon-2x angle-to-left"></i>
+						<i class="icon-align-justify icon-large"></i>
+						<p>我的订单</p>
+					</div>
+				</a>
+			</div>
+		</div>
+		<div class="my-collection-container">
+			<!--<div class="my-order-list border-top">
+						<div class="container">
+							<i class="icon-heart icon-large"></i>
+							<p>我的收藏</p>
+							<i class="icon-angle-right icon-2x angle-to-left"></i>
+						</div>
+					</div>-->
+			<div class="my-order-list border-top">
+				<div class="container">
+					<a href="buy-order.html">
+						<i class="icon-angle-right icon-2x angle-to-left"></i>
+						<i class="icon-star icon-large"></i>
+						<p>我买过的</p>
+					</a>
+				</div>
+			</div>
+			<div class="my-order-list">
+				<div class="container">
+					<a href="watch-order.html">
+						<i class="icon-angle-right icon-2x angle-to-left"></i>
+						<i class="icon-eye-open icon-large"></i>
+						<p>我的浏览记录</p>
+					</a>
+				</div>
+			</div>
+		</div>
+		<!--<div class="my-collection-container">
+					<div class="my-order-list border-top">
+						<div class="container">
+							<i class="icon-credit-card icon-large"></i>
+							<p>我的优惠卷</p>
+							<i class="icon-angle-right icon-2x angle-to-left"></i>
+						</div>
+					</div>
+					<div class="my-order-list">
+						<div class="container">
+							<i class="icon-credit-card icon-large"></i>
+							<p>我的会员卡</p>
+							<i class="icon-angle-right icon-2x angle-to-left"></i>
+						</div>
+					</div>
+				</div>-->
+		<div class="my-setting-container">
+			<div class="my-order-list border-top">
+				<div class="container">
+					<a href="address-manager.html">
+						<i class="icon-angle-right icon-2x angle-to-left"></i>
+						<i class="icon-home icon-large"></i>
+						<p>修改收货地址</p>
+					</a>
+				</div>
+			</div>
+			<div class="my-order-list">
+				<div class="container">
+					<a href="#">
+						<i class="icon-angle-right icon-2x angle-to-left"></i>
+						<i class="icon-phone-sign icon-large"></i>
+						<p>联系我们</p>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</template>
+
+<script>
+	export default {
+		data () {
+			return {
+				user: {"userImg": "/static/images/20172001.jpg", "username": "刘自在"}
+			}
+		}
+	}
+</script>
+
+<style>
+	/*
+	 * 用户信息样式，包括用户头像和用户昵称
+	 **/
+	body {
+		background-color: #FAFAFA;
+	}
+	
+	.mine-page {
+		position: fixed;
+		top: 0;
+		width: 100%;
+	}
+	
+	.user-message {
+		width: 100%;
+		height: 90px;
+		padding: 1%;
+		background-color: #FC5050;
+	}
+	
+	.user-img {
+		width: auto;
+		display: inline-block;
+		margin-left: 5%;
+		float: left;
+	}
+	
+	.user-img img {
+		width: 70px;
+		height: 70px;
+		border-radius: 35px;
+	}
+	
+	.user-name {
+		display: inline-block;
+		margin-left: 10px;
+		float: left;
+	}
+	
+	.user-name p {
+		width: auto;
+		margin-top: 20px;
+		font-size: 18px;
+		font-weight: 400;
+		color: #FFFFFF;
+	}
+	/*
+	 * 订单操作与查询样式
+	 * */
+	.my-order-state-container {
+		width: 100%;
+		height: auto;
+		display: inline-block;
+		border-bottom: 1px solid #CCCCCC;
+		background-color: #FFFFFF;
+	}
+	
+	.my-order-state-container ul {
+		width: inherit;
+		list-style: none;
+		padding: 0;
+		margin: 2% 0 0 0;
+	}
+	
+	.my-order-state-container ul li {
+		width: 24%;
+		display: inline-block;
+		text-align: center;
+	}
+	
+	.my-order-state-container a {
+		color: #000000;
+		text-decoration: none;
+	}
+	
+	.my-order-state-container p {
+		color: #515151;
+	}
+	
+	.my-order-list {
+		width: 100%;
+		height: auto;
+		display: table;
+		background-color: #FFFFFF;
+		border-bottom: 1px solid #CCCCCC;
+		text-align: left;
+	}
+	
+	.my-order-list a {
+		color: #000000;
+		text-decoration: none;
+	}
+	
+	.my-order-list p {
+		width: auto;
+		line-height: 55px;
+		display: table-cell;
+		font-size: 16px;
+		font-weight: 300;
+		padding-left: 35px;
+		vertical-align: middle;
+		color: #515151;
+	}
+	
+	.my-order-list i {
+		width: auto;
+		line-height: 55px;
+		display: table-cell;
+		vertical-align: middle;
+	}
+	
+	.angle-to-left {
+		float: right;
+	}
+	
+	.my-collection-container {
+		margin-top: 5%;
+	}
+	
+	.border-top {
+		border-top: 1px solid #CCCCCC;
+	}
+	
+	.my-setting-container {
+		width: 100%;
+		height: auto;
+		margin-top: 5%;
+		margin-bottom: 60px;
+	}
+</style>

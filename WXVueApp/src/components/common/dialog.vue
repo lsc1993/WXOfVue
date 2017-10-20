@@ -1,15 +1,13 @@
 <template>
 	<transition name="dialog">
-		<div class="dialog-modal-mask">
+		<div class="dialog-modal-mask" v-show="showDialog">
 			<div class="dialog-modal-wrapper">
 				<div class="dialog-modal-container"> 
 					<div class="dialog-header">
-						<slot name="dialog-header">
-						</slot>
+						{{title}}
 					</div>
 					<div class="dialog-content">
-						<slot name="dialog-content">
-						</slot>
+						{{message}}
 					</div>
 					<div class="dialog-footer">
 						<slot name="dialog-footer">
@@ -22,6 +20,22 @@
 </template>
 
 <script>
+	export default {
+		props: {
+			showDialog: {
+				type: Boolean,
+				default: false
+			},
+			title: {
+				type: String,
+				default: ""
+			},
+			message: {
+				type: String,
+				default: ""
+			}
+		}
+	}
 </script>
 
 <style>
@@ -71,6 +85,7 @@
 	    padding: 10px;
 	    border-bottom: 1px solid #CCCCCC;
 	    overflow-y: scroll;
+	    text-align: left;
 	}
 	
 	.dialog-content::-webkit-scrollbar {

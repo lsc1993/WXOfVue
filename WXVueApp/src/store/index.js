@@ -7,20 +7,14 @@ import * as getters from './getters'
 Vue.use(Vuex);
 
 const state = {
-	productDetail: {
-		id:"",
-		pId:"",
-		name:"",
-		describe:"",
-		price:"",
-		saleVolum:"",
-		count:1,
-		imgIndex:"",
-		imgDesc:{},
-		imgTurn:{},
-		standards:{}
-	},
-	orderList:[]
+	productDetail: {},
+	orderList:[],
+	addrTemp: {}, //地址选择控件缓存
+	addrEdit: {
+		province: "选择省份",
+		city: "选择城市",
+		region: "选择地区",
+	}, //地址修改缓存
 }
 
 export default new Vuex.Store({

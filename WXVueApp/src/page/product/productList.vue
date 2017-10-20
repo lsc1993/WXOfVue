@@ -30,7 +30,6 @@
 		methods: {
 			gotoProduct(index){
 				var pId = this.products[index].id;
-				alert(pId);
 				this.$router.push("/product/"+pId);
 			},
 			initProduct(){

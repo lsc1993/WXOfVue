@@ -149,6 +149,9 @@
 			},
 			removeWindow(){
 				this.showStdWindow = false;
+			},
+			gotoShopCart(){
+				this.$router.push({path: "/shopcart"})
 			}
 		}
 	}

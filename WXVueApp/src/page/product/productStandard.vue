@@ -51,14 +51,18 @@
 				</div>
 			</div>
 		</transition>
+		<toast :show="showTip" :message="tip"></toast>
 	</div>
 </template>
 
 <script>
 	import {mapState, mapMutations} from 'vuex'
+	import toast from '../../components/common/toast'
 	export default {
 		data () {
 			return {
+				showTip: false,
+				tip: "",
 				product: {}
 			}
 		},
@@ -68,6 +72,9 @@
 				default: false
 			}
 		},
+		components: {
+			toast
+		},
 		computed: {
 			...mapState([
 				"productDetail"
@@ -76,7 +83,7 @@
 				this.product = this.productDetail;
 				return this.product;
 			},
-			show() {
+			show(){
 				return this.showWindow;
 			}
 		},
@@ -108,8 +115,16 @@
 					this.product.count--;
 				}
 			},
+			showToast(message){
+				var self = this;
+				this.tip = message;
+				this.showTip = true;
+				setTimeout(function(){
+					self.showTip = false;
+				},2000);
+			},
 			addShopCart(){
-				
+				this.showToast("请选择规格");
 			},
 			buyNow(){
 				var std,standard,price,sid,isChooseStd;
@@ -125,7 +140,7 @@
 					}
 				}
 				if(!isChooseStd){
-					alert("请选择规格");
+					this.showToast("请选择规格");
 					return;
 				}
 				var order = {
@@ -134,10 +149,12 @@
 					"name": this.product.name,
 					"sid": sid,
 					"price": price,
+					"count": this.product.count,
 					"standard": standard
 				};
 				this.CLEAR_ORDER();
 				this.ADD_ORDER(order);
+				this.$router.push("/order");
 			}
 		}
 	}
@@ -156,8 +173,8 @@
 		width: 100%;
 		background: rgba(0,0,0,0.5);
 		display: table;
-	    transition: opacity .3s ease;
-		-webkit-transition: .3s ease;
+	    transition: opacity .2s ease;
+		-webkit-transition: .2s ease;
 	}
 	
 	.popup-window-modal-wrapper {
@@ -173,7 +190,7 @@
 		overflow-y: scroll;
 		margin: 0px auto;
 		background-color: #fff;
-		transition: all .3s ease;
+		transition: all .2s ease;
 		font-family: Helvetica, Arial, sans-serif;
 	}
 	.popup-window-modal-container::-webkit-scrollbar {
@@ -317,18 +334,9 @@
 	/*
 	 * popupwindow动画
 	 * */
-	.popup-enter {
+	.popup-enter-active, .popup-leave-active{
 		opacity: 0;
-	}
-	.popup-leave-active {
-		opacity: 0;
-	}
-	.popup-enter-active .popup-window-modal-container, .popup-leave-active .popup-window-modal-container{
-		transform: scale(1.1);
+		transform: translateY(40%);
 		-webkit-transform: translateY(40%);
-	}
-	
-	.popup-enter-active, .popup-leave-active {
-		transition: opacity .5s
 	}
 </style>
