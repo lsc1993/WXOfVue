@@ -14,39 +14,39 @@
 			<div class="my-order-state-container">
 				<ul>
 					<li>
-						<a href="order-list.html?tab=0">
+						<router-link to="orderlist/0">
 							<i class="icon-indent-right icon-large"></i>
-							<p>待付款</p>
-						</a>
-					</li>
-					<li>
-						<a href="order-list.html?tab=1">
-							<i class="icon-tasks icon-large"></i>
 							<p>待发货</p>
-						</a>
+						</router-link>
 					</li>
 					<li>
-						<a href="order-list.html?tab=2">
-							<i class="icon-inbox icon-large"></i>
+						<router-link to="orderlist/1">
+							<i class="icon-tasks icon-large"></i>
 							<p>待收货</p>
-						</a>
+						</router-link>
 					</li>
 					<li>
-						<a href="order-list.html?tab=3">
-							<i class="icon-truck icon-large"></i>
+						<router-link to="orderlist/2">
+							<i class="icon-inbox icon-large"></i>
 							<p>已完成</p>
-						</a>
+						</router-link>
+					</li>
+					<li>
+						<router-link to="orderlist/3">
+							<i class="icon-truck icon-large"></i>
+							<p>已取消</p>
+						</router-link>
 					</li>
 				</ul>
 			</div>
 			<div class="my-order-list">
-				<a href="order-list.html?tab=1">
+				<router-link to="orderlist/1">
 					<div class="container">
 						<i class="icon-angle-right icon-2x angle-to-left"></i>
 						<i class="icon-align-justify icon-large"></i>
 						<p>我的订单</p>
 					</div>
-				</a>
+				</router-link>
 			</div>
 		</div>
 		<div class="my-collection-container">
@@ -59,20 +59,20 @@
 					</div>-->
 			<div class="my-order-list border-top">
 				<div class="container">
-					<a href="buy-order.html">
+					<router-link to="/buyorder">
 						<i class="icon-angle-right icon-2x angle-to-left"></i>
 						<i class="icon-star icon-large"></i>
 						<p>我买过的</p>
-					</a>
+					</router-link>
 				</div>
 			</div>
 			<div class="my-order-list">
 				<div class="container">
-					<a href="watch-order.html">
+					<router-link to="/browse">
 						<i class="icon-angle-right icon-2x angle-to-left"></i>
 						<i class="icon-eye-open icon-large"></i>
 						<p>我的浏览记录</p>
-					</a>
+					</router-link>
 				</div>
 			</div>
 		</div>
@@ -95,20 +95,20 @@
 		<div class="my-setting-container">
 			<div class="my-order-list border-top">
 				<div class="container">
-					<a href="address-manager.html">
+					<router-link to="/addr">
 						<i class="icon-angle-right icon-2x angle-to-left"></i>
 						<i class="icon-home icon-large"></i>
 						<p>修改收货地址</p>
-					</a>
+					</router-link>
 				</div>
 			</div>
 			<div class="my-order-list">
 				<div class="container">
-					<a href="#">
+					<router-link to="/about">
 						<i class="icon-angle-right icon-2x angle-to-left"></i>
 						<i class="icon-phone-sign icon-large"></i>
 						<p>联系我们</p>
-					</a>
+					</router-link>
 				</div>
 			</div>
 		</div>

@@ -107,7 +107,7 @@
 				if(this.product.count < 100){
 					this.product.count++;
 				}else{
-					alert("不能买更多了~");
+					this.showToast("不能买更多了~");
 				}
 			},
 			subCount(){

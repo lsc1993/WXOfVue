@@ -9,22 +9,21 @@
 					<li v-for="(shopOrder, index) in shopOrderList" :key="shopOrder.id">
 						<div>
 							<div class="shop-order-type">
-								<!--<i class="icon-home icon-large">泊心风物</i>-->
 								<img src="/static/images/icon-store.png"><span>泊心风物</span></img>
 								<p @click="deleteOrder(index)">删除</p>
+							</div>
+							<div class="shop-order-unsale" v-if="shopOrder.status=='下架'">
+								<img src="/static/images/icon-unsale.png" />
 							</div>
 							<div class="shop-order-content">
 								<div class="shop-order-checkbox">
 									<label class="input-check-bg" :class="{'input-check-bg-checked' : shopOrder.checked }" @click="checkItem(index)"></label>
 								</div>
 								<div class="shop-order-message">
-									<img :src="shopOrder.imgurl" @click="gotoProductDetail(index)" />
+									<img :src="shopOrder.image" @click="gotoProductDetail(index)" />
 									<div class="shop-order-product-name" @click="gotoProductDetail(index)">
 										<p>{{shopOrder.name}}</p>
 										<p>{{shopOrder.standard}}</p>
-									</div>
-									<div class="shop-order-unsale" v-if="shopOrder.status=='下架'">
-										<img src="/static/images/icon-unsale.png" />
 									</div>
 									<div class="shop-order-cost">
 										<div class="shop-order-product-count">
@@ -70,6 +69,7 @@
 </template>
 
 <script>
+	import {mapMutations} from 'vuex'
 	import toast from '../../components/common/toast'
 	import dialogWindow from '../../components/common/dialog'
 	export default {
@@ -111,6 +111,9 @@
 			}
 		},
 		methods: {
+			...mapMutations([
+				"ADD_ORDER", "CLEAR_ORDER"
+			]),
 			initShopOrder(){
 				var item = {
 					"id": 1,
@@ -119,7 +122,7 @@
 					"sId": 1,
 					"name": "红茶",
 					"imgname": "/static/images/20172001.jpg",
-					"imgurl": "/static/images/20172001.jpg",
+					"image": "/static/images/20172001.jpg",
 					"standard": "100克",
 					"status": "上架",
 					"count": 1,
@@ -134,9 +137,9 @@
 					"sId": 1,
 					"name": "红茶",
 					"imgname": "/static/images/20172001.jpg",
-					"imgurl": "/static/images/20172001.jpg",
+					"image": "/static/images/20172001.jpg",
 					"standard": "100克",
-					"status": "下架",
+					"status": "上架",
 					"count": 1,
 					"price": 220,
 					"total": 220,
@@ -207,6 +210,21 @@
 				this.msg = "是否删除该商品？";
 				this.delIndex = index;
 			},
+			submitOrder(){
+				this.CLEAR_ORDER();
+				var choosed = false;
+				for(var i=0;i < this.shopOrderList.length;++i){
+					if(this.shopOrderList[i].checked){
+						choosed = true;
+						this.ADD_ORDER(this.shopOrderList[i]);
+					}
+				}
+				if(!choosed){
+					this.showToast("请选择购买的商品");
+					return;
+				}
+				this.$router.push("/order");
+			},
 			showToast(message){
 				var self = this;
 				this.tip = message;
@@ -275,7 +293,7 @@
 	.shop-order-unsale {
 		width: auto;
 		display: inline;
-		z-index: 10;
+		z-index: -100;
 	}
 	
 	.shop-order-unsale img {
@@ -283,7 +301,7 @@
 		left: 50%;
 		display: inline-block;
 		width: auto;
-		height: 50px;
+		height: 70px;
 	}
 	
 	.shop-order-type {

@@ -4,7 +4,7 @@
 			<!--全部订单-->
 			<div class="order-list" id="order-pay-list">
 				<ul>
-					<li v-for="(order,index) in orderList" :key="order.id">
+					<li v-for="(order,index) in loadOrderList" :key="order.id">
 						<div class="container">
 							<div class="row">
 								<div class="col-md-5 col-sm-10 col-xs-9">
@@ -55,59 +55,77 @@
 </template>
 
 <script>
-	import tabHeader from "/components/header/tabHeader"
 	export default {
 		data () {
 			return {
-				uegeBtn: false,
+				urgeBtn: false,
 				receiveBtn: false,
 				buyBtn: false,
-				tabText: [
-					{"text": "待发货", "choosed": true},
-					{"text": "待收货", "choosed": false},
-					{"text": "已完成", "choosed": false},
-					{"text": "已取消", "choosed": false},
-				],
 				orderList: []
 			}
 		},
 		computed: {
 			loadOrderList(){
-				var param = this.$rout.param;
+				var param = this.$route.params.pos;
 				var status;
-				if(param == "NOTSEND"){
+				if(param == 0){
 					status = "NOTSEND";
 					this.urgeBtn = true;
 					this.receiveBtn = false;
 					this.buyBtn = false;
-				}else if(param == "NOTRECEIVE"){
+				}else if(param == 1){
 					status = "NOTRECEIVE";
 					this.urgeBtn = false;
 					this.receiveBtn = true;
 					this.buyBtn = false;
-				}else if(param == "COMPLETE"){
+				}else if(param == 2){
 					status = "COMPLETE";
 					this.urgeBtn = false;
 					this.receiveBtn = false;
 					this.buyBtn = true;
-				}else if(param == "CANCEL"){
+				}else if(param == 3){
 					status = "CANCEL";
 					this.urgeBtn = false;
 					this.receiveBtn = false;
 					this.buyBtn = true;
 				}
-				this.initOrderList(status);
+				return this.initOrderList(status);
 			}
 		},
 		methods: {
 			initOrderList(status){
-				
+				this.orderList.splice(0, this.orderList.length);
+				var order = 
+				{
+					"id": "1",
+					"no": "1",
+					"pid": "1",
+					"name": "红茶",
+					"imgurl": "/static/images/20172001.jpg",
+					"standard": "100克",
+					"count": "2",
+					"pTotal": "420",
+					"total": "420",
+					"status": "待发货",
+					"pstatus": "上架"
+				};
+				if(status == "NOTSEND"){
+					order.status = "待发货";
+				}else if(status == "NOTRECEIVE"){
+					order.status = "待收货";
+				}else if(status == "COMPLETE"){
+					order.status = "已完成";
+				}else if(status == "CANCEL"){
+					order.status = "已取消";
+				}
+				this.orderList.push(order);
+				return this.orderList;
 			}
 		}
 	}
 </script>
 
-<style>
+<style>	
 	.order-list {
 		width: 100%;
 		height: auto;
@@ -126,6 +144,7 @@
 		display: block; 
 		margin-top: 15px;
 		box-shadow: 2px 1px #F2F2F2; 
+		text-align: left;
 	}
 	
 	.order-no p {

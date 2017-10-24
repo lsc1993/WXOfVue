@@ -1,18 +1,22 @@
 <template>
-	<div class="fixed-header">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12 col-sm-12 col-xs-12">
-					<div class="menu-wrapper">
-						<router-link to="/">
-							<i class="icon-angle-left icon-2x"></i>
-						</router-link>
-						<p class="title-center">{{title}}</p>
-					</div>	
+	<div>
+		<div class="fixed-header">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 col-sm-12 col-xs-12">
+						<div class="menu-wrapper">
+							<router-link to="/">
+								<i class="icon-angle-left icon-2x"></i>
+							</router-link>
+							<p class="title-center">{{title}}</p>
+						</div>	
+					</div>
 				</div>
 			</div>
 		</div>
+		<div class="space"></div>
 	</div>
+	
 </template>
 
 <script>
@@ -58,5 +62,9 @@
 		font-weight: 400;
 		font-size: 18px;
 		padding-right: 5%;
+	}
+	
+	.space {
+		height: 60px;
 	}
 </style>

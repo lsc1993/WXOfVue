@@ -7,8 +7,14 @@ const home = r => require.ensure([], () => r(require('../page/home/home')), 'hom
 const productList = r => require.ensure([], () => r(require('../page/product/productList')), 'productList')
 const productDetail = r => require.ensure([], () => r(require('../page/product/productDetail')), 'productDetail')
 const order = r => require.ensure([], () => r(require('../page/order/order')), 'order')
+const orderStatus = r => require.ensure([], () => r(require('../page/order/orderStatusMenu')), 'orderStatus')
+const orderList = r => require.ensure([], () => r(require('../page/order/orderList')), 'orderList')
 const shopcart = r => require.ensure([], () => r(require('../page/shopcart/shopcart')), 'shopcart')
 const mine = r => require.ensure([], () => r(require('../page/mine/mine')), 'mine')
+const buyOrder = r => require.ensure([], () => r(require('../page/mine/myBuyOrder')), 'buyOrder')
+const browse = r => require.ensure([], () => r(require('../page/mine/myBrowseOrder')), 'browseOrder')
+const addrManager = r => require.ensure([], () => r(require('../page/address/addressManager')), 'addrManager')
+const aboutUs = r => require.ensure([], () => r(require('../page/mine/aboutUs')), 'aboutUs')
 
 export default new Router({
   routes: [
@@ -32,6 +38,13 @@ export default new Router({
     	component: order
     },
     {
+    	path: '/orderlist/',
+    	component: orderStatus,
+    	children: [
+    		{path: ":pos", name: "orderSend", component: orderList},
+    	]
+    },
+    {
     	path: '/shopcart',
     	name: 'shopcart',
     	component: shopcart
@@ -40,6 +53,26 @@ export default new Router({
     	path: '/mine',
     	name: 'mine',
     	component: mine
+    },
+    {
+    	path: '/buyorder',
+    	name: 'buyOrder',
+    	component: buyOrder
+    },
+    {
+    	path: '/browse',
+    	name: 'browseOrder',
+    	component: browse
+    },
+    {
+    	path: '/addr',
+    	name: 'addrManager',
+    	component: addrManager
+    },
+    {
+    	path: '/about',
+    	name: 'aboutUs',
+    	component: aboutUs
     }
   ]
 })

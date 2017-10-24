@@ -4,7 +4,7 @@
 			<div class="container">
 				<div class="row address-choose-container" v-show="!showAddress">
 					<div class="col-md-2 col-sm-2 col-xs-2">
-						<img src="../../../static/images/address-palce.svg" />
+						<img src="/static/images/address-palce.svg" />
 					</div>
 					<div class="col-md-9 col-sm-9 col-xs-8">
 						<p>选择收获地址</p>
@@ -237,6 +237,9 @@
 				$("#buy-message").blur(function(){
 					$("#buy-message").animate({height:"30px"},200);	
 				});
+			},
+			gotoShopCart(){
+				this.$router.push("/shopcart");
 			}
 		}
 	}		

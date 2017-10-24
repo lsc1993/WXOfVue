@@ -37,8 +37,8 @@
 									<input type="text" :value="loadAddress.postcode" v-model="address.postcode" placeholder="邮政编码(选填)"/>
 								</div>
 								<div class="col-md-12 col-sm-12 col-xs-12 address-operator-button">
-									<button class="btn btn-success" @click="submit()">保存</button>
-									<button class="btn btn-danger" v-show="showDelBtn">删除</button>
+									<button class="btn btn-success" @click="saveAddr()">保存</button>
+									<button class="btn btn-danger" v-show="showDelBtn" @click="delAddr()">删除</button>
 								</div>
 							</div>
 						</div>
@@ -46,7 +46,7 @@
 				</div>
 			</div>
 		</transition>
-		<addrChoose :showDialog="showDialog" @dismiss="dismiss"></addrChoose>
+		<addrChoose :showDialog="showDialog" :index="chooseIndex" @dismiss="removeWindow"></addrChoose>
 	</div>
 </template>
 
@@ -57,7 +57,7 @@
 		data () {
 			return {
 				showDialog: false,
-				diaTitle: "",
+				chooseIndex: 0,
 				address: {
 					province: "选择省份",
 					city: "选择城市",
@@ -110,20 +110,23 @@
 			]),
 			chooseProvince(){
 				this.showDialog = true;
-				this.SET_PROVINCE("选择省份");
+				this.chooseIndex = 0;
 			},
 			chooseCity(){
 				this.showDialog = true;
-				this.SET_CITY("选择城市");
+				this.chooseIndex = 1;
 			},
 			chooseRegion(){
 				this.showDialog = true;
-				this.SET_REGION("选择地区");
+				this.chooseIndex = 2;
 			},
-			submit(){
+			saveAddr(){
 				alert(this.address.name + this.address.tel + this.address.province + this.address.city + this.address.region);
 			},
-			dismiss(){
+			delAddr(){
+				this.$emit("deleteAddr");
+			},
+			removeWindow(){
 				this.showDialog = false;
 			}
 		}
@@ -248,7 +251,7 @@
 	/**
 	 * popupwindow显示动画
 	 * */
-	.popup-window-transition-enter, .popup-window-transition-leave-active {
+	.popup-window-transition-enter-active, .popup-window-transition-leave-active {
 		opacity: 0;
 		transform: translateY(40%);
 		-webkit-transform: translateY(40%);

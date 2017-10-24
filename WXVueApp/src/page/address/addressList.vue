@@ -46,12 +46,24 @@
 				</div>
 			</div>
 		</transition>
-		<addrEdit :show="showEdit" :showDelBtn="showDel" :title="addrTitle" @close="removeWindow()"></addrEdit>
+		<addrEdit :show="showEdit" 
+			:showDelBtn="showDel" 
+			:title="addrTitle" 
+			@close="removeWindow()"
+			@deleteAddr="delAddr">
+		</addrEdit>
+		<diaTip :showDialog="showDiaTip" :message="msg" :title="diaTitle">
+			<div slot="dialog-footer">
+				<p class="dialog-button-left" @click="dismiss()">取消</p>
+				<p class="dialog-button-right" @click="confirm()">确定</p>
+			</div>
+		</diaTip>
 	</div>
 </template>
 
 <script>
 	import {mapState,mapMutations} from 'vuex'
+	import diaTip from '../../components/common/dialog'
 	import addrEdit from './addressEditor'
 	export default {
 		data () {
@@ -59,6 +71,10 @@
 				showEdit: false,
 				showDel: false,
 				addrTitle: "",
+				editIndex: 0,
+				showDiaTip: false,
+				diaTitle: "",
+				msg: "",
 				addrList: []
 			}
 		},
@@ -72,7 +88,7 @@
 			this.initAddress();
 		},
 		components: {
-			addrEdit
+			addrEdit,diaTip
 		},
 		methods: {
 			...mapMutations([
@@ -90,10 +106,27 @@
 					"address": "浙江省杭州市西湖区留和路288号",
 					"postcode": "310000"
 				};
+				var address1 = {
+					"id": 1,
+					"name": "刘爽",
+					"tel": "15700084332",
+					"province": "浙江省",
+					"city": "杭州市",
+					"region": "西湖区",
+					"road": "西湖区留和路135号",
+					"address": "浙江省杭州市西湖区留和路135号",
+					"postcode": "310000"
+				};
 				this.addrList.push(address);
-				this.addrList.push(address);
+				this.addrList.push(address1);
+			},
+			delAddr(){
+				this.showDiaTip = true;
+				this.msg = "是否删除地址？";
+				this.diaTitle = "提示";
 			},
 			editAddress(index){
+				this.editIndex = index;
 				this.SET_ADDREDIT(this.addrList[index]);
 				this.showEdit = true;
 				this.showDel = true;
@@ -107,9 +140,18 @@
 			},
 			chooseAddress(index){
 				this.SET_ADDRTEMP(this.addrList[index]);
+				this.$emit("close");
 			},
 			removeWindow(){
 				this.showEdit = false;
+			},
+			confirm(){
+				this.addrList.splice(this.editIndex, 1);
+				this.removeWindow();
+				this.dismiss();
+			},
+			dismiss(){
+				this.showDiaTip = false;
 			}
 		}
 	}

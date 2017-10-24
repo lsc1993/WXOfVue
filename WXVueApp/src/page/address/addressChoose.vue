@@ -1,11 +1,11 @@
 <template>
 	<div>
 		<transition name="dialog">
-			<div class="dialog-modal-mask" v-if="show">
+			<div class="dialog-modal-mask" v-if="showDialog">
 				<div class="dialog-modal-wrapper">
 					<div class="dialog-modal-container"> 
 						<div class="dialog-header">
-							<p>{{title}}</p>
+							{{title}}
 						</div>
 						<div class="dialog-content">
 							<ul>
@@ -504,31 +504,32 @@ var addr_arr = new Array();
 			showDialog: {
 				type: Boolean,
 				default: false
+			},
+			index: {
+				type: Number,
+				default: 0
 			}
 		},
 		computed: {
 			...mapState([
-				'addrTemp'
+				'addrEdit'
 			]),
-			show: function(){
-				return this.showDialog;
-			},
 			initAddr: function(){
-				if(this.addrTemp.province == "选择省份" ){
+				if(this.index == 0){
 					this.aera = addr_arr[0];
 					this.choosePos = 1;
 					this.title = "请选择省份";
 					return this.aera;
-				}else if(this.addrTemp.province != "" && this.addrTemp.city == "选择城市"){
-					var id = this.getProvIdByName(this.addrTemp.province);
+				}else if(this.index == 1){
+					var id = this.getProvIdByName(this.addrEdit.province);
 					this.aera = addr_arr[id];
 					this.choosePos = 2;
 					this.title = "请选择城市";
 					return this.aera;
-				}else if(this.addrTemp.province != "" && this.addrTemp.city != "" && this.addrTemp.region == "选择地区"){
-					var id = this.getProvIdByName(this.addrTemp.province);
+				}else if(this.index == 2){
+					var id = this.getProvIdByName(this.addrEdit.province);
 					var cities = addr_arr[id];
-					var rId = this.getCityIdByName(this.addrTemp.city,addr_arr[id]);
+					var rId = this.getCityIdByName(this.addrEdit.city,addr_arr[id]);
 					this.aera = addr_arr[rId];
 					this.choosePos = 3;
 					this.title = "请选择地区";
@@ -652,13 +653,12 @@ var addr_arr = new Array();
 	}
 	
 	.dialog-header {
+		width: auto;
 		height: 45px;
-		margin-top: 0;
 		color: #42b983;
-		text-align: center;
 		font-size: medium;
 		font-weight: 400;
-		padding: 15px;
+		text-align: center;
 		border-bottom: 1px solid #CCCCCC;
 	}
 	
@@ -715,17 +715,4 @@ var addr_arr = new Array();
 		background-color: #CCCCCC;
 	}
 	
-	.dialog-enter {
-		opacity: 0;
-	}
-	
-	.dialog-leave-active {
-		opacity: 0;
-	}
-	
-	.dialog-enter .dialog-modal-container,
-	.dialog-leave-active .dialog-modal-container {
-		transform: scale(1.1);
-		-webkit-transform: scale(1.1);
-	}
 </style>

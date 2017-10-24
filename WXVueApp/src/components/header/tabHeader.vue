@@ -2,16 +2,11 @@
 	<header class="fixed-header">
 		<div class="menu-wrapper">
 			<ul class="navbar-ul">
-				<li v-for="(tab, index) in tabText" :key="text.id" 
-					@click="$emit('tabClick', index)" 
+				<li v-for="(tab, index) in tabText" :key="tab.id" 
+					@click="changeTab(index)" 
 					:class="{'tab-choosed': tab.choosed}">
 					{{tab.text}}
 				</li>
-				<!--<li id="tab-1" class="tab-choosed" onclick="tabClick(0)"><a>待付款</a></li>
-				<li id="tab-2" onclick="tabClick(1)"><a>待发货</a></li>
-				<li id="tab-3" onclick="tabClick(2)"><a>待收货</a></li>
-				<li id="tab-4" onclick="tabClick(3)"><a>已完成</a></li>
-				<li id="tab-5" onclick="tabClick(4)"><a>已取消</a></li>-->
 			</ul>
 		</div>				 
 	</header>
@@ -19,10 +14,34 @@
 
 <script>
 	export default {
+		created(){
+			this.initTab(this.$route.params.pos);
+		},
 		props: {
 			tabText: {
 				type: Array,
 				default: []
+			}
+		},
+		methods: {
+			changeTab(index){
+				this.$emit("tabClick", index);
+				for(var i=0;i<this.tabText.length;++i){
+					if(i == index){
+						this.tabText[i].choosed = true;
+					}else{
+						this.tabText[i].choosed = false;
+					}
+				}
+			},
+			initTab(index){
+				for(var i=0;i<this.tabText.length;++i){
+					if(i == index){
+						this.tabText[i].choosed = true;
+					}else{
+						this.tabText[i].choosed = false;
+					}
+				}
 			}
 		}
 	}
