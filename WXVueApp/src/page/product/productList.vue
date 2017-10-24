@@ -35,18 +35,18 @@
 			initProduct(){
 				if(this.$route.params.id == "" || this.$route.params.id == undefined){
 					//do something
-					ajaxRequest("http://www.hzfuyao.com:8080/WXOfServer/product/list", "POST", "", function(data){
+					/*ajaxRequest("http://www.hzfuyao.com:8080/WXOfServer/product/list", "POST", "", function(data){
 						
 					},function(){
-						alert("dd");
-					});
+						
+					});*/
 				}else{
 					//do something
-					ajaxRequest("http://www.hzfuyao.com:8080/WXOfServer/product/list", "POST", "", function(data){
+					/*ajaxRequest("http://www.hzfuyao.com:8080/WXOfServer/product/list", "POST", "", function(data){
 						
 					},function(){
-						alert("dd");
-					});
+						
+					});*/
 				}
 			}
 		},
