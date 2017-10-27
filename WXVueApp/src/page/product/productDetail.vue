@@ -110,7 +110,8 @@
 			}
 		},
 		created(){
-			this.initProduct();
+			var self = this;
+			this.initProduct(self);
 		},
 		components: {
 			backHeader,
@@ -120,29 +121,55 @@
 			...mapMutations([
 				"SET_PRODUCT_DETAIL"
 			]),
-			initProduct(){
-				this.product = {
-					id:"123",
-					pId:"2312",
-					name:"红茶",
-					describe:"红茶儿",
-					price:"99",
-					saleVolume:"22",
-					delivery: "快递发货",
-					count:1,
-					imgIndex:"/static/images/20172001.jpg",
-					imgDesc:[{"img": "/static/images/20172001.jpg"},{"img": "/static/images/20172001.jpg"}],
-					imgTurn:[{"img": "/static/images/20172001.jpg"},{"img": "/static/images/20172001.jpg"}],
-					standards:[
-						{"sid": 1,"price": 120, "standard": "100克", "isChoosed": false},
-						{"sid": 2,"price": 220, "standard": "120克", "isChoosed": false},
-						{"sid": 3,"price": 320, "standard": "150克", "isChoosed": false}
-					]
-				};
-				this.SET_PRODUCT_DETAIL(this.product);
-				setTimeout(function(){
-	    			$("#product-image-turn").swipeSlide();
-	    		},1500);
+			initProduct(self){
+				requestOnce("/product/detail", "POST", {"pId": this.$route.params.id}, true,
+					function(data){
+						var sImg,imgname;
+						var dImg = new Array();
+						var pImg = new Array();
+						for(var i=0;i < data.images.length;++i){
+							var image = data.images[i].image;
+							if(image.startsWith("sImg")){
+								sImg = imageUrl + image;
+								imgname = image;
+							}else if(image.startsWith("pImg")){
+								pImg.push({"img": imageUrl + image});
+							}else if(image.startsWith("dImg")){
+								dImg.push({"img": imageUrl + image});
+							}
+						}
+						var stds = new Array();
+						for(var i=0;i < data.standard.length;++i){
+							stds.push({
+								"sid": data.standard[i].id,
+								"price": data.standard[i].price,
+								"standard": data.standard[i].standard, 
+								"choosed": false});
+						}
+						self.product = {
+							"id": data.product.id,
+							"pId": data.product.pId,
+							"name": data.product.name,
+							"describe": data.product.describe,
+							"price": data.product.price,
+							"saleVolume": data.saleVolum.saleVolum,
+							"delivery": "快递发货",
+							"count": data.product.count,
+							"imgname": imgname,
+							"imgIndex": sImg,
+							"imgDesc": dImg,
+							"imgTurn": pImg,
+							"standards": stds
+						};
+						self.SET_PRODUCT_DETAIL(self.product);
+						setTimeout(function(){
+			    			$("#product-image-turn").swipeSlide();
+			    		},1500);
+					},
+					function(){
+						
+					}
+				);
 			},
 			chooseStandard(){
 				this.showStdWindow = true;
@@ -247,6 +274,7 @@
 	.product-price-label {
 		width: 100%;
 		height:55px;
+		display: inline-block;
 		background-color: #D9534F;
 	}
 	
@@ -293,6 +321,7 @@
 	.product-sales-volume {
 		width: 100%;
 		height: 50px;
+		display: inline-block;
 		border-bottom: 1px solid #CCCCCC;
 		background-color: #FFFFFF;
 	}
@@ -336,8 +365,7 @@
 	}
 	
 	.product-standard i {
-		width: 5%;
-		line-height: 50px;
+		line-height: 40px;
 		margin-right: 3%;
 		float: right;
 	}
@@ -348,6 +376,7 @@
 	.product-detail-container {
 		width: 100%;
 		height: auto;
+		display: inline-block;
 		border-bottom: 1px solid #CCCCCC;
 	}
 	

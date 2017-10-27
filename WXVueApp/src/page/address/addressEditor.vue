@@ -37,8 +37,8 @@
 									<input type="text" :value="loadAddress.postcode" v-model="address.postcode" placeholder="邮政编码(选填)"/>
 								</div>
 								<div class="col-md-12 col-sm-12 col-xs-12 address-operator-button">
-									<button class="btn btn-success" @click="saveAddr()">保存</button>
-									<button class="btn btn-danger" v-show="showDelBtn" @click="delAddr()">删除</button>
+									<button id="address-save-btn" class="btn btn-success" @click="saveAddr()">保存</button>
+									<button id="address-del-btn" class="btn btn-danger" v-show="showDelBtn" @click="delAddr()">删除</button>
 								</div>
 							</div>
 						</div>
@@ -47,16 +47,20 @@
 			</div>
 		</transition>
 		<addrChoose :showDialog="showDialog" :index="chooseIndex" @dismiss="removeWindow"></addrChoose>
+		<toast :show="showTip" :message="tip"></toast>
 	</div>
 </template>
 
 <script>
+	import toast from '../../components/common/toast'
 	import addrChoose from './addressChoose'
 	import {mapState,mapMutations} from 'vuex'
 	export default {
 		data () {
 			return {
 				showDialog: false,
+				showTip: false,
+				tip: "",
 				chooseIndex: 0,
 				address: {
 					province: "选择省份",
@@ -80,7 +84,7 @@
 			}
 		},
 		components: {
-			addrChoose
+			addrChoose,toast
 		},
 		computed: {
 			/*
@@ -121,13 +125,111 @@
 				this.chooseIndex = 2;
 			},
 			saveAddr(){
-				alert(this.address.name + this.address.tel + this.address.province + this.address.city + this.address.region);
+				if(!this.checkAddr()){
+					return;
+				}
+				var self = this;
+				$("#address-save-btn").attr("disabled", true);
+				var userToken = $.cookie("user_token");
+				if(this.address.postcode == undefined || this.address.postcode == null){
+					this.address.postcode = "";
+				}
+				var data = {
+					"id": this.address.id,
+					"userToken": userToken,
+					"receiver": this.address.name,
+					"phone": this.address.tel,
+				    "province": this.address.province,
+				 	"city": this.address.city,
+				 	"region": this.address.region,
+					"detailAddress": this.address.road,
+					"postcode": this.address.postcode
+				};
+				if(data.id == "" || data.id == undefined){
+					requestOnce("/user/add-addr", "POST", data, true,
+						function(data){
+							$("#address-save-btn").attr("disabled", false);
+							self.showToast(data.message);
+							self.$emit("refresh");
+						},
+						function(){
+							$("#address-save-btn").attr("disabled", false);
+						});
+				}else{
+					requestOnce("/user/update-addr", "POST", data, true,
+						function(data){
+							$("#address-save-btn").attr("disabled", false);
+							self.showToast(data.message);
+							self.$emit("refresh");
+						},
+						function(){
+							$("#address-save-btn").attr("disabled", false);
+						}
+					);
+				}
 			},
 			delAddr(){
-				this.$emit("deleteAddr");
+				var self = this;
+				var userToken = $.cookie("user_token");
+				$("#address-del-btn").attr("disabled", true);
+				var data = {
+					"id": this.address.id,
+					"userToken": userToken,
+					"receiver": this.address.name,
+					"phone": this.address.tel,
+			        "province": this.address.province,
+			 		"city": this.address.city,
+			 		"region": this.address.region,
+					"detailAddress": this.address.road,
+					"postcode": this.address.postcode};
+				requestOnce("/user/del-addr", "POST", data, true,
+					function(data){
+						$("#address-del-btn").attr("disabled", false);
+						self.$emit("deleteAddr");
+					},
+					function(){
+						$("#address-del-btn").attr("disabled", false);
+					}
+				);
+				
+			},
+			checkAddr(){
+				if(this.address.province == "选择省份"){
+					this.showToast("请选择所在省份");
+					return false;
+				}
+				if(this.address.city == "选择城市"){
+					this.showToast("请选择所在城市");
+					return false;
+				}
+				if(this.address.region == "选择地区"){
+					this.showToast("请选择所在地区");
+					return false;
+				}
+				if(this.address.name == "" || this.address.name == undefined){
+					this.showToast("请输入联系人姓名");
+					return false;
+				}
+				if(this.address.tel == "" || this.address.tel == undefined){
+					this.showToast("请输入联系方式");
+					return false;
+				}
+				if(this.address.road == "" || this.address.road == undefined){
+					this.showToast("请输入详细地址");
+					return false;
+				}
+				return true;
 			},
 			removeWindow(){
 				this.showDialog = false;
+			},
+			showToast(message){
+				var self = this;
+				this.tip = message;
+				this.showTip = true;
+				setTimeout(function(){
+					self.showTip = false;
+				},2000);
 			}
 		}
 	}

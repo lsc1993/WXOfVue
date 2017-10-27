@@ -13,7 +13,7 @@
 							<img :src="order.imgurl"/>
 						</div>
 						<div class="order-unsale" v-if="order.pstatus=='下架'">
-							<img src="/static/images/icon-unsale.png" />
+							<img src="../../../static/images/icon-unsale.png" />
 						</div>
 						<div class="my-trade-list-message">
 							<p>{{order.name}}</p>
@@ -55,26 +55,32 @@
 		},
 		methods: {
 			initOrderList(){
-				var item = {
-					"pId": 1,
-					"name": "红茶",
-					"price": 220,
-					"imgurl": "/static/images/20172001.jpg",
-					"pstatus": "上架"
-				};
-				var item1 = {
-					"pId": 1,
-					"name": "红茶",
-					"price": 220,
-					"imgurl": "/static/images/20172001.jpg",
-					"pstatus": "下架"
-				}
-				this.orderList.push(item);
-				this.orderList.push(item1);
+				var self = this;
+				var data = {"userToken": $.cookie("user_token")};
+				requestOnce("/product/browse-history", "POST", data, true,
+					function(data){
+						var len = data.size;
+						for(var i=0;i < len;++i){
+							var order = data.rows[i];
+							var item = {
+								"id": order.pid,
+								"pId": order.pno,
+								"name": order.pname,
+								"price": order.price,
+								"imgurl": imageUrl + order.imgurl,
+								"status": order.status
+							}
+							self.orderList.push(item);
+						}
+					},
+					function(){
+						self.showToast("电波无法到达~~");
+					}
+				);
 			},
 			onItemClick(index){
 				if(this.orderList[index].pstatus == "下架"){
-					this.showToast("该商品已下架~૧(●´৺`●)૭~");
+					this.showToast("该商品已下架");
 					return;
 				}
 				this.$router.push("/product/"+this.orderList[index].pId);

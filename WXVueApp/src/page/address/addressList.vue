@@ -50,7 +50,8 @@
 			:showDelBtn="showDel" 
 			:title="addrTitle" 
 			@close="removeWindow()"
-			@deleteAddr="delAddr">
+			@deleteAddr="delAddr"
+			@refresh="refreshAddr()">
 		</addrEdit>
 		<diaTip :showDialog="showDiaTip" :message="msg" :title="diaTitle">
 			<div slot="dialog-footer">
@@ -95,30 +96,36 @@
 				"SET_ADDRTEMP","SET_ADDREDIT","RESET_ADDREDIT"
 			]),
 			initAddress(){
-				var address = {
-					"id": 1,
-					"name": "刘爽",
-					"tel": "15700084332",
-					"province": "浙江省",
-					"city": "杭州市",
-					"region": "西湖区",
-					"road": "西湖区留和路288号",
-					"address": "浙江省杭州市西湖区留和路288号",
-					"postcode": "310000"
-				};
-				var address1 = {
-					"id": 1,
-					"name": "刘爽",
-					"tel": "15700084332",
-					"province": "浙江省",
-					"city": "杭州市",
-					"region": "西湖区",
-					"road": "西湖区留和路135号",
-					"address": "浙江省杭州市西湖区留和路135号",
-					"postcode": "310000"
-				};
-				this.addrList.push(address);
-				this.addrList.push(address1);
+				var self = this;
+				var userToken = $.cookie("user_token");
+				var data =  {"userToken": userToken};
+				requestOnce("/user/address", "POST", data, true,
+					function(data){
+						var len = data.address.length;
+						if(len == 0){
+							return;
+						}
+						self.addrList.splice(0,self.addrList.length);
+						for(var i=0;i < len;++i){//初始化地址列表
+							var address = data.address[i];
+							var addr = {
+								"id": address.id,
+								"name": address.receiver,
+								"tel": address.phone,
+								"province": address.province,
+								"city": address.city,
+								"region": address.region,
+								"road": address.detailAddress,
+								"address": address.province+address.city+address.region+address.detailAddress,
+								"postcode": address.postcode
+							};
+							self.addrList.push(addr);
+						}
+					},
+					function(){
+						
+					}
+				);
 			},
 			delAddr(){
 				this.showDiaTip = true;
@@ -141,6 +148,10 @@
 			chooseAddress(index){
 				this.SET_ADDRTEMP(this.addrList[index]);
 				this.$emit("close");
+			},
+			refreshAddr(){
+				this.removeWindow();
+				this.initAddress();
 			},
 			removeWindow(){
 				this.showEdit = false;
@@ -183,7 +194,7 @@
 		bottom: 0;
 		width: 100%;
 		height: auto;
-		max-height: 80%;
+		max-height: 60%;
 		overflow-y: scroll;
 		margin: 0px auto;
 		background-color: #fff;

@@ -7,7 +7,7 @@
 							<div class="bottom-tab-button" id="sss">
 								<router-link to="/">
 									<!--<i class="icon-apple"></i>-->
-									<img src="/static/images/icon-home.png" />
+									<img src="../../../static/images/icon-home.png" />
 									<p>首页</p>
 								</router-link>
 							</div>
@@ -16,7 +16,7 @@
 							<div class="bottom-tab-button">
 								<router-link to="/shopcart">
 									<!--<i class="icon-shopping-cart"></i>-->
-									<img src="/static/images/icon-shopcart.png" />
+									<img src="../../../static/images/icon-shopcart.png" />
 									<p>购物车</p>
 								</router-link>
 							</div>

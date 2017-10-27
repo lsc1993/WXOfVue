@@ -4,7 +4,7 @@
 			<div class="container">
 				<div class="row address-choose-container" v-show="!showAddress">
 					<div class="col-md-2 col-sm-2 col-xs-2">
-						<img src="/static/images/address-palce.svg" />
+						<img src="../../../static/images/address-palce.svg" />
 					</div>
 					<div class="col-md-9 col-sm-9 col-xs-8">
 						<p>选择收获地址</p>
@@ -115,7 +115,7 @@
 		</div>
 		<footer>
 			<div class="order-footer">
-				<div id="submit-order-btn" class="order-submit" @click="payOrder()">
+				<div id="submit-order-btn" class="order-submit" @click="submitOrder()">
 					<p>提交订单</p>
 				</div>
 				<div class="order-total-cost">
@@ -125,11 +125,15 @@
 			</div>
 		</footer>
 		<addrList :show="showAddrList" @close="removeAddrWindow()"></addrList>
+		<toast :show="showTip" :message="tip"></toast>
+		<loading :show="showLoading"></loading>
 	</div>
 </template>
 
 <script>
 	import {mapState} from 'vuex'
+	import toast from '../../components/common/toast'
+	import loading from '../../components/common/loading'
 	import addrList from '../address/addressList'
 	export default {
 		data () {
@@ -138,6 +142,10 @@
 				singleOrder: true,
 				showAddrList: false,
 				showAddress: false,
+				showTip: false,
+				tip: "",
+				showLoading: false,
+				submitLock: false,
 				orders:[],
 				address: {}
 			}
@@ -149,7 +157,7 @@
 			this.autoHeightTextaera();  //此方法在created内调用无效
 		},
 		components: {
-			addrList
+			addrList, toast, loading
 		},
 		computed: {
 			...mapState([
@@ -166,7 +174,7 @@
 					this.singleOrder = false;
 					return this.orders;
 				}else{
-					alert("订单信息出错");
+					showToast("没有订单信息");
 					return this.orders;
 				}
 			},
@@ -227,8 +235,112 @@
 			removeAddrWindow(){
 				this.showAddrList = false;
 			},
-			payOrder(){
-				
+			submitOrder(){
+				if(this.submitLock){
+					return;
+				}
+				this.submitLock = true;
+				if(!this.showAddress){
+					this.showToast("请选择地址");
+					this.submitLock = false;
+					return;
+				}
+				this.showLoading = true;
+				var self = this;
+				var userToken = $.cookie("user_token");
+				if(this.orderType == 0){
+					var item = this.orders[0];
+					var data= {
+						"userToken": userToken,
+						"pid": item.pId,
+						"sid": item.sId,
+						"pName": item.name,
+						"imgurl": item.imgname,
+						"pTotal": item.total,
+						"count": item.count,
+						"standard": item.standard,
+						"sendCost": this.deliveCost,
+						"total": this.totalCost,
+						"discount": "1",
+						"buyerMsg": $("#buy-message").val(),
+						"sendWay": "快递发货",
+						"aid": this.address.id,
+						"receiver": this.address.name,
+						"phone": this.address.tel,
+						"address": this.address.address,
+						"postcode": this.address.postcode
+					};
+					requestOnce("/order/submit", "POST", data, true,
+						function(data){
+							self.showLoading = false;
+							self.submitLock = false;
+							self.$router.push("/orderSuccess");
+						},
+						function(){
+							self.showLoading = false;
+							self.submitLock = false;
+						}
+					);
+				}else if(this.orderType == 1){
+					var data = null;
+					var len = this.orders.length;
+					var jsonStr = "{";
+					if(len != 0){
+						jsonStr += '"orders"' + ":" + "["
+					}
+					for(var i=0;i < len;++i){
+						var key = "order"+i;
+						var item = this.orders[i];
+						
+						var value = "{"
+									+ toJSONString("pId",item.pId)
+									+ toJSONString("pno",item.pno)
+									+ toJSONString("pname",item.name) 
+									+ toJSONString("sId",item.sId)
+									+ toJSONString("standard",item.standard)
+									+ toJSONString("imgname",item.imgname)
+									+ toJSONString("imgurl",item.image)
+									+ toJSONString("pTotal",item.total)
+									+ toJSONString("count",item.count)
+									+ toJSONStringWithOutSplit("total", this.totalCost);
+									
+						if(i != len-1){
+							value += "},";
+						}else{
+							value += "}";
+						}
+						jsonStr += value;
+					}
+					if(len != 0){
+						jsonStr += "],";
+					}
+					var common = '"common"' + ":" + "{";
+					common += toJSONString("userToken",userToken)
+						+ toJSONString("discount","1")
+						+ toJSONString("sendWay", "快递发货")
+						+ toJSONString("buyMsg", $("#buy-message").val())
+						+ toJSONString("sendCost", this.deliveCost)
+						+ toJSONString("aid", this.address.id)
+						+ toJSONString("receiver", this.address.name)
+						+ toJSONString("phone", this.address.tel)
+						+ toJSONString("address", this.address.address)
+						+ toJSONStringWithOutSplit("postcode", this.address.postcode);
+					common += "}";
+					jsonStr += common;
+					jsonStr += "}";
+					data = jsonStr;
+					requestOnce("/order/submit-multi", "POST", data, false,
+						function(data){
+							self.submitLock = false;
+							self.showLoading = false;
+							self.$router.push("/orderSuccess");
+						},
+						function(){
+							self.submitLock = false;
+							self.showLoading = false;
+						}
+					);
+				}
 			},
 			autoHeightTextaera(){ //买家留言输入框高度伸展
 				$("#buy-message").focus(function(){
@@ -240,6 +352,14 @@
 			},
 			gotoShopCart(){
 				this.$router.push("/shopcart");
+			},
+			showToast(message){
+				var self = this;
+				this.tip = message;
+				this.showTip = true;
+				setTimeout(function(){
+					self.showTip = false;
+				},2000);
 			}
 		}
 	}		

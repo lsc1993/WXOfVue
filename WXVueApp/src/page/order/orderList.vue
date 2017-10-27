@@ -4,7 +4,7 @@
 			<!--全部订单-->
 			<div class="order-list" id="order-pay-list">
 				<ul>
-					<li v-for="(order,index) in loadOrderList" :key="order.id">
+					<li v-for="(order,index) in orderList" :key="order.id">
 						<div class="container">
 							<div class="row">
 								<div class="col-md-5 col-sm-10 col-xs-9">
@@ -16,6 +16,9 @@
 									<div class="order-status">
 										<p>{{order.status}}</p>
 									</div>
+								</div>
+								<div class="order-unsale" v-if="order.pstatus=='下架'">
+									<img src="../../../static/images/icon-unsale.png" />
 								</div>
 								<div class="order-message-container order-message">
 									<div class="col-md-2 col-sm-4 col-xs-4">
@@ -51,75 +54,185 @@
 				</ul>
 			</div>
 		</div>
+		<diaTip :showDialog="showTip" :message="msg" :title="title">
+			<div slot="dialog-footer">
+				<p class="dialog-button-middle" @click="confirm()">确定</p>
+			</div>
+		</diaTip>
+		<toast :show="showToastTip" :message="tip"></toast>
 	</div>
 </template>
 
 <script>
+	import diaTip from '../../components/common/dialog'
+	import toast from '../../components/common/toast'
 	export default {
 		data () {
 			return {
 				urgeBtn: false,
 				receiveBtn: false,
 				buyBtn: false,
+				start: 0,
+				status: "",
+				drop: null,
+				showTip: false,
+				msg: "",
+				title: "提示",
+				showToastTip: false,
+				tip: "",
 				orderList: []
 			}
 		},
-		computed: {
-			loadOrderList(){
+		mounted(){
+			this.resetStatus();
+			this.dropUpLoad();
+		},
+		components: {
+			diaTip, toast
+		},
+		watch: {
+			'$route'(to, from){
+				this.resetStatus();
+			}
+		},
+		methods: {
+			initOrderList(data){
+				var len = data.result;
+				var orders = data.rows;
+				for(var i=0;i < len;++i){
+					var item = orders[i];
+					var order = 
+					{
+						"id": item.id,
+						"no": item.orderId,
+						"pid": item.pid,
+						"name": item.name,
+						"imgurl": imageUrl + item.imgurl,
+						"standard": item.standard,
+						"count": item.pCount,
+						"pTotal": item.pTotal,
+						"total": item.total,
+						"status": item.status,
+						"pstatus": item.pstatus
+					};
+					this.orderList.push(order);
+				}
+			},
+			resetStatus(){
 				var param = this.$route.params.pos;
 				var status;
+				this.start = 0;
 				if(param == 0){
-					status = "NOTSEND";
+					this.status = "WAITSEND";
 					this.urgeBtn = true;
 					this.receiveBtn = false;
 					this.buyBtn = false;
 				}else if(param == 1){
-					status = "NOTRECEIVE";
+					this.status = "WAITRECEIVE";
 					this.urgeBtn = false;
 					this.receiveBtn = true;
 					this.buyBtn = false;
 				}else if(param == 2){
-					status = "COMPLETE";
+					this.status = "COMPLETE";
 					this.urgeBtn = false;
 					this.receiveBtn = false;
 					this.buyBtn = true;
 				}else if(param == 3){
-					status = "CANCEL";
+					this.status = "CANCEL";
 					this.urgeBtn = false;
 					this.receiveBtn = false;
 					this.buyBtn = true;
 				}
-				return this.initOrderList(status);
-			}
-		},
-		methods: {
-			initOrderList(status){
-				this.orderList.splice(0, this.orderList.length);
-				var order = 
-				{
-					"id": "1",
-					"no": "1",
-					"pid": "1",
-					"name": "红茶",
-					"imgurl": "/static/images/20172001.jpg",
-					"standard": "100克",
-					"count": "2",
-					"pTotal": "420",
-					"total": "420",
-					"status": "待发货",
-					"pstatus": "上架"
-				};
-				if(status == "NOTSEND"){
-					order.status = "待发货";
-				}else if(status == "NOTRECEIVE"){
-					order.status = "待收货";
-				}else if(status == "COMPLETE"){
-					order.status = "已完成";
-				}else if(status == "CANCEL"){
-					order.status = "已取消";
+				if(this.drop != null){
+					this.orderList.splice(0, this.orderList.length);
+					this.drop.resettabload();
 				}
-				this.orderList.push(order);
-				return this.orderList;
+			},
+			dropUpLoad(){
+				var times = 0;
+				var limit = 10;
+				var self = this;
+				this.drop = $("#order-list").dropload({
+					scrollArea : window,
+			        domDown : {
+			            domClass   : 'dropload-down',
+			            domRefresh : '<div class="dropload-refresh">上拉加载更多</div>',
+			            domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中...</div>',
+			            domNoData  : '<div class="dropload-noData">没有更多了</div>'
+			        },
+			        loadDownFn : function(me){
+			        	var data = {
+							"userToken": $.cookie("user_token"),
+							"status": self.status, 
+							"start": self.start,
+							"limit": limit
+						};
+			        	requestOnce("/order/list", "POST", data, true,
+							function(data){
+								self.start++;
+								var len = data.result;
+								if(len > 0){
+									self.initOrderList(data);
+								}else{
+									me.lock();
+									me.noData();
+								}
+								me.resetload();
+							},
+							function(){
+								times++;
+								if(times == 5){
+									alert("服务器无响应");
+									$('.dropload-down').hide();
+								}else if(times < 5){
+									me.resetload(); 
+								}
+							}
+						);
+			        }
+				});
+			},
+			urgeOrder(index){
+				this.showDialog("已收到您的请求~");
+			},
+			confirmReceive(index){
+				var userToken = $.cookie("user_token");
+				var self = this;
+				var data = {"userToken": userToken, "id": this.orderList[index].id, "status": "COMPLETE"};
+				requestOnce("/order/receive", "POST", data, true,
+					function(data){
+						if(data.result == "fault"){
+							showDialog(data.message);
+						}else{
+							self.$router.push("/receiveSuccess");
+						}
+					},
+					function(){
+						
+					}
+				);
+			},
+			buyAgain(index){
+				if(this.orderList[index].pstatus == "下架"){
+					this.showToast("该商品已下架");
+					return;
+				}
+				this.$router.push("/product/" + this.orderList[index].pid);
+			},
+			confirm(){
+				this.showTip = false;
+			},
+			showDialog(msg){
+				this.showTip = true;
+				this.msg = msg;
+			},
+			showToast(message){
+				var self = this;
+				this.tip = message;
+				this.showToastTip = true;
+				setTimeout(function(){
+					self.showToastTip = false;
+				},2000);
 			}
 		}
 	}
@@ -193,5 +306,20 @@
 		float: right;
 		background-color: rgba(255,255,255,.3);
 		border: 1px solid #CCCCCC;
+	}
+	
+	.order-unsale {
+		width: auto;
+		display: inline;
+		z-index: -10;
+	}
+	
+	.order-unsale img {
+		position: absolute;
+		left: 50%;
+		display: inline-block;
+		width: auto;
+		height: 70px;
+		margin-top: 5%;
 	}
 </style>

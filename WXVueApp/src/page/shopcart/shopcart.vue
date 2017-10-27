@@ -9,11 +9,11 @@
 					<li v-for="(shopOrder, index) in shopOrderList" :key="shopOrder.id">
 						<div>
 							<div class="shop-order-type">
-								<img src="/static/images/icon-store.png"><span>泊心风物</span></img>
+								<img src="../../../static/images/icon-store.png"><span>泊心风物</span></img>
 								<p @click="deleteOrder(index)">删除</p>
 							</div>
 							<div class="shop-order-unsale" v-if="shopOrder.status=='下架'">
-								<img src="/static/images/icon-unsale.png" />
+								<img src="../../../static/images/icon-unsale.png" />
 							</div>
 							<div class="shop-order-content">
 								<div class="shop-order-checkbox">
@@ -115,38 +115,35 @@
 				"ADD_ORDER", "CLEAR_ORDER"
 			]),
 			initShopOrder(){
-				var item = {
-					"id": 1,
-					"pId": 1,
-					"pno": 1,
-					"sId": 1,
-					"name": "红茶",
-					"imgname": "/static/images/20172001.jpg",
-					"image": "/static/images/20172001.jpg",
-					"standard": "100克",
-					"status": "上架",
-					"count": 1,
-					"price": 220,
-					"total": 220,
-					"checked": false
-				};
-				var item1 = {
-					"id": 2,
-					"pId": 1,
-					"pno": 1,
-					"sId": 1,
-					"name": "红茶",
-					"imgname": "/static/images/20172001.jpg",
-					"image": "/static/images/20172001.jpg",
-					"standard": "100克",
-					"status": "上架",
-					"count": 1,
-					"price": 220,
-					"total": 220,
-					"checked": false
-				};
-				this.shopOrderList.push(item);
-				this.shopOrderList.push(item1);
+				var self = this;
+				var data = {"userToken": $.cookie("user_token")};
+				requestOnce("/product/shopitem", "POST", data, true,
+					function(data){
+						var len = data.size;
+						var items = data.rows;
+						for(var i=0;i < len;++i){
+							var item = {
+								"id": items[i].id,
+								"pId": items[i].pid,
+								"pno": items[i].pno,
+								"sId": items[i].sid,
+								"name": items[i].name,
+								"imgname": items[i].imgurl,
+								"image": imageUrl + items[i].imgurl,
+								"standard": items[i].standard,
+								"count": items[i].count,
+								"price": items[i].price,
+								"status": items[i].status,
+								"total": (parseFloat(items[i].price) * parseInt(items[i].count)).toFixed(2),
+								"checked": false
+							}
+							self.shopOrderList.push(item);
+						}
+					},
+					function(){
+						showToast("服务器错误~~");
+					}
+				);
 			},
 			subCount(index){  //增加产品数量
 				if(this.shopOrderList[index].count > 1){
@@ -165,7 +162,11 @@
 				}
 			},
 			gotoProductDetail(index){  //跳转产品详情
-				this.$router.push({path: "/product/" + this.shopOrderList[index].id});
+				if(this.shopOrderList[index].status == "下架"){
+					this.showToast("该商品已下架");
+					return;
+				}
+				this.$router.push({path: "/product/" + this.shopOrderList[index].pId});
 			},
 			checkAll(){  //选中所有购物车中的产品
 				if (!this.allChecked){
@@ -184,7 +185,7 @@
 			},
 			checkItem(index){  //选中某个购物车中的产品
 				if(this.shopOrderList[index].status == "下架"){
-					this.showToast("该商品已下架~૧(●´৺`●)૭~");
+					this.showToast("该商品已下架");
 					return;
 				}
 				if(!this.shopOrderList[index].checked){
@@ -237,7 +238,17 @@
 				this.showDia = false;
 			},
 			confirm(){
-				this.shopOrderList.splice(this.delIndex,1);
+				var self = this;
+				var data = {"id": this.shopOrderList[this.delIndex].id};
+				requestOnce("/product/del-shop", "POST", data, true,
+					function(data){
+						self.shopOrderList.splice(self.delIndex,1);
+						self.showToast("已移除购物车商品");
+					},
+					function(){
+						self.showToast("服务器出错了~~");
+					}
+				);
 				this.showDia = false;
 			}
 		}
@@ -249,7 +260,12 @@
 	 * 购物车页面样式
 	 * */
 	.shop-order-container {
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
 		width: 100%;
+		padding: 1%;
 	}
 	
 	.shop-order-tip {
@@ -268,10 +284,9 @@
 	 * 购物车产品列表
 	 * */
 	.shop-order-list {
-		position: fixed;
-		top: 0;
 		width: 100%;
 		height: auto;
+		margin-bottom: 50px;
 	}
 	
 	.shop-order-list ul {
@@ -286,7 +301,7 @@
 		padding: 2%;
 		margin: 1%;
 		background-color: #FFFFFF;
-		box-shadow: 1px 1px 1px #CCCCCC;
+		box-shadow: 1px 1px 1px  #CCCCCC;
 		border-radius: 5px;
 	}
 	
@@ -408,13 +423,16 @@
 		right: 0;
 		bottom: 0;
 		width: 100%;
-		height: auto;
+		height: 50px;
+		display: inline-block;
+		background: #ffffff;
 	}
 	
 	.shop-order-all-check {
 		max-width: 28%;
 		display: inline-block;
 		margin-left: 10px;
+		margin-top: 15px;
 		float: left;
 	}
 	
@@ -471,12 +489,12 @@
 		height: 20px;
 		display: inline-block;
 		float: left;
-		background: url(/static/images/icon-unchecked.svg) no-repeat;
+		background: url(../../../static/images/icon-unchecked.svg) no-repeat;
 		background-size: 20px 20px;
 	}
 	
 	.input-check-bg-checked {
-		background: url(/static/images/icon-checked.svg) no-repeat;
+		background: url(../../../static/images/icon-checked.svg) no-repeat;
 		background-size: 20px 20px;
 	}
 </style>

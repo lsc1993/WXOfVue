@@ -25,7 +25,7 @@
 									<li v-for="(std,index) in loadProduct.standards" 
 										:key="std.id" 
 										@click="chooseStandard(index)" 
-										:class="{'product-standard-choosed' : std.isChoosed, 'product-standard-unchoosed' : !std.isChoosed}">
+										:class="{'product-standard-choosed' : std.choosed, 'product-standard-unchoosed' : !std.isChoosed}">
 										{{std.standard}}
 									</li>
 								</ul>
@@ -35,7 +35,7 @@
 							<p class="product-sale-count-p">数量:</p>
 							<div class="product-count-caculator">
 								<p @click="subCount()">-</p>
-								<p>{{product.count}}</p>
+								<p>{{count}}</p>
 								<p @click="addCount()">+</p>
 							</div>
 						</div>
@@ -63,6 +63,7 @@
 			return {
 				showTip: false,
 				tip: "",
+				count: 1,
 				product: {}
 			}
 		},
@@ -96,23 +97,23 @@
 				for(var i = 0;i < length;++i){
 					var std;
 					if(i == index){
-						this.product.standards[i].isChoosed = true;
+						this.product.standards[i].choosed = true;
 						this.product.price = this.product.standards[i].price;
 					} else {
-						this.product.standards[i].isChoosed = false;
+						this.product.standards[i].choosed = false;
 					}
 				}
 			},
 			addCount(){
-				if(this.product.count < 100){
-					this.product.count++;
+				if(this.count < this.product.count){
+					this.count++;
 				}else{
 					this.showToast("不能买更多了~");
 				}
 			},
 			subCount(){
-				if(this.product.count > 1){
-					this.product.count--;
+				if(this.count > 1){
+					this.count--;
 				}
 			},
 			showToast(message){
@@ -124,33 +125,70 @@
 				},2000);
 			},
 			addShopCart(){
-				this.showToast("请选择规格");
-			},
-			buyNow(){
-				var std,standard,price,sid,isChooseStd;
-				isChooseStd = false;
+				var std,standard,price,sid,chooseStd;
+				chooseStd = false;
 				for(var i=0;i<this.product.standards.length;++i){
 					std = this.product.standards[i];
-					if(std.isChoosed){
+					if(std.choosed){
 						sid = std.sid;
 						price = std.price;
 						standard = std.standard;
-						isChooseStd = true;
+						chooseStd = true;
 						break;
 					}
 				}
-				if(!isChooseStd){
+				if(!chooseStd){
+					this.showToast("请选择规格");
+					return;
+				}
+				var self = this;
+				var data = {
+					"userToken": $.cookie("user_token"),
+					"pId": this.product.id,
+					"pNo": this.product.pId,
+					"sId": sid,
+					"standard": standard,
+    				"price": price,
+    				"count": this.count,
+    				"imgurl": this.product.imgname,
+    				"pName": this.product.name};
+    			requestOnce("/product/shopcart", "POST", data, true,
+    				function(data){
+    					self.$emit("close");
+    					self.showToast(data.message);
+    				},
+    				function(){
+    					self.showToast("电波迷路了");
+    				}
+    			);
+			},
+			buyNow(){
+				var std,standard,price,sid,chooseStd;
+				chooseStd = false;
+				for(var i=0;i<this.product.standards.length;++i){
+					std = this.product.standards[i];
+					if(std.choosed){
+						sid = std.sid;
+						price = std.price;
+						standard = std.standard;
+						chooseStd = true;
+						break;
+					}
+				}
+				if(!chooseStd){
 					this.showToast("请选择规格");
 					return;
 				}
 				var order = {
 					"pId": this.product.pId,
 					"image": this.product.imgIndex,
+					"imgname": this.product.imgname,
 					"name": this.product.name,
-					"sid": sid,
+					"sId": sid,
 					"price": price,
-					"count": this.product.count,
-					"standard": standard
+					"count": this.count,
+					"standard": standard,
+					"total": parseFloat(price) * this.count
 				};
 				this.CLEAR_ORDER();
 				this.ADD_ORDER(order);

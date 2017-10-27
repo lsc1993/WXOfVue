@@ -119,7 +119,7 @@
 	export default {
 		data () {
 			return {
-				user: {"userImg": "/static/images/20172001.jpg", "username": "刘自在"}
+				user: {"userImg": "../../../static/images/20172001.jpg", "username": "刘自在"}
 			}
 		}
 	}

@@ -32,7 +32,8 @@
 			:showDelBtn="showDelBtn"
 			:title="title"
 			@close="removeWindow()"
-			@deleteAddr="delAddr">
+			@deleteAddr="delAddr"
+			@refresh="refreshAddr()">
 		</addrEditor>
 		<diaTip :showDialog="showDiaTip" :message="msg" :title="diaTitle">
 			<div slot="dialog-footer">
@@ -83,30 +84,35 @@
 				'SET_ADDREDIT','RESET_ADDREDIT'
 			]),
 			initAddress(){
-				var address = {
-					"id": 1,
-					"name": "刘爽",
-					"tel": "15700084332",
-					"province": "浙江省",
-					"city": "杭州市",
-					"region": "西湖区",
-					"road": "西湖区留和路288号",
-					"address": "浙江省杭州市西湖区留和路288号",
-					"postcode": "310000"
-				};
-				var address1 = {
-					"id": 1,
-					"name": "刘爽",
-					"tel": "15700084332",
-					"province": "浙江省",
-					"city": "杭州市",
-					"region": "西湖区",
-					"road": "西湖区留和路135号",
-					"address": "浙江省杭州市西湖区留和路135号",
-					"postcode": "310000"
-				};
-				this.addrItems.push(address);
-				this.addrItems.push(address1);
+				var self = this;
+				var data = {"userToken": $.cookie("user_token")};
+				requestOnce("/user/address", "POST", data, true,
+					function(data){
+						var len = data.address.length;
+						if(len == 0 || len == undefined){
+							return;
+						}
+						self.addrItems.splice(0, self.addrItems.length);
+						for(var i=0;i < len;++i){//初始化地址列表
+							var item = data.address[i];
+							var addr = {
+								"id": item.id,
+								"name": item.receiver,
+								"tel": item.phone,
+								"province": item.province,
+								"city": item.city,
+								"region": item.region,
+								"road": item.detailAddress,
+								"address": item.province+item.city+item.region+item.detailAddress,
+								"postcode": item.postcode
+							};
+							self.addrItems.push(addr);
+						}
+					},
+					function(){
+						showToast("电波迷路了~");
+					}
+				);
 			},
 			delAddr(){
 				this.showDiaTip = true;
@@ -125,6 +131,10 @@
 				this.showDelBtn = false;
 				this.showWindow = true;
 				this.RESET_ADDREDIT();
+			},
+			refreshAddr(){
+				this.removeWindow();
+				this.initAddress();
 			},
 			removeWindow(){
 				this.showWindow = false;

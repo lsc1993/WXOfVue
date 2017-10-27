@@ -6,7 +6,6 @@
 					<ul class="product-ul">
 						<li v-for="(product, index) in products" :key="product.id" @click="gotoProduct(index)">
 							<img :src="product.img" />
-							<p>{{$route.params.id}}</p>
 						</li>
 					</ul>
 				</div>
@@ -19,35 +18,79 @@
 	export default {
 		data () {
 			return {
-				products:[
-					{id: 1,img: "/static/images/20172001.jpg"},
-				]
+				start: 0,
+				times: 0,
+				products:[]
 			}
 		},
 		created() {
-			this.initProduct();
+			this.authWXUser("weixin");
+		},
+		mounted(){
+			this.dropUpLoad();
+			
 		},
 		methods: {
 			gotoProduct(index){
-				var pId = this.products[index].id;
+				var pId = this.products[index].pId;
 				this.$router.push("/product/"+pId);
 			},
-			initProduct(){
-				if(this.$route.params.id == "" || this.$route.params.id == undefined){
-					//do something
-					/*ajaxRequest("http://www.hzfuyao.com:8080/WXOfServer/product/list", "POST", "", function(data){
+			dropUpLoad(){
+				var self = this;
+				$("#product-wrapper").dropload({
+					scrollArea : window,
+			        domDown : {
+			            domClass   : 'dropload-down',
+			            domRefresh : '<div class="dropload-refresh">上拉加载更多</div>',
+			            domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中...</div>',
+			            domNoData  : '<div class="dropload-noData">没有更多了</div>'
+			        },
+			        loadDownFn: function(me){
+			        	requestOnce("/product/list", "POST", {"start": self.start, "limit": 5}, true,
+							function(data){
+								self.start++;
+								var len = data.size;
+								if(len > 0){
+									for(var i=0;i < len;++i){
+										var pro = {
+											"id": data.rows[i].product.id,
+											"pId": data.rows[i].product.pId,
+											"img": imageUrl + data.rows[i].image.image
+										};
+										self.products.push(pro);
+									}
+								}else{
+									me.lock();
+									me.noData();
+								}
+								me.resetload();
+							},
+							function(){
+								self.times++;
+								if(self.times == 5){
+									alert("我们与服务器失去了连接");
+									$('.dropload-down').hide();
+								} else if(self.times < 5){
+									me.resetload(); 
+								}
+							})
+			        }
+				});
+			},
+			authWXUser(code){
+				var param = new FormData();
+				param.append("code", code);
+				requestOnce("/wxauth/auth", "POST", param, false,
+					function(data){
+						//window.history.pushState(null, null, "/");
+						if(data.result == "fault"){
+							alert(data.message);
+						}
+					},
+					function(){
 						
-					},function(){
-						
-					});*/
-				}else{
-					//do something
-					/*ajaxRequest("http://www.hzfuyao.com:8080/WXOfServer/product/list", "POST", "", function(data){
-						
-					},function(){
-						
-					});*/
-				}
+					}
+				);
 			}
 		},
 		watch: {

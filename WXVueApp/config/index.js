@@ -31,7 +31,40 @@ module.exports = {
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+    	'/product': {
+	    	target: 'http://localhost:8080/',
+	    	changeOrigin: true, //用于解决跨域问题
+	      pathRewrite: {
+	      	'^/product/': '/product/'
+	      }
+	    },
+	    '/wxauth': {
+	    	target: 'http://localhost:8080/',
+	    	changeOrigin: true, //用于解决跨域问题
+	      pathRewrite: {
+	      	'^/wxauth/': '/wxauth/'
+	      }
+	    },
+	    '/user': {
+	    	target: 'http://localhost:8080/',
+	    	changeOrigin: true, //用于解决跨域问题
+	      pathRewrite: {
+	      	'^/user/': '/user/'
+	      }
+	    },
+	    '/order': {
+	    	target: 'http://localhost:8080/',
+	    	changeOrigin: true, //用于解决跨域问题
+	      pathRewrite: {
+	      	'^/order/': '/order/'
+	      }
+	    }
+    },
+   /* context: [ //代理路径
+      'WXOfServer'
+    ],
+    proxypath: 'http://localhost:8080',*/
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
     // (https://github.com/webpack/css-loader#sourcemaps)

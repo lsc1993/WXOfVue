@@ -13,7 +13,7 @@
 							<img :src="order.imgurl"/>
 						</div>
 						<div class="order-unsale" v-if="order.pstatus=='下架'">
-							<img src="/static/images/icon-unsale.png" />
+							<img src="../../../static/images/icon-unsale.png" />
 						</div>
 						<div class="my-trade-list-message">
 							<p>{{order.name}}</p>
@@ -36,11 +36,13 @@
 				title: "我买过的",  
 				showToastTip: false,
 				tip: "",
+				start: 0,
+				times: 0,
 				orderList: []
 			}
 		},
-		created(){
-			this.initOrderList();
+		mounted(){
+			this.dropUpLoad();
 		},
 		computed: {
 			showTip(){
@@ -54,23 +56,53 @@
 			backHeader,toast
 		},
 		methods: {
-			initOrderList(){
-				var item = {
-					"pId": 1,
-					"name": "红茶",
-					"price": 220,
-					"imgurl": "/static/images/20172001.jpg",
-					"pstatus": "上架"
-				};
-				var item1 = {
-					"pId": 1,
-					"name": "红茶",
-					"price": 220,
-					"imgurl": "/static/images/20172001.jpg",
-					"pstatus": "下架"
-				}
-				this.orderList.push(item);
-				this.orderList.push(item1);
+			dropUpLoad(){
+				var self = this;
+				
+				$("#my-buy-order").dropload({
+					scrollArea: window,
+			        domDown: {
+			            domClass   : 'dropload-down',
+			            domRefresh : '<div class="dropload-refresh">↑上拉加载更多</div>',
+			            domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中...</div>',
+			            domNoData  : '<div class="dropload-noData">没有更多了</div>'
+			        },
+			        loadDownFn : function(me){
+			        	var data = {"userToken": $.cookie("user_token"), "status": "COMPLETE", "start": self.start, "limit": 10};
+			        	requestOnce("/order/list", "POST", data, true,
+							function(data){
+								self.start++;
+								alert(self.start);
+								var len = data.result;
+								for(var i=0;i < len;++i){
+									var order = data.rows[i];
+									var item = {
+										"pId": order.pid,
+										"name": order.name,
+										"price": order.pTotal,
+										"imgurl": imageUrl + order.imgurl,
+										"pstatus": order.pstatus
+									};
+									self.orderList.push(item);
+								}
+								if(len <= 0){
+									me.lock();
+									me.noData();
+								}
+								me.resetload();
+							},
+							function(){
+								self.times++;
+								if(self.times == 5){
+									self.showToast("电波迷路了~~");
+									$('.dropload-down').hide();
+								} else if(self.times < 5){
+									me.resetload(); 
+								}
+							}
+						);
+			        }
+		     	});
 			},
 			onItemClick(index){
 				if(this.orderList[index].pstatus == "下架"){

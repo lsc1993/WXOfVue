@@ -13,7 +13,7 @@
 				<p>客服微信：dongjia993</p>
 				<p>联系电话：15700084332&nbsp;&nbsp;17764507160</p>
 				<div class="about-store">
-					<img  src="/static/images/store.jpg"/>
+					<img  src="../../../static/images/store.jpg"/>
 					<p>关注我们</p>
 				</div>
 			</div>
@@ -98,5 +98,6 @@
 	}
 	.fixed-footer p {
 		margin-top: 20px;
+		color: #F0F0F0;
 	}
 </style>

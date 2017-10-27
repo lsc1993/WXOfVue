@@ -15,6 +15,8 @@ const buyOrder = r => require.ensure([], () => r(require('../page/mine/myBuyOrde
 const browse = r => require.ensure([], () => r(require('../page/mine/myBrowseOrder')), 'browseOrder')
 const addrManager = r => require.ensure([], () => r(require('../page/address/addressManager')), 'addrManager')
 const aboutUs = r => require.ensure([], () => r(require('../page/mine/aboutUs')), 'aboutUs')
+const orderSuccess = r => require.ensure([], () => r(require('../page/notify/orderSuccess')), 'orderSuccess')
+const receiveSuccess = r => require.ensure([], () => r(require('../page/notify/receiveSuccess')), 'receiveSuccess')
 
 export default new Router({
   routes: [
@@ -73,6 +75,16 @@ export default new Router({
     	path: '/about',
     	name: 'aboutUs',
     	component: aboutUs
+    },
+    {
+    	path: '/orderSuccess',
+    	name: 'orderSuccess',
+    	component: orderSuccess
+    },
+    {
+    	path: '/receiveSuccess',
+    	name: 'receiveSuccess',
+    	component: receiveSuccess
     }
   ]
 })
