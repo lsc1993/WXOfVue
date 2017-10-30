@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
+const welcome = r => require.ensure([], () => r(require('../page/home/welcome')), 'welcome')
 const home = r => require.ensure([], () => r(require('../page/home/home')), 'home')
 const productList = r => require.ensure([], () => r(require('../page/product/productList')), 'productList')
 const productDetail = r => require.ensure([], () => r(require('../page/product/productDetail')), 'productDetail')
@@ -19,9 +20,15 @@ const orderSuccess = r => require.ensure([], () => r(require('../page/notify/ord
 const receiveSuccess = r => require.ensure([], () => r(require('../page/notify/receiveSuccess')), 'receiveSuccess')
 
 export default new Router({
+	mode: "history",
   routes: [
+  	{
+  		path: '/',
+  		name: "welcome",
+  		component: welcome
+  	},
     {
-      path: '/',
+      path: '/home',
       component: home,
       children: [
         {path: "", name: "pList", component: productList},

@@ -147,6 +147,7 @@
 				showLoading: false,
 				submitLock: false,
 				orders:[],
+				orderParam: {},
 				address: {}
 			}
 		},
@@ -235,6 +236,45 @@
 			removeAddrWindow(){
 				this.showAddrList = false;
 			},
+			payOrder(){
+				if(!this.showAddress){
+					this.showToast("请选择地址");
+					return;
+				}
+				var data;
+				var userToken = $.cookie("user_token");
+				if(this.orderType == 0){
+					data = {
+						"userToken": userToken,
+						"total": this.totalCost,
+						"body": this.orders[0].name
+					};
+				}else if(this.orderType == 1){
+					data = {
+						"userToken": userToken,
+						"total": this.totalCost,
+						"body": "老东家的风物馆"
+					};
+				}
+				var self = this;
+				requestOnce("/WXOfServer/wxpay/order-pay", "POST", data, true,
+					function(data){
+						if (typeof WeixinJSBridge == "undefined"){
+						    if(document.addEventListener ){
+						    	document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+						    }else if(document.attachEvent){
+						        document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
+						        document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+						    }
+						}else{
+						   self.onBridgeReady(data, self);
+						}
+					},
+					function(){
+						self.showToast("微信支付认证失败");
+					}
+				);
+			},
 			submitOrder(){
 				if(this.submitLock){
 					return;
@@ -252,6 +292,7 @@
 					var item = this.orders[0];
 					var data= {
 						"userToken": userToken,
+						"orderId": this.orderParam.orderId,
 						"pid": item.pId,
 						"sid": item.sId,
 						"pName": item.name,
@@ -261,6 +302,7 @@
 						"standard": item.standard,
 						"sendCost": this.deliveCost,
 						"total": this.totalCost,
+						"status": this.orderParam.status,
 						"discount": "1",
 						"buyerMsg": $("#buy-message").val(),
 						"sendWay": "快递发货",
@@ -316,9 +358,11 @@
 					}
 					var common = '"common"' + ":" + "{";
 					common += toJSONString("userToken",userToken)
+						+ toJSONString("orderId", this.orderParam.orderId)
 						+ toJSONString("discount","1")
 						+ toJSONString("sendWay", "快递发货")
 						+ toJSONString("buyMsg", $("#buy-message").val())
+						+ toJSONString("status", this.orderParam.status)
 						+ toJSONString("sendCost", this.deliveCost)
 						+ toJSONString("aid", this.address.id)
 						+ toJSONString("receiver", this.address.name)
@@ -341,6 +385,30 @@
 						}
 					);
 				}
+			},
+			onBridgeReady(data, self){
+				self.orderParam.orderId = data.orderId;
+			    WeixinJSBridge.invoke(
+			    	'getBrandWCPayRequest', {
+			        "appId": data.appId,     //公众号名称，由商户传入     	
+			        "timeStamp": data.timeStamp, //时间戳，自1970年以来的秒数
+			        "nonceStr": data.nonceStr, //随机串     
+			        "package": data.package,     
+			        "signType": data.signType,         //微信签名方式：     
+			        "paySign": data.paySign //微信签名 
+			    	},
+			        function(res){
+			       		alert(res.err_msg + " " + res.err_code + " " + res.err_desc);
+			            if(res.err_msg == "get_brand_wcpay_request:ok"){
+							self.orderParam.status = "WAITSEND";
+			            	self.submitOrder();
+			            }else if(res.err_msg == "get_brand_wcpay_request:fail"){
+			            	self.showToast("调用微信支付失败");
+			            }else if(res.err_msg == "get_brand_wcpay_request:cancel"){
+			            	self.showToast("已取消支付");
+			            }
+			        }
+			    ); 
 			},
 			autoHeightTextaera(){ //买家留言输入框高度伸展
 				$("#buy-message").focus(function(){
