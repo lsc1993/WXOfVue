@@ -73,6 +73,7 @@
 				receiveBtn: false,
 				buyBtn: false,
 				start: 0,
+				times: 0,
 				status: "",
 				drop: null,
 				showTip: false,
@@ -180,11 +181,11 @@
 								me.resetload();
 							},
 							function(){
-								times++;
-								if(times == 5){
-									alert("服务器无响应");
+								self.times++;
+								if(self.times == 5){
+									this.showToast("电波迷路了");
 									$('.dropload-down').hide();
-								}else if(times < 5){
+								}else if(self.times < 5){
 									me.resetload(); 
 								}
 							}
