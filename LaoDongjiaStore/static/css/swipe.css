@@ -1,7 +1,5 @@
 .slide{
     position: relative;
-    width: 100%;
-    max-width: 640px;
     overflow: hidden;
     margin: 0px auto;
 }
