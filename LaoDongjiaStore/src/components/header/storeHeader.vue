@@ -75,6 +75,11 @@
 		font-size: 15px;
 	}
 	
+	.menu-container p:hover {
+		cursor: pointer;
+		color: #EEB422;
+	}
+	
 	.menu-container img {
 		width: 20px;
 		height: 20px;

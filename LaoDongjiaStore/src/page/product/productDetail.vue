@@ -5,8 +5,10 @@
 		<div class="product-detail-container">
 			<div class="container">
 				<div class="product-link">
-					<p>首页<span>></span></p>
-					<p>所有商品<span>></span></p>
+					<router-link to="/"><p>首页</p></router-link>
+					<span>></span>
+					<p>所有商品</p>
+					<span>></span>
 					<p>茶</p>
 					<hr class="line"/>
 				</div>
@@ -18,35 +20,155 @@
 							</div>
 							<div class="product-image-preview">
 								<ul>
-									<li v-for="(pImage, index) in productImg">
+									<li v-for="(pImage, index) in product.imgTurn" @click="imageClick(index)">
 										<img :src="pImage.img" />
 									</li>
 								</ul>
 							</div>
 						</div>
+						<div class="col-md-6 col-sm-6 col-xs-12">
+							<div class="product-describe-container">
+								<p class="product-name-font">{{product.name}}</p>
+								<p class="product-describe-font">{{product.describe}}</p>
+							</div>
+							<div class="product-price-container">
+								<p class="product-name-font">￥</p>
+								<p class="product-name-font">{{product.price}}</p>
+								<hr class="line" />
+							</div>
+							<div class="product-sale-count">
+								<p>选择数量:</p>
+								<div class="product-count-caculator">
+									<p @click="subCount()">-</p>
+									<p>{{count}}</p>
+									<p @click="addCount()">+</p>
+								</div>
+							</div>
+							<div class="product-standard-container">
+								<p>规格:</p>
+								<div>
+									<ul>
+										<li v-for="(std,index) in product.standards" 
+											:key="std.id" 
+											@click="chooseStandard(index)" 
+											:class="{'product-standard-choosed' : std.choosed, 'product-standard-unchoosed' : !std.isChoosed}">
+											{{std.standard}}
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="product-trade-container">
+								<button class="product-shop-button">加入购物车</button>
+								<button class="product-buy-button">立即购买</button>
+							</div>
+						</div>
 					</div>
+				</div>
+				<div class="product-command-container">
+					<h4>猜你喜欢</h4>
+					<ul>
+						<li v-for="(cImg, index) in productCommand" class="col-md-3 col-sm-3 col-xs-6">
+							<img :src="cImg.img" />
+						</li>
+					</ul>
+				</div>
+				<div class="product-detail-wrapper">
+					<ul>
+						<li v-for="(dImg, index) in product.imgDesc" class="col-md-12 col-sm-12 col-xs-12">
+							<img :src="dImg.img" />
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>
+		<storeFooter></storeFooter>
+		<toast :show="showTip" :message="tip"></toast>
 	</div>
 </template>
 
 <script>
+	import toast from "../../components/common/toast"
 	import storeHeader from "../../components/header/storeHeader"
 	import naviHeader from "../../components/header/naviHeader"
 	import storeFooter from "../../components/footer/storeFooter"
 	export default {
 		data () {
 			return {
-				preview : "../../../static/images/s_w453h453.png",
-				productImg: [
+				count: 1,
+				showTip: false,
+				tip: "",
+				preview: "../../../static/images/s_w453h453.png",
+				product: {
+					"id": 1,
+					"pid": 1,
+					"name": "玄米茶",
+					"describe": "高山 流水",
+					"price": 120,
+					"count": 99,
+					"imgname": "",
+					"imgIndex": "",
+					"imgDesc": [
+						{"img": "../../../static/images/s.jpeg"},
+						{"img": "../../../static/images/s_w453h453.png"},
+						{"img": "../../../static/images/s_w453h454.png"}
+					],
+					"imgTurn": [
+						{"img": "../../../static/images/s_w453h453.png"},
+						{"img": "../../../static/images/s_w453h454.png"}
+					],
+					"standards": [
+						{"standard": "100克", "price": 100, "choosed": false},
+						{"standard": "200克", "price": 200, "choosed": false},
+						{"standard": "300克", "price": 300, "choosed": false}
+					]
+				},
+				productCommand: [
+					{"img": "../../../static/images/s_w453h453.png"},
+					{"img": "../../../static/images/s_w453h454.png"},
 					{"img": "../../../static/images/s_w453h453.png"},
 					{"img": "../../../static/images/s_w453h454.png"}
 				]
 			}
 		},
 		components: {
-			storeHeader, naviHeader, storeFooter
+			storeHeader, naviHeader, storeFooter, toast
+		},
+		methods: {
+			imageClick(index){
+				this.preview = this.product.imgTurn[index].img;
+			},
+			chooseStandard(index){
+				var length = this.product.standards.length;
+				for(var i = 0;i < length;++i){
+					var std;
+					if(i == index){
+						this.product.standards[i].choosed = true;
+						this.product.price = this.product.standards[i].price;
+					} else {
+						this.product.standards[i].choosed = false;
+					}
+				}
+			},
+			addCount(){
+				if(this.count < this.product.count){
+					this.count++;
+				}else{
+					this.showToast("不能买更多了~");
+				}
+			},
+			subCount(){
+				if(this.count > 1){
+					this.count--;
+				}
+			},
+			showToast(message){
+				var self = this;
+				this.tip = message;
+				this.showTip = true;
+				setTimeout(function(){
+					self.showTip = false;
+				},2000);
+			},
 		}
 	}
 </script>
@@ -61,6 +183,14 @@
 		text-align: left;
 	}
 	
+	.product-link a {
+		color: #000000;
+	}
+	
+	.product-link a:hover {
+		color: #EEB422;
+	}
+	
 	.product-link p {
 		display: inline-block;
 	}
@@ -72,7 +202,226 @@
 		border: 0.1px solid;
 	}
 	
+	/**
+	 * 产品图片以及预览图样式
+	 * */
 	.product-image {
+		width: 80%;
+		height: 420px;
 		background: rgba(0,0,0,0.1);
+	}
+	
+	.product-image img {
+		width: 100%;
+		max-height: 400px;
+	}
+	
+	.product-image-preview {
+		width: auto;
+		margin-top: 20px;
+	}
+	
+	.product-image-preview ul {
+		padding: 0;
+		float: left;
+	}
+	
+	.product-image-preview ul li {
+		list-style: none;
+		display: inline-block;
+		margin-right: 15px;
+	}
+	
+	.product-image-preview ul li img {
+		width: 70px;
+		
+	}
+	
+	.product-image-preview ul li:hover {
+		background: rgba(0,0,0,0.2);
+	}
+	
+	/**
+	 * 产品信息样式
+	 * */
+	.product-describe-container {
+		width: 100%;
+		text-align: left;
+	}
+	
+	.product-name-font {
+		font-size: 20px;
+		font-weight: bold;
+	}
+	
+	.product-describe-font {
+		color: #CCCCCC;
+	}
+	
+	/**
+	 * 产品价格样式
+	 * */
+	.product-price-container {
+		width: 80%;
+		text-align: left;
+		margin-top: 15px;
+	}
+	
+	.product-price-container p {
+		display: inline-block;
+	}
+	
+	/**
+	 * 产品数量样式
+	 * */
+	.product-sale-count {
+		width: 100%;
+		height: auto;
+		text-align: left;
+	}
+	
+	.product-sale-count p {
+		width: auto;
+		font-size: 16px;
+		display: inline-block;
+	}
+	
+	.product-count-caculator {
+		width: auto;
+		margin-left: 20px;
+		display: inline-block;
+		text-align: center;
+	}
+	.product-count-caculator p {
+		width: 25px;
+		height: 25px;
+		font-size: 16px;
+		font-weight: 400;
+		border: 1px solid #CCCCCC;
+		border-radius: 1px;
+	}
+	
+	.product-count-caculator p:hover {
+		cursor: pointer;
+	}
+	
+	/**
+	 * 交易按钮样式
+	 * */
+	.product-trade-container {
+		width: 100%;
+		margin-top: 40px;
+	}
+	
+	.product-buy-button {
+		width: 45%;
+		height:45px;
+		color: #ffffff;
+		background: #f0ad4e;
+		border: hidden;
+		border-radius: 5px;
+	}
+	
+	.product-shop-button {
+		width: 45%;  
+		height:45px;
+		color: #ffffff;
+		background: #d40f0f;
+		border: hidden;
+		border-radius: 5px;
+		float: left;
+	}
+	
+	/**
+	 * 产品规格样式
+	 * */
+	.product-standard-container {
+		width: 100%;
+	}
+	
+	.product-standard-container p {
+		text-align: left;
+	}
+	
+	.product-standard-container ul {
+		list-style: none;
+		padding: 0;
+		text-align: left;
+	}
+	
+	.product-standard-container ul li {
+		width: auto;
+		display: inline-block;
+		margin-right: 5%;
+	}
+	
+	.product-standard-unchoosed {
+		border: 1px solid #CCCCCC;
+	}
+	
+	.product-standard-choosed {
+		border: 1px solid #EEA236;
+	}
+	
+	/**
+	 * 产品推荐样式
+	 * */
+	.product-command-container {
+		margin-top: 50px;
+		padding: 0;
+	}
+	
+	.product-command-container ul {
+		width: 100%;
+		padding: 0;
+	}
+	
+	.product-command-container ul li {
+		list-style: none;
+		margin: 30px auto;
+	}
+	
+	.product-command-img {
+		width: 100%;
+	}
+	
+	/** 
+	 * 产品描述样式
+	 * */
+	.product-detail-wrapper {
+		width: 100%;
+		margin-top: 10%;
+	}
+	
+	.product-detail-wrapper ul {
+		padding: 0;
+	}
+	
+	.product-detail-wrapper ul li {
+		list-style: none;
+	}
+	
+	.product-detail-wrapper ul li img {
+		width: auto;
+		max-width: 100%;
+	}
+	
+	/** 
+	 * 产品推荐样式
+	 * */
+	.product-command-container {
+		width: 100%;
+	}
+	
+	.product-command-container ul {
+		padding: 0;
+	}
+	
+	.product-command-container ul li {
+		list-style: none;
+	}
+	
+	.product-command-container ul li img {
+		width: 100%;
 	}
 </style>

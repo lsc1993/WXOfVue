@@ -4,7 +4,7 @@
 			<div class="navi-header-wrapper">
 				<div class="navi-content">
 					<ul>
-						<li v-for="(tab, index) in tabText">
+						<li v-for="(tab, index) in tabText" @click="tabClick(index)">
 							{{tab.text}}
 						</li>
 					</ul>
@@ -24,6 +24,19 @@
 					{"text": "茶的种类"},
 					{"text": "茶文化"}
 				],
+			}
+		},
+		methods: {
+			tabClick(index){
+				if(index == 0){
+					this.$router.push("/");
+					return;
+				}
+				
+				if(index == 1){
+					this.$router.push("/plist");
+					return;
+				}
 			}
 		}
 	}
@@ -60,6 +73,6 @@
 	
 	.navi-content ul li:hover {
 		cursor: pointer;
-		color: #C0A16B;
+		color: #EEB422;
 	}
 </style>

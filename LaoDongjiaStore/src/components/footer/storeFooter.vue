@@ -1,5 +1,5 @@
 <template>
-	<div class="footer-container">
+	<div class="footer-container hidden-xs">
 		<div class="footer-wrapper">
 			<div class="store-describe">
 				<p>Copyright© 老东家的风物馆官网 2017

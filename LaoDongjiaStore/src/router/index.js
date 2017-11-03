@@ -5,6 +5,7 @@ Vue.use(Router)
 
 const home = r => require.ensure([], () => r(require('../page/home/home')), 'home')
 const productDetail = r => require.ensure([], () => r(require('../page/product/productDetail')), 'productDetail')
+const productList = r => require.ensure([], () => r(require('../page/product/productList')), 'productList')
 
 export default new Router({
 	mode: "history",
@@ -18,6 +19,11 @@ export default new Router({
       path: '/product/:pid',
       name: 'productDetail',
       component: productDetail
+    },
+    {
+    	path: '/plist',
+    	name: 'productList',
+    	component: productList
     }
   ]
 })
