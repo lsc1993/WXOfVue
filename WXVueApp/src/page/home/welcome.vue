@@ -10,7 +10,8 @@
 	import {mapMutations} from 'vuex'
 	export default {
 		created() {
-			this.checkAuth();
+			//this.checkAuth();
+			this.$router.push("/home");
 		},
 		methods: {
 			...mapMutations([
@@ -29,7 +30,7 @@
 						"authrize": false
 					}
 					this.SET_AUTH(auth);
-					this.$router.push("/WXVueApp/home");
+					this.$router.push("/home");
 				}else{
 					window.location.href = "http://open.weixin.qq.com/connect/oauth2/authorize?appid=wx29ffb7f4b6c0a1bb&redirect_uri=http%3A%2F%2Fwww.hzfuyao.com%2FWXVueApp%2F&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
 				}

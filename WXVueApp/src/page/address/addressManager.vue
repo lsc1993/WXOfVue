@@ -156,6 +156,8 @@
 	 * 收货地址样式
 	 * */
 	.address-list-container {
+		position: absolute;
+		top: 55px;
 		width: 100%;
 		height: auto;
 		margin-bottom: 60px;

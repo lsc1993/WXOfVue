@@ -4,12 +4,14 @@
 		<div class="space"></div>
 		<div class="product-container">
 			<div class="product-wrapper">
-				<div class="slide" id="product-image-turn">
-					<ul>
-						<li v-for="img in product.imgTurn" :key="img.id">
-							<img :src="img.img" />
-						</li>
-					</ul>
+				<div class="product-img-turn">
+					<div class="slide" id="product-image-turn">
+						<ul>
+							<li v-for="img in product.imgTurn" :key="img.id">
+								<img :src="img.img" />
+							</li>
+						</ul>
+					</div>
 				</div>
 				<div class="product-price-label">
 					<p class="price-text-small">￥</p>
@@ -242,12 +244,16 @@
 	 * 产品页面内容样式
 	 * */
 	.product-container {
+		width: 100%;
 		margin-bottom: 50px;
 	}
 	/*
 	 * 布局整体宽度
 	 * */
 	.product-wrapper {
+		position: absolute;
+		top: 55px;
+		left: 0;
 		width: 100%;
 		padding: 0;
 	}
@@ -257,13 +263,7 @@
 	 * */
 	.product-img-turn {
 		width: 100%;
-		height: 45%;
 		background-color: #FFFFFF;
-	}
-	
-	.product-img-turn img {
-		width: 100%;
-		height: 45%;
 	}
 	
 	/*

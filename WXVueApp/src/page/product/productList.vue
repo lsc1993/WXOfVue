@@ -31,7 +31,7 @@
 		methods: {
 			gotoProduct(index){
 				var pId = this.products[index].pId;
-				this.$router.push("/WXVueApp/product/"+pId);
+				this.$router.push("/product/"+pId);
 			},
 			dropUpLoad(){
 				var self = this;
@@ -48,6 +48,7 @@
 							function(data){
 								self.start++;
 								var len = data.size;
+								alert(data.size);
 								if(len > 0){
 									for(var i=0;i < len;++i){
 										var pro = {

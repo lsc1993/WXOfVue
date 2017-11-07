@@ -33,21 +33,22 @@
 				"SET_AUTH"
 			]),
 			authWXUser(){
-				if(this.authWX.authrize){
+				/*if(this.authWX.authrize){
 					return;
-				}
-				var authCode = this.authWX.code;
+				}*/
+				var authCode = "weixin";
 				var self = this;
 				if(authCode != "" && authCode != undefined){
 					var param = new FormData();
-					param.append("code", authCode);
+					param.append("code", "weixin");
 					requestOnce(requestUrl + "/wxauth/auth", "POST", param, false,
 						function(data){
-							var auth = {
+							/*var auth = {
 								"code": "",
 								"authrize": true
 							};
-							self.SET_AUTH(auth);
+							self.SET_AUTH(auth);*/
+							alert(data.message);
 						},
 						function(){
 								

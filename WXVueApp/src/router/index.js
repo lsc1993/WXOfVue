@@ -20,76 +20,75 @@ const orderSuccess = r => require.ensure([], () => r(require('../page/notify/ord
 const receiveSuccess = r => require.ensure([], () => r(require('../page/notify/receiveSuccess')), 'receiveSuccess')
 
 export default new Router({
-  mode: "history",
   routes: [
   	{
-  		path: '/WXVueApp/',
+  		path: '/',
   		name: "welcome",
   		component: welcome
   	},
     {
-      path: '/WXVueApp/home',
+      path: '/home',
       component: home,
       children: [
         {path: "", name: "pList", component: productList},
-      	{path: "/WXVueApp/plist/:id", name: "teaList", component: productList},
-      	{path: "/WXVueApp/plist/:id", name: "taoList", component: productList}
+      	{path: "/plist/:id", name: "teaList", component: productList},
+      	{path: "/plist/:id", name: "taoList", component: productList}
       ]
     },
     {
-    	path: '/WXVueApp/product/:id',
+    	path: '/product/:id',
     	name: 'productDetail',
     	component: productDetail
     },
     {
-    	path: '/WXVueApp/order',
+    	path: '/order',
     	name: 'order',
     	component: order
     },
     {
-    	path: '/WXVueApp/orderlist',
+    	path: '/orderlist',
     	component: orderStatus,
     	children: [
-    		{path: "/WXVueApp/orderlist/:pos", name: "orderSend", component: orderList},
+    		{path: "/orderlist/:pos", name: "orderSend", component: orderList},
     	]
     },
     {
-    	path: '/WXVueApp/shopcart',
+    	path: '/shopcart',
     	name: 'shopcart',
     	component: shopcart
     },
     {
-    	path: '/WXVueApp/mine',
+    	path: '/mine',
     	name: 'mine',
     	component: mine
     },
     {
-    	path: '/WXVueApp/buyorder',
+    	path: '/buyorder',
     	name: 'buyOrder',
     	component: buyOrder
     },
     {
-    	path: '/WXVueApp/browse',
+    	path: '/browse',
     	name: 'browseOrder',
     	component: browse
     },
     {
-    	path: '/WXVueApp/addr',
+    	path: '/addr',
     	name: 'addrManager',
     	component: addrManager
     },
     {
-    	path: '/WXVueApp/about',
+    	path: '/about',
     	name: 'aboutUs',
     	component: aboutUs
     },
     {
-    	path: '/WXVueApp/orderSuccess',
+    	path: '/orderSuccess',
     	name: 'orderSuccess',
     	component: orderSuccess
     },
     {
-    	path: '/WXVueApp/receiveSuccess',
+    	path: '/receiveSuccess',
     	name: 'receiveSuccess',
     	component: receiveSuccess
     }

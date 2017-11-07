@@ -14,25 +14,25 @@
 			<div class="my-order-state-container">
 				<ul>
 					<li>
-						<router-link to="/WXVueApp/orderlist/0">
+						<router-link to="/orderlist/0">
 							<i class="icon-indent-right icon-large"></i>
 							<p>待发货</p>
 						</router-link>
 					</li>
 					<li>
-						<router-link to="/WXVueApp/orderlist/1">
+						<router-link to="/orderlist/1">
 							<i class="icon-tasks icon-large"></i>
 							<p>待收货</p>
 						</router-link>
 					</li>
 					<li>
-						<router-link to="/WXVueApp/orderlist/2">
+						<router-link to="/orderlist/2">
 							<i class="icon-inbox icon-large"></i>
 							<p>已完成</p>
 						</router-link>
 					</li>
 					<li>
-						<router-link to="/WXVueApp/orderlist/3">
+						<router-link to="/orderlist/3">
 							<i class="icon-truck icon-large"></i>
 							<p>已取消</p>
 						</router-link>
@@ -40,7 +40,7 @@
 				</ul>
 			</div>
 			<div class="my-order-list">
-				<router-link to="/WXVueApp/orderlist/1">
+				<router-link to="/orderlist/1">
 					<div class="container">
 						<i class="icon-angle-right icon-2x angle-to-left"></i>
 						<i class="icon-align-justify icon-large"></i>
@@ -59,7 +59,7 @@
 					</div>-->
 			<div class="my-order-list border-top">
 				<div class="container">
-					<router-link to="/WXVueApp/buyorder">
+					<router-link to="/buyorder">
 						<i class="icon-angle-right icon-2x angle-to-left"></i>
 						<i class="icon-star icon-large"></i>
 						<p>我买过的</p>
@@ -68,7 +68,7 @@
 			</div>
 			<div class="my-order-list">
 				<div class="container">
-					<router-link to="/WXVueApp/browse">
+					<router-link to="/browse">
 						<i class="icon-angle-right icon-2x angle-to-left"></i>
 						<i class="icon-eye-open icon-large"></i>
 						<p>我的浏览记录</p>
@@ -95,7 +95,7 @@
 		<div class="my-setting-container">
 			<div class="my-order-list border-top">
 				<div class="container">
-					<router-link to="/WXVueApp/addr">
+					<router-link to="/addr">
 						<i class="icon-angle-right icon-2x angle-to-left"></i>
 						<i class="icon-home icon-large"></i>
 						<p>修改收货地址</p>
@@ -104,7 +104,7 @@
 			</div>
 			<div class="my-order-list">
 				<div class="container">
-					<router-link to="/WXVueApp/about">
+					<router-link to="/about">
 						<i class="icon-angle-right icon-2x angle-to-left"></i>
 						<i class="icon-phone-sign icon-large"></i>
 						<p>联系我们</p>
@@ -122,7 +122,7 @@
 				user: {"userImg": "", "username": ""}
 			}
 		},
-		methods: {
+		methods: {  
 			initUser(){
 				alert($.cookie("user_token"));
 				var data = {"userToken": $.cookie("user_token")};
