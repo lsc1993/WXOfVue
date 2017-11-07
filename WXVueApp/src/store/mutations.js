@@ -31,5 +31,8 @@ export default {
     },
     [types.SET_REGION](state, region){
     	state.addrEdit.region = region;
+    },
+    [types.SET_AUTH](state, auth){
+    	state.authWX = auth;
     }
 }

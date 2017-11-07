@@ -3,7 +3,7 @@
 		<backHeader :title="title"></backHeader>
 		<div class="my-trade-container container" id="my-buy-order">
 			<div class="my-trade-tip" v-show="showTip">
-				<h4>空空如也<router-link to="/">去逛逛~</router-link></h4>
+				<h4>空空如也<router-link to="/WXVueApp/">去逛逛~</router-link></h4>
 			</div>
 			<div class="my-trade-content" v-show="!showTip">
 				<ul>
@@ -69,7 +69,7 @@
 			        },
 			        loadDownFn : function(me){
 			        	var data = {"userToken": $.cookie("user_token"), "status": "COMPLETE", "start": self.start, "limit": 10};
-			        	requestOnce("/order/list", "POST", data, true,
+			        	requestOnce(requestUrl + "/order/list", "POST", data, true,
 							function(data){
 								self.start++;
 								alert(self.start);
@@ -106,10 +106,10 @@
 			},
 			onItemClick(index){
 				if(this.orderList[index].pstatus == "下架"){
-					this.showToast("该商品已下架~૧(●´৺`●)૭~");
+					this.showToast("该商品已下架");
 					return;
 				}
-				this.$router.push("/product/"+this.orderList[index].pId);
+				this.$router.push("/WXVueApp/product/"+this.orderList[index].pId);
 			},
 			showToast(message){
 				var self = this;

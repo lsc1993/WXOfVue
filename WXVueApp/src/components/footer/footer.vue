@@ -5,7 +5,7 @@
 					<div class="row">
 						<div class="col-md-4 col-sm-4 col-xs-4">
 							<div class="bottom-tab-button" id="sss">
-								<router-link to="/">
+								<router-link to="/WXVueApp/home">
 									<!--<i class="icon-apple"></i>-->
 									<img src="../../../static/images/icon-home.png" />
 									<p>首页</p>
@@ -14,7 +14,7 @@
 						</div>
 						<div class="col-md-4 col-sm-4 col-xs-4">
 							<div class="bottom-tab-button">
-								<router-link to="/shopcart">
+								<router-link to="/WXVueApp/shopcart">
 									<!--<i class="icon-shopping-cart"></i>-->
 									<img src="../../../static/images/icon-shopcart.png" />
 									<p>购物车</p>
@@ -23,7 +23,7 @@
 						</div>
 						<div class="col-md-4 col-sm-4 col-xs-4">
 							<div class="bottom-tab-button">
-								<router-link to="/mine">
+								<router-link to="/WXVueApp/mine">
 									<!--<i class="icon-envelope"></i>-->
 									<img src="../../../static/images/icon-me.png" />
 									<p>我的</p>

@@ -115,7 +115,7 @@
 		</div>
 		<footer>
 			<div class="order-footer">
-				<div id="submit-order-btn" class="order-submit" @click="submitOrder()">
+				<div id="submit-order-btn" class="order-submit" @click="payOrder()">
 					<p>提交订单</p>
 				</div>
 				<div class="order-total-cost">
@@ -257,7 +257,7 @@
 					};
 				}
 				var self = this;
-				requestOnce("/WXOfServer/wxpay/order-pay", "POST", data, true,
+				requestOnce(requestUrl + "/wxpay/order-pay", "POST", data, true,
 					function(data){
 						if (typeof WeixinJSBridge == "undefined"){
 						    if(document.addEventListener ){
@@ -312,11 +312,11 @@
 						"address": this.address.address,
 						"postcode": this.address.postcode
 					};
-					requestOnce("/order/submit", "POST", data, true,
+					requestOnce(requestUrl + "/order/submit", "POST", data, true,
 						function(data){
 							self.showLoading = false;
 							self.submitLock = false;
-							self.$router.push("/orderSuccess");
+							self.$router.push("/WXVueApp/orderSuccess");
 						},
 						function(){
 							self.showLoading = false;
@@ -373,11 +373,11 @@
 					jsonStr += common;
 					jsonStr += "}";
 					data = jsonStr;
-					requestOnce("/order/submit-multi", "POST", data, false,
+					requestOnce(requestUrl + "/order/submit-multi", "POST", data, false,
 						function(data){
 							self.submitLock = false;
 							self.showLoading = false;
-							self.$router.push("/orderSuccess");
+							self.$router.push("/WXVueApp/orderSuccess");
 						},
 						function(){
 							self.submitLock = false;
@@ -419,7 +419,7 @@
 				});
 			},
 			gotoShopCart(){
-				this.$router.push("/shopcart");
+				this.$router.push("/WXVueApp/shopcart");
 			},
 			showToast(message){
 				var self = this;
@@ -440,12 +440,14 @@
 		width: 100%;
 		height: auto;
 		background-color: #CCCCCC;
+		z-index: 10;
 	}
 	
 	.address-choose-container {
 		width: auto;
 		height: 50px;
 		text-align: left;
+		z-index: 10;
 	}
 	
 	.address-choose-container p {
@@ -471,6 +473,7 @@
 		position: relative;
 		display: table;
 		margin-top: 10px;
+		z-index: 10;
 	}
 	
 	.address-icon {

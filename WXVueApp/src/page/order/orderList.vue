@@ -168,7 +168,7 @@
 							"start": self.start,
 							"limit": limit
 						};
-			        	requestOnce("/order/list", "POST", data, true,
+			        	requestOnce(requestUrl + "/order/list", "POST", data, true,
 							function(data){
 								self.start++;
 								var len = data.result;
@@ -183,7 +183,7 @@
 							function(){
 								self.times++;
 								if(self.times == 5){
-									this.showToast("电波迷路了");
+									self.showToast("电波迷路了");
 									$('.dropload-down').hide();
 								}else if(self.times < 5){
 									me.resetload(); 
@@ -200,12 +200,12 @@
 				var userToken = $.cookie("user_token");
 				var self = this;
 				var data = {"userToken": userToken, "id": this.orderList[index].id, "status": "COMPLETE"};
-				requestOnce("/order/receive", "POST", data, true,
+				requestOnce(requestUrl + "/order/receive", "POST", data, true,
 					function(data){
 						if(data.result == "fault"){
 							showDialog(data.message);
 						}else{
-							self.$router.push("/receiveSuccess");
+							self.$router.push("/WXVueApp/receiveSuccess");
 						}
 					},
 					function(){
@@ -218,7 +218,7 @@
 					this.showToast("该商品已下架");
 					return;
 				}
-				this.$router.push("/product/" + this.orderList[index].pid);
+				this.$router.push("/WXVueApp/product/" + this.orderList[index].pid);
 			},
 			confirm(){
 				this.showTip = false;

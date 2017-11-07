@@ -25,12 +25,12 @@
 			clickLeftTab(){
 				$("#right-tab").removeClass("right-navi-btn-selected").addClass("right-navi-btn-unselected");
 				$("#left-tab").removeClass("left-navi-btn-unselected").addClass("left-navi-btn-selected");
-				this.$router.push({path: "/plist/tea"});
+				this.$router.push({path: "/WXVueApp/plist/tea"});
 			},
 			clickRightTab(){
 				$("#left-tab").removeClass("left-navi-btn-selected").addClass("left-navi-btn-unselected");
 				$("#right-tab").removeClass("right-navi-btn-unselected").addClass("right-navi-btn-selected");
-				this.$router.push({path: "/plist/tao"});
+				this.$router.push({path: "/WXVueApp/plist/tao"});
 			}
 		}
 	}

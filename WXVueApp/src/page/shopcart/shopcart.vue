@@ -2,7 +2,7 @@
 	<div>
 		<div class="shop-order-container" id="shop-cart">
 			<div class="shop-order-tip" v-if="showTip">
-				<h4>空空如也<router-link to="/">去逛逛~</router-link></h4>
+				<h4>空空如也<router-link to="/WXVueApp/">去逛逛~</router-link></h4>
 			</div>
 			<div class="shop-order-list" v-else="!showTip">
 				<ul>
@@ -117,7 +117,7 @@
 			initShopOrder(){
 				var self = this;
 				var data = {"userToken": $.cookie("user_token")};
-				requestOnce("/product/shopitem", "POST", data, true,
+				requestOnce(requestUrl + "/product/shopitem", "POST", data, true,
 					function(data){
 						var len = data.size;
 						var items = data.rows;
@@ -166,7 +166,7 @@
 					this.showToast("该商品已下架");
 					return;
 				}
-				this.$router.push({path: "/product/" + this.shopOrderList[index].pId});
+				this.$router.push({path: "/WXVueApp/product/" + this.shopOrderList[index].pno});
 			},
 			checkAll(){  //选中所有购物车中的产品
 				if (!this.allChecked){
@@ -224,7 +224,7 @@
 					this.showToast("请选择购买的商品");
 					return;
 				}
-				this.$router.push("/order");
+				this.$router.push("/WXVueApp/order");
 			},
 			showToast(message){
 				var self = this;
@@ -240,7 +240,7 @@
 			confirm(){
 				var self = this;
 				var data = {"id": this.shopOrderList[this.delIndex].id};
-				requestOnce("/product/del-shop", "POST", data, true,
+				requestOnce(requestUrl + "/product/del-shop", "POST", data, true,
 					function(data){
 						self.shopOrderList.splice(self.delIndex,1);
 						self.showToast("已移除购物车商品");
@@ -300,6 +300,7 @@
 		height: auto;
 		padding: 2%;
 		margin: 1%;
+		margin-right: 1%;
 		background-color: #FFFFFF;
 		box-shadow: 1px 1px 1px  #CCCCCC;
 		border-radius: 5px;

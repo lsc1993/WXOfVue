@@ -86,7 +86,7 @@
 			initAddress(){
 				var self = this;
 				var data = {"userToken": $.cookie("user_token")};
-				requestOnce("/user/address", "POST", data, true,
+				requestOnce(requestUrl + "/user/address", "POST", data, true,
 					function(data){
 						var len = data.address.length;
 						if(len == 0 || len == undefined){

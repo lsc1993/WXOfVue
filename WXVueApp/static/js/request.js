@@ -1,6 +1,6 @@
-domain = "http://localhost:";
-requestUrl = domain;
-imageUrl = domain + "1993/ImageResource/";
+domain = "http://www.hzfuyao.com";
+requestUrl = domain + "/WXOfServer";
+imageUrl = domain + ":1993/ImageResource/";
 
 function ajaxRequest(url, type, data, jsonType, successFn, failFn){
 	if(type == "GET"){

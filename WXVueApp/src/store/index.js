@@ -7,6 +7,7 @@ import * as getters from './getters'
 Vue.use(Vuex);
 
 const state = {
+	authWX: {},
 	productDetail: {},
 	orderList:[],
 	addrTemp: {}, //地址选择控件缓存

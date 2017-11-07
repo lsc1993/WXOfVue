@@ -122,7 +122,7 @@
 				"SET_PRODUCT_DETAIL"
 			]),
 			initProduct(self){
-				requestOnce("/product/detail", "POST", {"pId": this.$route.params.id}, true,
+				requestOnce(requestUrl + "/product/detail", "POST", {"pId": this.$route.params.id}, true,
 					function(data){
 						var sImg,imgname;
 						var dImg = new Array();
@@ -178,7 +178,7 @@
 				this.showStdWindow = false;
 			},
 			gotoShopCart(){
-				this.$router.push({path: "/shopcart"})
+				this.$router.push("/WXVueApp/shopcart");
 			}
 		}
 	}
@@ -198,14 +198,12 @@
 		right: 0;
 	    height: 50px;
 		background: #FFFFFF;
-		z-index: 99;
+		z-index: 1;
 	}
 	
 	.fixed-footer-wrapper {
 		width: 100%;
 		min-height: 50px;
-		border-bottom: 1px solid #CCCCCC;
-		border-top: 1px solid #CCCCCC;
 	}
 	
 	.footer-tab-btn1 {

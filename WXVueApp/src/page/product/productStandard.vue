@@ -152,7 +152,7 @@
     				"count": this.count,
     				"imgurl": this.product.imgname,
     				"pName": this.product.name};
-    			requestOnce("/product/shopcart", "POST", data, true,
+    			requestOnce(requestUrl + "/product/shopcart", "POST", data, true,
     				function(data){
     					self.$emit("close");
     					self.showToast(data.message);
@@ -192,7 +192,7 @@
 				};
 				this.CLEAR_ORDER();
 				this.ADD_ORDER(order);
-				this.$router.push("/order");
+				this.$router.push("/WXVueApp/order");
 			}
 		}
 	}
@@ -257,7 +257,7 @@
 		position: absolute;
 		right: 3%;
 		top: 3%;
-		z-index: 1000;
+		z-index: 100;
 	}
 	
 	.product-pop-remove button {

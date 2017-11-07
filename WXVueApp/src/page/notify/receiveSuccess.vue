@@ -34,10 +34,10 @@
 				var userToken = $.cookie("user_token");
 				var data = {"userToken": userToken, "comment": text};
 				var self = this;
-				requestOnce("/order/comment", "POST", data, true,
+				requestOnce(requestUrl + "/order/comment", "POST", data, true,
 					function(data){
 						alert("已收到您的宝贵意见");
-						self.$router.push("/mine");
+						self.$router.push("/WXVueApp/mine");
 					},
 					function(){
 						showToast("服务器出错了");

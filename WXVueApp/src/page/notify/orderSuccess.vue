@@ -7,10 +7,10 @@
 			</div>
 			<p>您已成功下单，我们会及时处理</p>
 			<div class="operator-container">
-				<router-link to="/">
+				<router-link to="/WXVueApp/">
 					<button>返回首页</button>
 				</router-link>
-				<router-link to="/orderlist/1">
+				<router-link to="/WXVueApp/orderlist/1">
 					<button>查看订单</button>
 				</router-link>
 			</div>

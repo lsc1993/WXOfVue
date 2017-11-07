@@ -5,7 +5,7 @@
 				<div class="row">
 					<div class="col-md-12 col-sm-12 col-xs-12">
 						<div class="menu-wrapper">
-							<router-link to="/">
+							<router-link to="/WXVueApp/home">
 								<i class="icon-angle-left icon-2x"></i>
 							</router-link>
 							<p class="title-center">{{title}}</p>

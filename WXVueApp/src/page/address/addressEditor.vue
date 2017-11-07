@@ -146,7 +146,7 @@
 					"postcode": this.address.postcode
 				};
 				if(data.id == "" || data.id == undefined){
-					requestOnce("/user/add-addr", "POST", data, true,
+					requestOnce(requestUrl + "/user/add-addr", "POST", data, true,
 						function(data){
 							$("#address-save-btn").attr("disabled", false);
 							self.showToast(data.message);
@@ -156,7 +156,7 @@
 							$("#address-save-btn").attr("disabled", false);
 						});
 				}else{
-					requestOnce("/user/update-addr", "POST", data, true,
+					requestOnce(requestUrl + "/user/update-addr", "POST", data, true,
 						function(data){
 							$("#address-save-btn").attr("disabled", false);
 							self.showToast(data.message);
@@ -182,7 +182,7 @@
 			 		"region": this.address.region,
 					"detailAddress": this.address.road,
 					"postcode": this.address.postcode};
-				requestOnce("/user/del-addr", "POST", data, true,
+				requestOnce(requestUrl + "/user/del-addr", "POST", data, true,
 					function(data){
 						$("#address-del-btn").attr("disabled", false);
 						self.$emit("deleteAddr");

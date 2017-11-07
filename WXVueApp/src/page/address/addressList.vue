@@ -99,7 +99,7 @@
 				var self = this;
 				var userToken = $.cookie("user_token");
 				var data =  {"userToken": userToken};
-				requestOnce("/user/address", "POST", data, true,
+				requestOnce(requestUrl + "/user/address", "POST", data, true,
 					function(data){
 						var len = data.address.length;
 						if(len == 0){

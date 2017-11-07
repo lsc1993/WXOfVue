@@ -24,16 +24,14 @@
 			}
 		},
 		created() {
-			this.authWXUser("weixin");
 		},
 		mounted(){
 			this.dropUpLoad();
-			
 		},
 		methods: {
 			gotoProduct(index){
 				var pId = this.products[index].pId;
-				this.$router.push("/product/"+pId);
+				this.$router.push("/WXVueApp/product/"+pId);
 			},
 			dropUpLoad(){
 				var self = this;
@@ -46,7 +44,7 @@
 			            domNoData  : '<div class="dropload-noData">没有更多了</div>'
 			        },
 			        loadDownFn: function(me){
-			        	requestOnce("/product/list", "POST", {"start": self.start, "limit": 5}, true,
+			        	requestOnce(requestUrl + "/product/list", "POST", {"start": self.start, "limit": 5}, true,
 							function(data){
 								self.start++;
 								var len = data.size;
@@ -76,21 +74,6 @@
 							})
 			        }
 				});
-			},
-			authWXUser(code){
-				var param = new FormData();
-				param.append("code", code);
-				requestOnce("/wxauth/auth", "POST", param, false,
-					function(data){
-						//window.history.pushState(null, null, "/");
-						if(data.result == "fault"){
-							alert(data.message);
-						}
-					},
-					function(){
-						
-					}
-				);
 			}
 		},
 		watch: {
