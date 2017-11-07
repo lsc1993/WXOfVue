@@ -30,7 +30,7 @@ module.exports = {
     port: process.env.PORT || 8088,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/WXVueApp/',
+    assetsPublicPath: './',
     proxyTable: {
     	'/product': {
 	    	target: 'http://localhost:8080/',
