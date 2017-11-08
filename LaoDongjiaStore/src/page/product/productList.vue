@@ -47,8 +47,25 @@
 					{"type": "乌龙茶"},
 					{"type": "盖碗"},
 				],
-				prductList: [
-					{},
+				productList: [
+					{
+						"id": 1,
+						"pid": 1,
+						"name": "玄米茶",
+						"describe": "高山 流水",
+						"price": 120,
+						"count": 99,
+						"img": "../../../static/images/s_w453h453.png"
+					},
+					{
+						"id": 1,
+						"pid": 1,
+						"name": "玄米茶",
+						"describe": "高山 流水",
+						"price": 120,
+						"count": 99,
+						"img": "../../../static/images/wrapper_pic1_1.png"
+					},
 				]
 			}
 		},
@@ -104,5 +121,32 @@
 		margin-top: 0;
 		color: #CCCCCC;
 		border: 0.1px solid;
+	}
+	
+	.product-list-wrapper {
+		width: 100%;
+		margin-top: 45px;
+	}
+	
+	.product-list-wrapper ul {
+		padding: 0;
+	}
+	
+	.product-list-wrapper ul li {
+		height: auto;
+		list-style: none;
+		box-shadow: 0 0 1px #CCCCCC;
+		border-radius: 5px;
+		padding: 1%;
+		margin-right: 3%;
+	}
+	
+	.product-list-wrapper ul li img {
+		width: 90%;
+		max-height: 180px;
+	}
+	
+	.product-list-wrapper ul li:hover {
+		background: rgba(0, 0, 0, 0.1);
 	}
 </style>

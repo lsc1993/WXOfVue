@@ -1,10 +1,10 @@
 <template>
 	<div>
 		<div class="product-view-container">
-			<img :src="image" />
+			<img :src="imgUrl" />
 			<div class="product-view-msg">
 				<p>{{name}}</p>
-				<p>{{price}}</p>
+				<p>￥{{price}}</p>
 			</div>
 		</div>
 	</div>
@@ -40,6 +40,7 @@
 	
 	.product-view-msg {
 		width: 100%;
+		margin-top: 20px;
 	}
 	
 	.product-view-msg p {
