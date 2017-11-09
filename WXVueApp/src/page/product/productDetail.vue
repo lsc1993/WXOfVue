@@ -198,7 +198,7 @@
 		right: 0;
 	    height: 50px;
 		background: #FFFFFF;
-		z-index: 1;
+		z-index: 10;
 	}
 	
 	.fixed-footer-wrapper {
@@ -248,6 +248,10 @@
 	 * 布局整体宽度
 	 * */
 	.product-wrapper {
+		position: absolute;
+		top: 55px;
+		left: 0;
+		right: 0;
 		width: 100%;
 		padding: 0;
 	}

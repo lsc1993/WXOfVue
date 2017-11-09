@@ -122,9 +122,11 @@
 				user: {"userImg": "", "username": ""}
 			}
 		},
+		created () {
+			this.initUser();
+		},
 		methods: {
 			initUser(){
-				alert($.cookie("user_token"));
 				var data = {"userToken": $.cookie("user_token")};
 				var self = this;
 				requestOnce(requestUrl + "/wxauth/userinfo", "POST", data, true, 
@@ -168,12 +170,13 @@
 		width: auto;
 		display: inline-block;
 		margin-left: 5%;
+		margin-top: 10px;
 		float: left;
 	}
 	
 	.user-img img {
-		width: 70px;
-		height: 70px;
+		width: 65px;
+		height: 65px;
 		border-radius: 35px;
 	}
 	

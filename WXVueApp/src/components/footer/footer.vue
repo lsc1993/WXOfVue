@@ -51,7 +51,7 @@
 		min-height: 50px;
 		border-top: 1px solid #CCCCCC;
 		background: #FFFFFF;
-		z-index: 99;
+		z-index: 120;
 	}
 	
 	.bottom-tab {

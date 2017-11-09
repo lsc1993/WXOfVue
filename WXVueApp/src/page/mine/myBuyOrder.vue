@@ -58,7 +58,6 @@
 		methods: {
 			dropUpLoad(){
 				var self = this;
-				
 				$("#my-buy-order").dropload({
 					scrollArea: window,
 			        domDown: {
@@ -72,7 +71,6 @@
 			        	requestOnce(requestUrl + "/order/list", "POST", data, true,
 							function(data){
 								self.start++;
-								alert(self.start);
 								var len = data.result;
 								for(var i=0;i < len;++i){
 									var order = data.rows[i];
@@ -125,6 +123,10 @@
 
 <style>
 	.my-trade-container {
+		position: absolute;
+		top: 55px;
+		left: 0;
+		right: 0;
 		width: 100%;
 		height: auto;
 	}
@@ -142,8 +144,9 @@
 	.my-trade-content ul li {
 		width: 100%;
 		height: auto;
+		min-height: 80px;
 		display: block;
-		margin-top: 8px;
+		margin-top: 10px;
 	}
 	.my-trade-tip {
 		text-align: center;
@@ -189,7 +192,7 @@
 	
 	.order-unsale img {
 		position: absolute;
-		left: 50%;
+		left: 45%;
 		display: inline-block;
 		width: auto;
 		height: 70px;
