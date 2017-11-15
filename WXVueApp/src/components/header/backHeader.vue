@@ -36,7 +36,7 @@
 		top: 0;
 		left: 0;
 		right: 0;
-		height: 45px;
+		height: 50px;
 		background: #FFFFFF;
 		border-radius: 3px;
 		box-shadow: 2px 2px 1px #CCCCCC;
@@ -45,7 +45,7 @@
 	
 	.fixed-header a {
 		width: auto;
-		line-height: 45px;
+		line-height: 50px;
 		color: #4D4D4D;
 		text-decoration: none;
 		float: left;
@@ -53,11 +53,11 @@
 	
 	.fixed-header i {
 		width: 10%;
-		line-height: 45px;
+		line-height: 50px;
 	}
 	
 	.fixed-header p {
-		line-height: 45px;
+		line-height: 50px;
 		text-align: center;
 		font-weight: 400;
 		font-size: 18px;
@@ -65,6 +65,6 @@
 	}
 	
 	.space {
-		height: 50px;
+		height: 60px;
 	}
 </style>

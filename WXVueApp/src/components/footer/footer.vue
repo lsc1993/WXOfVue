@@ -48,10 +48,12 @@
 		bottom: 0;
 		left: 0;
 		right: 0;
-		min-height: 50px;
+		width: 100%;
+		height: 50px;
+		display: inline-block;
 		border-top: 1px solid #CCCCCC;
 		background: #FFFFFF;
-		z-index: 120;
+		z-index: 99;
 	}
 	
 	.bottom-tab {

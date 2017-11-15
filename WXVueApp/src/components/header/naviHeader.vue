@@ -39,7 +39,7 @@
 <style>
 	.fixed-header {
 		position: fixed;
-		top: 0;
+		top: 2px;
 		left: 0;
 		right: 0;
 		width: 100%;
