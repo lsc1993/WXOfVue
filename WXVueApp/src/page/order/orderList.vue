@@ -116,7 +116,10 @@
 						"status": item.status,
 						"pstatus": item.pstatus
 					};
-					this.orderList.push(order);
+					var state = this.getStatus(this.status);
+					if(state == item.status){
+						this.orderList.push(order);
+					}
 				}
 			},
 			resetStatus(){
@@ -147,6 +150,20 @@
 				if(this.drop != null){
 					this.orderList.splice(0, this.orderList.length);
 					this.drop.resettabload();
+				}
+			},
+			getStatus(){
+				if(this.status == "WAITSEND"){
+					return "待发货";
+				}
+				if(this.status == "WAITRECEIVE"){
+					return "待收货";
+				}
+				if(this.status == "COMPLETE"){
+					return "交易完成";
+				}
+				if(this.status == "CANCEL"){
+					return "已取消";
 				}
 			},
 			dropUpLoad(){

@@ -1,17 +1,10 @@
 <template>
-	<div>
+	<div class="wrapper">
 		<storeHeader></storeHeader>
 		<naviHeader></naviHeader>
 		<div class="product-detail-container">
 			<div class="container">
-				<div class="product-link">
-					<router-link to="/"><p>首页</p></router-link>
-					<span>></span>
-					<p>所有商品</p>
-					<span>></span>
-					<p>茶</p>
-					<hr class="line"/>
-				</div>
+				<productLink :type="product.name"></productLink>
 				<div class="product-detail">
 					<div class="row">
 						<div class="col-md-6 col-sm-6 col-xs-12">
@@ -59,7 +52,7 @@
 							</div>
 							<div class="product-trade-container">
 								<button class="product-shop-button">加入购物车</button>
-								<button class="product-buy-button">立即购买</button>
+								<button class="product-buy-button" @click="buyNow()">立即购买</button>
 							</div>
 						</div>
 					</div>
@@ -87,10 +80,12 @@
 </template>
 
 <script>
+	import {mapMutations} from "vuex"
 	import toast from "../../components/common/toast"
 	import storeHeader from "../../components/header/storeHeader"
 	import naviHeader from "../../components/header/naviHeader"
 	import storeFooter from "../../components/footer/storeFooter"
+	import productLink from "./productLink"
 	export default {
 		data () {
 			return {
@@ -117,9 +112,9 @@
 						{"img": "../../../static/images/s_w453h454.png"}
 					],
 					"standards": [
-						{"standard": "100克", "price": 100, "choosed": false},
-						{"standard": "200克", "price": 200, "choosed": false},
-						{"standard": "300克", "price": 300, "choosed": false}
+						{"sId": "1" ,"standard": "100克", "price": 100, "choosed": false},
+						{"sId": "1" ,"standard": "200克", "price": 200, "choosed": false},
+						{"sId": "1" ,"standard": "300克", "price": 300, "choosed": false}
 					]
 				},
 				productCommand: [
@@ -131,9 +126,12 @@
 			}
 		},
 		components: {
-			storeHeader, naviHeader, storeFooter, toast
+			storeHeader, naviHeader, storeFooter, toast, productLink
 		},
 		methods: {
+			...mapMutations([
+				"ADD_ORDER", "CLEAR_ORDER"
+			]),
 			imageClick(index){
 				this.preview = this.product.imgTurn[index].img;
 			},
@@ -161,6 +159,39 @@
 					this.count--;
 				}
 			},
+			buyNow(){
+				var standard,price,sId;
+				var chooseStd = false;
+				var len = this.product.standards.length;
+				for(var i=0;i < len;++i){
+					var std = this.product.standards[i];
+					if(std.choosed){
+						sId = std.sId;
+						price = std.price;
+						standard = std.standard;
+						chooseStd = true;
+						break;
+					}
+				}
+				if(!chooseStd){
+					this.showToast("请选择规格");
+					return;
+				}
+				var order = {
+					"pId": this.product.pId,
+					"image": this.product.imgIndex,
+					"imgname": this.product.imgname,
+					"name": this.product.name,
+					"sId": sId,
+					"price": price,
+					"count": this.count,
+					"standard": standard,
+					"total": parseFloat(price) * this.count
+				};
+				this.CLEAR_ORDER();
+				this.ADD_ORDER(order);
+				this.$router.push("/order");
+			},
 			showToast(message){
 				var self = this;
 				this.tip = message;
@@ -174,8 +205,14 @@
 </script>
 
 <style>
+	.wrapper {
+		position: relative;
+		min-height: 100%;
+	}
+	
 	.product-detail-container {
 		width: 100%;
+		padding-bottom: 130px;
 	}
 	
 	.product-link {

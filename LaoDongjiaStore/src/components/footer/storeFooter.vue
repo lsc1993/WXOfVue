@@ -22,29 +22,18 @@
 </template>
 
 <script>
-	export default {
-		data () {
-			return {
-				socialImg: [
-					{"img": "../../../static/images/icon-weixin.png"},
-					{"img": "../../../static/images/icon-weixin.png"},
-				]
-			}
-		},
-		mounted() {
-			
-		},
-		methods: {
-			
-		}
-	}
+	export default {}
 </script>
 
 <style>
 	.footer-container {
+		position: absolute;
+		bottom: 0;
+		left: 0;
 		width: 100%;
 		height: 120px;
 		background: #fcfbf7;
+		margin-top: 20px;
 	}
 	
 	.store-describe {

@@ -198,6 +198,7 @@
 		bottom: 0;
 		left: 0;
 		right: 0;
+		width: 100%;
 	    height: 50px;
 		background: #FFFFFF;
 		z-index: 1;
@@ -205,7 +206,7 @@
 	
 	.fixed-footer-wrapper {
 		width: 100%;
-		min-height: 50px;
+		height: 50px;
 	}
 	
 	.footer-tab-btn1 {

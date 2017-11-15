@@ -1,20 +1,21 @@
 <template>
-	<div>
+	<div class="wrapper">
 		<storeHeader></storeHeader>
 		<naviHeader></naviHeader>
 		<div class="product-list-container">
 			<div class="container">
-				<div class="product-link">
+				<!--<div class="product-link">
 					<router-link to="/"><p>首页</p></router-link>
 					<span>></span>
 					<p>所有商品</p>
 					<span>></span>
-					<p>茶</p>
+					<p>{{type}}</p>
 					<hr class="line"/>
-				</div>
+				</div>-->
+				<productLink :type="type"></productLink>
 				<div class="product-type-container">
 					<ul>
-						<li v-for="(type, index) in productType">
+						<li v-for="(type, index) in productType" @click="typeClick(type.type)">
 							{{type.type}}
 						</li>
 					</ul>
@@ -23,13 +24,14 @@
 					<div class="row">
 						<ul>
 							<li v-for="(product, index) in productList" class="col-md-3 col-sm-3 col-xs-6">
-								<productView :imgUrl="product.img" :name="product.name" :price="product.price"></productView>
+								<productView :imgUrl="product.img" :name="product.name" :price="product.price" :pId="product.pid"></productView>
 							</li>
 						</ul>
 					</div>
 				</div>
 			</div>
 		</div>
+		<storeFooter></storeFooter>
 	</div>
 </template>
 
@@ -38,9 +40,11 @@
 	import naviHeader from "../../components/header/naviHeader"
 	import storeFooter from "../../components/footer/storeFooter"
 	import productView from "./productView"
+	import productLink from "./productLink"
 	export default {
 		data () {
 			return {
+				type: "所有商品",
 				productType: [
 					{"type": "龙井茶"},
 					{"type": "白茶"},
@@ -50,7 +54,7 @@
 				productList: [
 					{
 						"id": 1,
-						"pid": 1,
+						"pid": "1",
 						"name": "玄米茶",
 						"describe": "高山 流水",
 						"price": 120,
@@ -59,7 +63,43 @@
 					},
 					{
 						"id": 1,
-						"pid": 1,
+						"pid": "1",
+						"name": "玄米茶",
+						"describe": "高山 流水",
+						"price": 120,
+						"count": 99,
+						"img": "../../../static/images/wrapper_pic1_1.png"
+					},
+					{
+						"id": 1,
+						"pid": "1",
+						"name": "玄米茶",
+						"describe": "高山 流水",
+						"price": 120,
+						"count": 99,
+						"img": "../../../static/images/s_w453h453.png"
+					},
+					{
+						"id": 1,
+						"pid": "1",
+						"name": "玄米茶",
+						"describe": "高山 流水",
+						"price": 120,
+						"count": 99,
+						"img": "../../../static/images/wrapper_pic1_1.png"
+					},
+					{
+						"id": 1,
+						"pid": "1",
+						"name": "玄米茶",
+						"describe": "高山 流水",
+						"price": 120,
+						"count": 99,
+						"img": "../../../static/images/wrapper_pic1_1.png"
+					},
+					{
+						"id": 1,
+						"pid": "1",
 						"name": "玄米茶",
 						"describe": "高山 流水",
 						"price": 120,
@@ -70,14 +110,37 @@
 			}
 		},
 		components: {
-			storeHeader, naviHeader, storeFooter, productView
+			storeHeader, naviHeader, storeFooter, productView, productLink
+		},
+		methods: {
+			typeClick(type){
+				var t = this.getType(type);
+				if(t == undefined){
+					t = "all";
+				}
+				this.$router.push("/plist/" + t);
+			},
+			getType(type){
+				this.type = type;
+				if(type == "龙井茶"){
+					return "tea";
+				}
+				if(type == "盖碗"){
+					return "tao";
+				}
+			}
 		}
 	}
 </script>
 
 <style>
+	.wrapper {
+		position: relative;
+		min-height: 100%;
+	}
 	.product-list-container {
 		width: 100%;
+		padding-bottom: 130px;
 	}
 	
 	.product-type-container {
@@ -97,35 +160,15 @@
 		list-style: none;
 		display: inline-block;
 		margin-right: 15px;
-		vertical-align: middle;
-	}
-	.product-link { 
-		width: 100%;
-		text-align: left;
 	}
 	
-	.product-link a {
-		color: #000000;
-	}
-	
-	.product-link a:hover {
+	.product-type-container ul li:hover {
+		cursor: pointer;
 		color: #EEB422;
-	}
-	
-	.product-link p {
-		display: inline-block;
-	}
-	
-	.line {
-		height: 1px;
-		margin-top: 0;
-		color: #CCCCCC;
-		border: 0.1px solid;
 	}
 	
 	.product-list-wrapper {
 		width: 100%;
-		margin-top: 45px;
 	}
 	
 	.product-list-wrapper ul {
@@ -135,18 +178,6 @@
 	.product-list-wrapper ul li {
 		height: auto;
 		list-style: none;
-		box-shadow: 0 0 1px #CCCCCC;
-		border-radius: 5px;
-		padding: 1%;
-		margin-right: 3%;
-	}
-	
-	.product-list-wrapper ul li img {
-		width: 90%;
-		max-height: 180px;
-	}
-	
-	.product-list-wrapper ul li:hover {
-		background: rgba(0, 0, 0, 0.1);
+		margin-top: 3%;
 	}
 </style>

@@ -7,12 +7,16 @@
 					<p>老东家的风物馆</p>
 				</div>
 				<div class="menu-container hidden-xs">
-					<p class="divider-line">登录</p>
-					<p>注册</p>
-					<img src="../../../static/images/icon-shopcart.png" />
+					<router-link to="/user/login"><p class="divider-line">登录</p></router-link>
+					<router-link to="/user/register"><p>注册</p></router-link>
+					<router-link to="/shopcart">
+						<img src="../../../static/images/icon-shopcart.png" />
+					</router-link>
 				</div>
 				<div class="menu-list-container visible-xs">
-					<img src="../../../static/images/icon-shopcart.png"/>
+					<router-link to="/shopcart">
+						<img src="../../../static/images/icon-shopcart.png"/>
+					</router-link>
 				</div>
 			</div>
 		</div>
@@ -33,7 +37,7 @@
 		display: inline-block;
 		clear: both;
 		background: #ffffff;
-		z-index: 10;
+		z-index: 20;
 	}
 	.store-hreader-wrapper {
 		height: 50px;
@@ -75,14 +79,19 @@
 		font-size: 15px;
 	}
 	
-	.menu-container p:hover {
-		cursor: pointer;
-		color: #EEB422;
-	}
-	
 	.menu-container img {
 		width: 20px;
 		height: 20px;
+	}
+	
+	.menu-container a {
+		color: #000000;
+		text-decoration: none;
+	}
+	
+	.menu-container a:hover {
+		cursor: pointer;
+		color: #EEB422;
 	}
 	
 	.menu-list-container {

@@ -1,0 +1,8 @@
+export const SET_ADDREDIT = "SET_ADDREDIT"
+export const RESET_ADDREDIT = "RESET_ADDREDIT"
+export const SET_PROVINCE = "SET_PROVINCE"
+export const SET_CITY = "SET_CITY"
+export const SET_REGION = "SET_REGION"
+export const SET_ADDRTEMP = "SET_ADDRTEMP"
+export const ADD_ORDER = "ADD_ORDER"
+export const CLEAR_ORDER = "CLEAR_ORDER"

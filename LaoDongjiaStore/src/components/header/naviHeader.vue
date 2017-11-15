@@ -34,7 +34,7 @@
 				}
 				
 				if(index == 1){
-					this.$router.push("/plist");
+					this.$router.push("/plist/all");
 					return;
 				}
 			}

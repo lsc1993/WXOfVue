@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="wrapper">
 		<storeHeader></storeHeader>
 		<naviHeader></naviHeader>
 		<div class="content">
@@ -118,7 +118,12 @@
 </script>
 
 <style>
+	.wrapper {
+		position: relative;
+	}
+	
 	.content {
+		padding-bottom: 130px;
 	}
 	
 	.dash-line {

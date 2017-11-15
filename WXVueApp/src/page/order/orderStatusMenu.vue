@@ -24,13 +24,13 @@
 		methods: {
 			onTabClick(index){
 				if(index==0){
-					this.$router.replace("/WXVueApp/orderlist/0");
+					this.$router.replace("/orderlist/0");
 				}else if(index == 1){
-					this.$router.replace("/WXVueApp/orderlist/1");
+					this.$router.replace("/orderlist/1");
 				}else if(index == 2){
-					this.$router.replace("/WXVueApp/orderlist/2");
+					this.$router.replace("/orderlist/2");
 				}else if(index == 3){
-					this.$router.replace("/WXVueApp/orderlist/3");
+					this.$router.replace("/orderlist/3");
 				}
 			}
 		}
