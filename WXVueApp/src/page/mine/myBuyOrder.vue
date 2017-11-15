@@ -125,6 +125,10 @@
 
 <style>
 	.my-trade-container {
+		position: absolute;
+ 		top: 60px;
+ 		left: 0;
+ 		right: 0;
 		width: 100%;
 		height: auto;
 	}
@@ -143,7 +147,7 @@
 		width: 100%;
 		height: auto;
 		display: block;
-		margin-top: 8px;
+		margin-top: 10px;
 	}
 	.my-trade-tip {
 		text-align: center;
@@ -189,7 +193,7 @@
 	
 	.order-unsale img {
 		position: absolute;
-		left: 50%;
+		left: 45%;
 		display: inline-block;
 		width: auto;
 		height: 70px;

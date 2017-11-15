@@ -241,15 +241,15 @@
 	 */
 	.popup-window-modal-mask {
 		position: fixed;
-		z-index: 20;
 		top: 0;
 		left: 0;
 		height: 100%;
 		width: 100%;
 		background: rgba(0,0,0,0.5);
 		display: table;
-	    transition: opacity .3s ease;
-		-webkit-transition: .3s ease;
+	    transition: opacity .2s ease;
+		-webkit-transition: .2s ease;
+		z-index: 30;
 	}
 
 	.popup-window-modal-wrapper {
@@ -265,7 +265,7 @@
 		overflow-y: scroll;
 		margin: 0px auto;
 		background-color: #fff;
-		transition: all .3s ease;
+		transition: all .2s ease;
 		font-family: Helvetica, Arial, sans-serif;
 	}
 	.popup-window-modal-container::-webkit-scrollbar {

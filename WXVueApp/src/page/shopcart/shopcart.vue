@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="shop-order-container" id="shop-cart">
+		<div class="shop-order-container container" id="shop-cart">
 			<div class="shop-order-tip" v-if="showTip">
 				<h4>空空如也<router-link to="/WXVueApp/">去逛逛~</router-link></h4>
 			</div>
@@ -265,7 +265,6 @@
 		left: 0;
 		bottom: 0;
 		width: 100%;
-		padding: 1%;
 	}
 	
 	.shop-order-tip {
@@ -299,10 +298,8 @@
 		width: 100%;
 		height: auto;
 		padding: 2%;
-		margin: 1%;
-		margin-right: 1%;
 		background-color: #FFFFFF;
-		box-shadow: 1px 1px 1px  #CCCCCC;
+		box-shadow: 1px 1px #CCCCCC;
 		border-radius: 5px;
 	}
 	
@@ -314,10 +311,10 @@
 	
 	.shop-order-unsale img {
 		position: absolute;
-		left: 50%;
+		left: 45%;
 		display: inline-block;
 		width: auto;
-		height: 70px;
+		height: 65px;
 	}
 	
 	.shop-order-type {

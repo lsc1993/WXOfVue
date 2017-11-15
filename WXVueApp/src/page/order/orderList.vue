@@ -17,7 +17,7 @@
 										<p>{{order.status}}</p>
 									</div>
 								</div>
-								<div class="order-unsale" v-if="order.pstatus=='下架'">
+								<div class="order-unsale" v-if="(order.pstatus=='下架' && showUnsale)">
 									<img src="../../../static/images/icon-unsale.png" />
 								</div>
 								<div class="order-message-container order-message">
@@ -72,6 +72,7 @@
 				urgeBtn: false,
 				receiveBtn: false,
 				buyBtn: false,
+				showUnsale: false,
 				start: 0,
 				times: 0,
 				status: "",
@@ -131,21 +132,25 @@
 					this.urgeBtn = true;
 					this.receiveBtn = false;
 					this.buyBtn = false;
+					this.showUnsale = false;
 				}else if(param == 1){
 					this.status = "WAITRECEIVE";
 					this.urgeBtn = false;
 					this.receiveBtn = true;
 					this.buyBtn = false;
+					this.showUnsale = false;
 				}else if(param == 2){
 					this.status = "COMPLETE";
 					this.urgeBtn = false;
 					this.receiveBtn = false;
 					this.buyBtn = true;
+					this.showUnsale = true;
 				}else if(param == 3){
 					this.status = "CANCEL";
 					this.urgeBtn = false;
 					this.receiveBtn = false;
 					this.buyBtn = true;
+					this.showUnsale = true;
 				}
 				if(this.drop != null){
 					this.orderList.splice(0, this.orderList.length);
@@ -200,7 +205,7 @@
 							function(){
 								self.times++;
 								if(self.times == 5){
-									self.showToast("电波迷路了");
+									self.showToast("找不到服务器了~");
 									$('.dropload-down').hide();
 								}else if(self.times < 5){
 									me.resetload(); 
@@ -334,10 +339,10 @@
 	
 	.order-unsale img {
 		position: absolute;
-		left: 50%;
+		left: 45%;
 		display: inline-block;
 		width: auto;
 		height: 70px;
-		margin-top: 5%;
+		margin-top: 8%;
 	}
 </style>

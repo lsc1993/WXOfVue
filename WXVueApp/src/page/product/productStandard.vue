@@ -204,7 +204,6 @@
 	 */
 	.popup-window-modal-mask {
 		position: fixed;
-		z-index: 99;
 		top: 0;
 		left: 0;
 		height: 100%;
@@ -213,6 +212,7 @@
 		display: table;
 	    transition: opacity .2s ease;
 		-webkit-transition: .2s ease;
+		z-index: 99;
 	}
 	
 	.popup-window-modal-wrapper {

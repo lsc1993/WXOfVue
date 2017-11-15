@@ -53,7 +53,7 @@
 		display: inline-block;
 		border-top: 1px solid #CCCCCC;
 		background: #FFFFFF;
-		z-index: 99;
+		z-index: 100;
 	}
 	
 	.bottom-tab {
@@ -69,10 +69,12 @@
 	.bottom-tab-button img {
 		width: 18px;
 		height: 18px;
+		display: block;
 	}
 	
 	.bottom-tab-button p {
 		font-size: 12px;
+		display: block;
 	}
 	
 	.bottom-tab a {

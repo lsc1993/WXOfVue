@@ -50,10 +50,10 @@
 <style>
 	.fixed-header {
 		position: fixed;
-		top: 2px;
+		top: 0;
 		left: 0;
 		right: 0;
-		min-height: 50px;
+		height: 50px;
 		background: #FFFFFF;
 		border-radius: 3px;
 		box-shadow: 2px 2px 1px #CCCCCC;

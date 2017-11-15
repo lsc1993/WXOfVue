@@ -20,7 +20,7 @@
 				</div>
 				<div class="product-sales-volume">
 					<div class="product-transport-fare">
-						<p>运费：</p><p>{{product.delivery}}</p>
+						<p>运费：</p><p>满100包邮</p>
 					</div>
 					<div class="product-sales-fare">
 						<p>销量：</p><p>{{product.saleVolume}}</p>
@@ -250,6 +250,10 @@
 	 * 布局整体宽度
 	 * */
 	.product-wrapper {
+		position: absolute;
+ 		top: 60px;
+ 		left: 0;
+ 		right: 0;
 		width: 100%;
 		padding: 0;
 	}

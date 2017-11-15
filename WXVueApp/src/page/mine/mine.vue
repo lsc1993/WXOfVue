@@ -122,9 +122,11 @@
 				user: {"userImg": "", "username": ""}
 			}
 		},
+		created () {
+			this.initUser();
+		},
 		methods: {
 			initUser(){
-				alert($.cookie("user_token"));
 				var data = {"userToken": $.cookie("user_token")};
 				var self = this;
 				requestOnce(requestUrl + "/wxauth/userinfo", "POST", data, true, 
@@ -135,7 +137,8 @@
 						}
 					},
 					function(){
-						
+						self.user.userImg = "../../../static/images/icon-default-head-jpg";
+						self.user.username = "东家";
 					}
 				);
 			}
@@ -172,8 +175,8 @@
 	}
 	
 	.user-img img {
-		width: 70px;
-		height: 70px;
+		width: 65px;
+		height: 65px;
 		border-radius: 35px;
 	}
 	

@@ -625,7 +625,6 @@ var addr_arr = new Array();
 <style>
 	.dialog-modal-mask {
 		position: fixed;
-		z-index: 30;
 		top: 0;
 		left: 0;
 		height: 100%;
@@ -634,6 +633,7 @@ var addr_arr = new Array();
 		display: table;
 	    transition: opacity .3s ease;
 		-webkit-transition: .3s ease;
+		z-index: 50;
 	}
 
 	.dialog-modal-wrapper {

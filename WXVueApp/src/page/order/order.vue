@@ -82,7 +82,7 @@
 		</div>
 		<div id="buy-message-container" class="buyer-message">
 			<div class="container">
-				<p class="buy-message-p">买家留言：</p>
+				<p>买家留言：</p>
 				<textarea id="buy-message" class="textaera-div"></textarea>
 			</div>
 		</div>
@@ -90,7 +90,7 @@
 			<div class="container">
 				<p>优惠</p>
 				<div class="favoravle-tab">
-					<p>使用优惠</p>
+					<p>无可用优惠</p>
 					<i class="icon-angle-right"></i>
 				</div>
 			</div>
@@ -220,10 +220,10 @@
 			},
 			deliveryCost: function(){
 				var price = parseFloat(this.pTotal);
-				if(price > 88){
+				if(price >= 100){
 					this.deliveCost = 0;
 				}else{
-					this.deliveCost = 6;
+					this.deliveCost = 8;
 				}
 				var cost = this.deliveCost; 
 				return cost.toFixed(2);
@@ -271,7 +271,7 @@
 						}
 					},
 					function(){
-						self.showToast("微信支付认证失败");
+						self.showToast("微信支付认证失败，请退出重试！");
 					}
 				);
 			},
@@ -398,14 +398,13 @@
 			        "paySign": data.paySign //微信签名 
 			    	},
 			        function(res){
-			       		alert(res.err_msg + " " + res.err_code + " " + res.err_desc);
 			            if(res.err_msg == "get_brand_wcpay_request:ok"){
 							self.orderParam.status = "WAITSEND";
 			            	self.submitOrder();
 			            }else if(res.err_msg == "get_brand_wcpay_request:fail"){
-			            	self.showToast("调用微信支付失败");
+			            	self.showToast("调用微信支付失败，请退出重试！");
 			            }else if(res.err_msg == "get_brand_wcpay_request:cancel"){
-			            	self.showToast("已取消支付");
+			            	self.showToast("您已取消支付");
 			            }
 			        }
 			    ); 
@@ -612,12 +611,12 @@
 		padding: 0;
 		height: auto;
 		border-bottom: 1px solid #CCCCCC;
+		text-align: left;
 	}
 	
-	.buy-message-p {
+	.buy-message p {
 		width: auto;
 		line-height: 30px;
-		float: left;
 	}
 	
 	.textaera-div {
@@ -691,6 +690,8 @@
 		right: 0;
 		width: 100%;
 		height: 55px;
+		display: inline-block;
+		background: #ffffff;
 	}
 	
 	.order-total-cost {
