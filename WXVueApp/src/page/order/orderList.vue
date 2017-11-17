@@ -17,7 +17,7 @@
 										<p>{{order.status}}</p>
 									</div>
 								</div>
-								<div class="order-unsale" v-if="order.pstatus=='下架'">
+								<div class="order-unsale" v-if="(order.pstatus=='下架' && showUnsale)">
 									<img src="../../../static/images/icon-unsale.png" />
 								</div>
 								<div class="order-message-container order-message">
@@ -72,6 +72,7 @@
 				urgeBtn: false,
 				receiveBtn: false,
 				buyBtn: false,
+				showUnsale: false,
 				start: 0,
 				times: 0,
 				status: "",
@@ -85,8 +86,9 @@
 			}
 		},
 		mounted(){
-			this.resetStatus();
 			this.dropUpLoad();
+			this.resetStatus();
+			
 		},
 		components: {
 			diaTip, toast
@@ -94,6 +96,9 @@
 		watch: {
 			'$route'(to, from){
 				this.resetStatus();
+				/*this.resetload();
+				this.drop.unlock();
+				this.drop.noData(false);*/
 			}
 		},
 		methods: {
@@ -131,25 +136,33 @@
 					this.urgeBtn = true;
 					this.receiveBtn = false;
 					this.buyBtn = false;
+					this.showUnsale = false;
 				}else if(param == 1){
 					this.status = "WAITRECEIVE";
 					this.urgeBtn = false;
 					this.receiveBtn = true;
 					this.buyBtn = false;
+					this.showUnsale = false;
 				}else if(param == 2){
 					this.status = "COMPLETE";
 					this.urgeBtn = false;
 					this.receiveBtn = false;
 					this.buyBtn = true;
+					this.showUnsale = true;
 				}else if(param == 3){
 					this.status = "CANCEL";
 					this.urgeBtn = false;
 					this.receiveBtn = false;
 					this.buyBtn = true;
+					this.showUnsale = true;
 				}
 				if(this.drop != null){
 					this.orderList.splice(0, this.orderList.length);
 					this.drop.resettabload();
+				}else {
+					this.dropUpLoad();
+					this.drop.resettabload();
+					alert("ss");
 				}
 			},
 			getStatus(){

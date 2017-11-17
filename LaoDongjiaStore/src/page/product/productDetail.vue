@@ -100,8 +100,8 @@
 					"describe": "高山 流水",
 					"price": 120,
 					"count": 99,
-					"imgname": "",
-					"imgIndex": "",
+					"imgname": "s_w453h453.png",
+					"imgIndex": "../../../static/images/s_w453h453.png",
 					"imgDesc": [
 						{"img": "../../../static/images/s.jpeg"},
 						{"img": "../../../static/images/s_w453h453.png"},

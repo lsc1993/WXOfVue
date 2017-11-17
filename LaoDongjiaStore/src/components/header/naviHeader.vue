@@ -21,8 +21,8 @@
 				tabText: [
 					{"text": "首页"},
 					{"text": "所有产品"},
-					{"text": "茶的种类"},
-					{"text": "茶文化"}
+					{"text": "产品分类"},
+					{"text": "风物日记"}
 				],
 			}
 		},
@@ -32,10 +32,12 @@
 					this.$router.push("/");
 					return;
 				}
-				
 				if(index == 1){
 					this.$router.push("/plist/all");
 					return;
+				}
+				if(index == 2){
+					this.$router.push("/user/mine");
 				}
 			}
 		}

@@ -318,7 +318,9 @@
         me._scrollContentHeight = doc.documentElement.clientHeight;
         // 获取win可见区高度  —— 这里有坑
         me._scrollWindowHeight = doc.documentElement.clientHeight;
+        alert(me._scrollContentHeight + " " + me._scrollWindowHeight);
         var me = this;
+        me.direction = 'up';
         if(me.direction == 'down' && me.upInsertDOM){
             me.$domUp.css({'height':'0'}).on('webkitTransitionEnd mozTransitionEnd transitionend',function(){
                 me.loading = false;

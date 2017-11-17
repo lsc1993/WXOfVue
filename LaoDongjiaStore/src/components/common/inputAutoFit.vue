@@ -54,7 +54,7 @@
 					if($(id1).val().length <= 0){
 						$(id2).animate({
 							top: "10px",
-							fontSize: "16px"
+							fontSize: "14px"
 						},200,"linear", function(){
 							$(id2).css({"color": "#aaaaaa", "z-index": "-1"});
 						});
@@ -75,7 +75,7 @@
 				}else {
 					$(id2).animate({
 						top: "10px",
-						fontSize: "16px"
+						fontSize: "14px"
 					},200,"linear", function(){
 						$(id2).css({"color": "#aaaaaa", "z-index": "-1"});
 					});
@@ -103,7 +103,7 @@
 		position: absolute;
 		top: 12px;
 		left: 12px;
-		font-size: 15px;
+		font-size: 14px;
 		transition: 0.3s ease;
 		color: #aaaaaa;
 		background: #ffffff;
