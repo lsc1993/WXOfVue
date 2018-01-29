@@ -52,6 +52,7 @@
 		display: inline-block;
 		float: left;
 		border: 1px solid #cccccc;
+		border-radius: 3px;
 	}
 	
 	.text-color {

@@ -96,9 +96,6 @@
 		watch: {
 			'$route'(to, from){
 				this.resetStatus();
-				/*this.resetload();
-				this.drop.unlock();
-				this.drop.noData(false);*/
 			}
 		},
 		methods: {
@@ -162,7 +159,6 @@
 				}else {
 					this.dropUpLoad();
 					this.drop.resettabload();
-					alert("ss");
 				}
 			},
 			getStatus(){

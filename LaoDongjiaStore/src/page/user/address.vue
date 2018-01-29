@@ -173,6 +173,7 @@
 		margin-left: 5%;
 		padding: 5px;
 		border: 1px solid #cccccc;
+		border-radius: 3px;
 		float: left;
 	}
 	

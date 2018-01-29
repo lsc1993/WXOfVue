@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="wrapper">
 		<storeHeader></storeHeader>
 		<naviHeader></naviHeader>
 		<router-view></router-view>
@@ -25,4 +25,8 @@
 </script>
 
 <style>
+	.wrapper {
+		position: relative;
+		min-height: 100%;
+	}
 </style>
