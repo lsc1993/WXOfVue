@@ -1,14 +1,13 @@
 <template>
-	<div class="wrapper">
+	<div class="user-wrapper">
 		<storeHeader></storeHeader>
 		<naviHeader></naviHeader>
 		<router-view></router-view>
-		<storeFooter></storeFooter>
+		<!--<storeFooter></storeFooter>-->
 	</div>
 </template>
 
 <script>
-	import toast from '../../components/common/toast'
 	import storeHeader from "../../components/header/storeHeader"
 	import naviHeader from "../../components/header/naviHeader"
 	import storeFooter from "../../components/footer/storeFooter"
@@ -19,14 +18,13 @@
 			}
 		},
 		components: {
-			storeHeader, naviHeader, storeFooter, toast
+			storeHeader, naviHeader, storeFooter
 		},
 	}
 </script>
 
 <style>
-	.wrapper {
-		position: relative;
+	.user-wrapper {
 		min-height: 100%;
 	}
 </style>

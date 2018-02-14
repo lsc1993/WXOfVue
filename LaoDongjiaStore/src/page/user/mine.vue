@@ -22,17 +22,23 @@
 							<p>性别：</p><p>{{userInfo.sex}}</p>
 						</div>
 					</div>
+					<div class="user-complete-message-wrapper">
+						<button @click="showChangeDialog()">完善资料</button>
+					</div>
 				</div>
 			</div>
 		</div>
+		<userDialog :show="showDialog" @close="closeChangeDialog()"></userDialog>
 	</div>
 </template>
 
 <script>
 	import slideMenu from "./children/slideMenu"
+	import userDialog from "./children/userMessageDialog"
 	export default {
 		data () {
 			return {
+				showDialog: false,
 				userInfo: {
 					"id": 1,
 					"nickName": "tt",
@@ -42,7 +48,15 @@
 			}
 		},
 		components: {
-			slideMenu
+			slideMenu, userDialog
+		},
+		methods: {
+			showChangeDialog() {
+				this.showDialog = true;
+			},
+			closeChangeDialog() {
+				this.showDialog = false;
+			}
 		}
 	}
 </script>
@@ -55,6 +69,7 @@
 	}
 	
 	.user-message {
+		position: relative;
 		width: 75%;
 		min-height: 300px;
 		display: inline-block;
@@ -101,5 +116,21 @@
 	
 	.user-message-item p {
 		display: inline-block;
+	}
+	
+	.user-complete-message-wrapper {
+		position: absolute;
+		right: 5%;
+		bottom: 5%;
+	}
+	
+	.user-complete-message-wrapper button {
+		width: 120px;
+		height: 30px;
+		display: inline-block;
+		background: #d40f0f;
+		color: #ffffff;
+		border: hidden;
+		border-radius: 3px;
 	}
 </style>

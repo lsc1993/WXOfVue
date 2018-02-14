@@ -486,18 +486,6 @@
 			}
 		},
 		props: {
-			provSele: {
-				type: String,
-				default: ""
-			},
-			citySele: {
-				type: String,
-				default: ""
-			},
-			regionSele: {
-				type: String,
-				default: ""
-			},
 			editable: {
 				type: Boolean,
 				default: false
@@ -511,9 +499,15 @@
 			this.initProvince();
 		},
 		watch: {
+			//监听编辑的地址位置，重置省市地区信息
 			indexEdit(){
 				this.initSelect();
 			}
+		},
+		computed: {
+			...mapState([
+				"addrEdit"
+			])
 		},
 		methods: {
 			...mapMutations([
@@ -524,16 +518,13 @@
 					this.showCity = true;
 					this.showRegion = true;
 					this.initProvince();
-					this.province = this.provSele;
-					//this.province = addr.province;
-					$("#province-select").val(this.provSele);
+					this.province = this.addrEdit.province;
+					$("#province-select").val(this.province);
 					this.initCity();
-					this.city = this.citySele;
-					//this.city = addr.city;
+					this.city = this.addrEdit.city;
 					$("#city-select").val(this.city);
 					this.initRegion();
-					this.region = this.regionSele;
-					//this.region = addr.region;
+					this.region = this.addrEdit.region;
 					$("#region-select").val(this.region);
 				}else {
 					this.showCity = false;
@@ -612,7 +603,7 @@
 					this.showCity = true;
 					this.showRegion = false;
 				}
-				this.SET_PROVINCE(provText);
+				//this.SET_PROVINCE(provText);
 				this.SET_CITY("请选择城市");
 				this.SET_REGION("请选择地区");
 			},
@@ -626,13 +617,18 @@
 					this.initRegion();
 					this.showRegion = true;
 				}
-				this.SET_CITY(cityText);
+				//this.SET_CITY(cityText);
 				this.SET_REGION("请选择地区");
 			},
 			chooseRegion(){
 				var e = event ? event : window.event;
 				var regionText = e.target.value;
-				this.SET_REGION(regionText);
+				//this.SET_REGION(regionText);
+			},
+			submitAddr(){
+				this.SET_PROVINCE(this.province);
+				this.SET_CITY(this.city);
+				this.SET_REGION(this.region);
 			},
 			clearCity(){
 				$("#city-select").empty();

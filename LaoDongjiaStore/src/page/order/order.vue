@@ -1,5 +1,5 @@
 <template>
-	<div class="wrapper">
+	<div class="order-wrapper1">
 		<storeHeader></storeHeader>
 		<naviHeader></naviHeader>
 		<div class="order-container">
@@ -127,7 +127,7 @@
 				diaContent: "",
 				showAddrList: false,
 				address: {},
-				orders: {}
+				orders: []
 			}
 		},
 		components: {
@@ -158,7 +158,7 @@
 				var len = this.orderList.length;
 				var cost = 0;
 				for(var i=0;i < len;++i){
-					cost += this.orderList[i].total;
+					cost += parseFloat(this.orderList[i].total);
 				}
 				return cost.toFixed(2);
 			},
@@ -189,7 +189,7 @@
 </script>
 
 <style>
-	.wrapper {
+	.order-wrapper1 {
 		position: relative;
 		min-height: 100%;
 	}

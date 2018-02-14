@@ -1,5 +1,5 @@
 <template>
-	<div class="wrapper">
+	<div class="shop-wrapper">
 		<storeHeader></storeHeader>
 		<naviHeader></naviHeader>
 		<div class="shopcart-container">
@@ -93,7 +93,7 @@
 								<p>{{total}}</p>
 							</div>
 							<div class="col-md-5 col-sm-5 col-xs-6">
-								<button class="shopcart-buy-button">结算</button>
+								<button class="shopcart-buy-button" @click="submitOrder()">结算</button>
 							</div>
 						</div>
 					</div>
@@ -106,6 +106,7 @@
 </template>
 
 <script>
+	import {mapMutations} from "vuex"
 	import toast from '../../components/common/toast'
 	import storeHeader from "../../components/header/storeHeader"
 	import naviHeader from "../../components/header/naviHeader"
@@ -175,13 +176,16 @@
 			}
 		},
 		methods: {
-			addCount(index){  //减少产品数量
+			...mapMutations([
+				"ADD_ORDER", "CLEAR_ORDER"
+			]),
+			addCount(index){
 				if(this.shopList[index].count < 100){
 					this.shopList[index].count++;
 					var pTotal = this.shopList[index].price * this.shopList[index].count;
 					this.shopList[index].total = pTotal.toFixed(2);
 				}else{
-					this.showToast("达到一次购买上限");
+					this.showToast(BUY_NUMBER_LIMIT);
 				}
 			},
 			subCount(index){
@@ -191,11 +195,16 @@
 					this.shopList[index].total = pTotal.toFixed(2);
 				}
 			},
+			/**
+			 * 函数描述：全选按钮，选中所有购物车产品（除下架产品）
+			 * @param 
+			 * @return
+			 */
 			checkAll(){  //选中所有购物车中的产品
 				if (!this.allChecked){
 					this.allChecked = true;
 					for(var i = 0;i < this.shopList.length;++i){
-						if(this.shopList[i].status != "下架"){
+						if(this.shopList[i].status != PRODUCT_STATUS_UNSALE){
 							this.shopList[i].checked = true;
 						}
 					}
@@ -206,9 +215,14 @@
 					}
 				}
 			},
+			/**
+			 * 函数描述：选中购物车中产品
+			 * @param index 产品下标
+			 * @return 
+			 */
 			checkItem(index){  //选中某个购物车中的产品
-				if(this.shopList[index].status == "下架"){
-					this.showToast("该商品已下架");
+				if(this.shopList[index].status == PRODUCT_STATUS_UNSALE){
+					this.showToast(PRODUCT_UNSALE_TIP);
 					return;
 				}
 				if(!this.shopList[index].checked){
@@ -218,6 +232,11 @@
 				}
 				this.updateState();
 			},
+			/**
+			 * 函数描述：在每次有选中购物车产品动作时，检查当前产品选中状态——是否所有产品都被选中
+			 * @param
+			 * @return
+			 */
 			updateState(){   //检查产品状态，更新数据
 				var checkAll = true;
 				for(var i = 0;i < this.shopList.length;++i){
@@ -228,6 +247,21 @@
 					}	
 				}
 				this.allChecked = checkAll;
+			},
+			submitOrder(){
+				this.CLEAR_ORDER();
+				var hasChoosedProduct = false;
+				for (var i = 0;i < this.shopList.length;++i) {
+					if (this.shopList[i].checked) {
+						this.ADD_ORDER(this.shopList[i]);
+						hasChoosedProduct = true;
+					}
+				}
+				if (hasChoosedProduct) {
+					this.$router.push("/order");
+				} else {
+					this.showToast(PLEASE_CHOOSE_PRODUCT);
+				}
 			},
 			gotoShop(){
 				this.$router.push("/");
@@ -245,7 +279,7 @@
 </script>
 
 <style>
-	.wrapper {
+	.shop-wrapper {
 		position: relative;
 		min-height: 100%;
 	}

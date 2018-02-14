@@ -1,45 +1,110 @@
 <template>
-	<div class="login-container">
-		<div class="login-wrapper">
-			<h4>登录</h4>
-			<div>
-				<inputBox :inputId="'account'" :inputType="'text'"
-					:tipId="'account-tip'" :tipText="'手机号'"></inputBox>
-				<inputBox :inputId="'password'" :inputType="'password'"
-					:tipId="'password-tip'" :tipText="'登录密码'"></inputBox>
-				<div class="operator-container">
-					<router-link to="/user/register">
-						<p class="text-left">注册</p>
-					</router-link>
-					<router-link to="/user/changePass">
-						<p class="text-right">忘记密码</p>
-					</router-link>
+	<div>
+		<div class="login-container">
+			<div class="login-wrapper">
+				<h4>登录</h4>
+				<div>
+					<inputBox :inputId="'account'" :inputType="'text'"
+						:tipId="'account-tip'" :tipText="'用户名'"></inputBox>
+					<inputBox :inputId="'password'" :inputType="'password'"
+						:tipId="'password-tip'" :tipText="'登录密码'"></inputBox>
+					<div class="operator-container">
+						<router-link to="/user/register">
+							<p class="text-left">注册</p>
+						</router-link>
+						<router-link to="/user/changePass">
+							<p class="text-right">忘记密码</p>
+						</router-link>
+					</div>
+					<button class="login-button" @click="login()">登录</button>
 				</div>
-				<button class="login-button">登录</button>
 			</div>
 		</div>
+		<toast :show="showToastTip" :message="tip"></toast>
 	</div>
 </template>
 
 <script>
 	import inputBox from "../../components/common/inputBox"
+	import toast from "../../components/common/toast"
 	export default {
 		data () {
 			return {
-				msg: ""
+				showToastTip: false,
+				tip: ""
 			}
 		},
 		components: {
-			inputBox
+			inputBox, toast
 		},
-		methods: {}
+		methods: {
+			login() {
+				var account = $("#account").val();
+				if (!this.checkAccount(account)) {
+					return;
+				}
+				var password = $("#password").val();
+				if (!this.checkPassword(password)) {
+					return;
+				}
+			},
+			checkAccount(account) {
+				if (!ACCOUNT_REG.test(account)) {
+					this.showToast(ACCOUNT_MATCH_RULE);
+					return false;
+				}
+				
+				if (account == "" || account.length < 1) {
+					this.showToast(ENTER_ACCOUNT);
+					return false;
+				}
+				
+				if (account.length < ACCOUNT_SHORT_LENGTH) {
+					this.showToast(ACCOUNT_TOO_SHORT);
+					return false;
+				}
+				
+				if (account.length > ACCOUNT_LONG_LENGTH) {
+					this.showToast(ACCOUNT_TOO_LONG);
+					return false;
+				}
+				
+				return true;
+			},
+			checkPassword(password) {
+				if (!PASSWORD_REG.test(password)) {
+					this.showToast(PASSWORD_MATCH_RULE);
+					return false;
+				}
+				
+				if (password.length < PASSWORD_SHORT_LENGTH) {
+					this.showToast(PASSWORD_TOO_SHORT);
+					return false;
+				}
+				
+				if (password.length > PASSWORD_LONG_LENGTH) {
+					this.showToast(PASSWORD_TOO_LONG);
+					return false;
+				}
+				
+				return true;
+			},
+			showToast(message) {
+				var self = this;
+				this.tip = message;
+				this.showToastTip = true;
+				setTimeout(function(){
+					self.showToastTip = false;
+				},2000);
+			}
+		}
 	}
 </script>
 
 <style>
 	.login-container {
 		position: absolute;
-		top: 30%;
+		top: 25%;
 		left: 20%;
 		width: 60%;
 		height: auto;

@@ -79,7 +79,17 @@
 						"province": "浙江省",
 						"city": "杭州市",
 						"region": "西湖区",
-						"address": "留和路135号UN公社9幢703",
+						"address": "留和路288号浙江工业大学",
+						"postcode": "310000"
+					},
+					{
+						"id": 1,
+						"name": "刘爽",
+						"tel": "15700084332",
+						"province": "浙江省",
+						"city": "杭州市",
+						"region": "西湖区",
+						"address": "留和路留下街道",
 						"postcode": "310000"
 					},
 					{
@@ -96,20 +106,10 @@
 						"id": 1,
 						"name": "刘爽",
 						"tel": "15700084332",
-						"province": "浙江省",
-						"city": "杭州市",
-						"region": "西湖区",
-						"address": "留和路135号UN公社9幢703",
-						"postcode": "310000"
-					},
-					{
-						"id": 1,
-						"name": "刘爽",
-						"tel": "15700084332",
-						"province": "浙江省",
-						"city": "杭州市",
-						"region": "西湖区",
-						"address": "留和路135号UN公社9幢703",
+						"province": "河南省",
+						"city": "郑州市",
+						"region": "二七区",
+						"address": "二七路",
 						"postcode": "310000"
 					}
 				]

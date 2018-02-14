@@ -46,14 +46,14 @@
 					$(id2).animate({
 						top: "-10px",
 						fontSize: "13px"
-					},200,"swing");
+					},150,"swing");
 					$(id2).css({"color": "#96b7ef", "z-index": "10"});
 				}).blur(function(){
 					if($(id1).val().length <= 0){
 						$(id2).animate({
 							top: "10px",
 							fontSize: "16px"
-						},200,"linear", function(){
+						},150,"linear", function(){
 							$(id2).css({"color": "#aaaaaa", "z-index": "-1"});
 						});
 					}else {

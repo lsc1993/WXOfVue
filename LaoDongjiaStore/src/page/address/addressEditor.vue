@@ -19,9 +19,7 @@
 								class="tel-container"></inputAutoFit>
 						</div>
 						<div class="address-region-container">
-							<addrChoose :provSele="loadAddr.province"
-								:citySele="loadAddr.city" :regionSele="loadAddr.region"
-								:editable="editWin" :indexEdit="editPos"></addrChoose>
+							<addrChoose :editable="editWin" :indexEdit="editPos"></addrChoose>
 						</div>
 						<div class="address-message-container">
 							<inputAutoFit :inputId="'address'" :inputType="'text'" 
@@ -92,13 +90,16 @@
 		},
 		watch: {
 			winType(){
-				if(this.winType == "create"){
+				if(this.winType == "create"){  //监听编辑弹窗类型变化
 					this.editWin = false;
 					this.editPos = -1;
 				}else if(this.winType == "edit"){
 					this.editWin = true;
 					this.editPos = this.choosePos;
 				}
+			},
+			choosePos(){
+				this.editPos = this.choosePos;  //监听地址选择变化
 			}
 		},
 		components: {
@@ -106,7 +107,7 @@
 		},
 		methods: {
 			confirmClick(){
-				alert(this.address.name + " " + $("#receiver").val());
+				alert(this.address.name + " " + $("#receiver").val() + this.addrEdit.name);
 			},
 			cancelClick(){
 				this.remove();
@@ -126,8 +127,8 @@
 		width: 100%;
 		height: 100%;
 		background: rgba(0,0,0,0.5);
-	    transition: opacity .3s ease;
-		-webkit-transition: .3s ease;
+	    transition: opacity .2s ease;
+		-webkit-transition: .2s ease;
 		z-index: 50;
 	}
 	

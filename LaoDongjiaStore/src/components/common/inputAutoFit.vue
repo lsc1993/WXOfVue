@@ -1,8 +1,9 @@
+<!--描述：一个支持自定义宽度的输入控件-->
 <template>
 	<div>
-		<div class="input-container">
+		<div class="input-fit-container">
 			<input :id="inputId" :type="inputType" :value="inputValue"/>
-			<p :id="tipId" class="tip-text">{{tipText}}</p>
+			<p :id="tipId" class="tip-fit-text">{{tipText}}</p>
 		</div>
 	</div>
 </template>
@@ -48,14 +49,14 @@
 					$(id2).animate({
 						top: "-10px",
 						fontSize: "13px"
-					},200,"swing");
+					},100,"swing");
 					$(id2).css({"color": "#96b7ef", "z-index": "10"});
 				}).blur(function(){
 					if($(id1).val().length <= 0){
 						$(id2).animate({
 							top: "10px",
 							fontSize: "14px"
-						},200,"linear", function(){
+						},100,"linear", function(){
 							$(id2).css({"color": "#aaaaaa", "z-index": "-1"});
 						});
 					}else {
@@ -70,13 +71,13 @@
 					$(id2).animate({
 						top: "-10px",
 						fontSize: "13px"
-					},200,"swing");
+					},100,"swing");
 					$(id2).css({"color": "#aaaaaa", "z-index": "10"});
 				}else {
 					$(id2).animate({
 						top: "10px",
 						fontSize: "14px"
-					},200,"linear", function(){
+					},100,"linear", function(){
 						$(id2).css({"color": "#aaaaaa", "z-index": "-1"});
 					});
 				}
@@ -86,11 +87,11 @@
 </script>
 
 <style>
-	.input-container {
+	.input-fit-container {
 		position: relative;
 	}
 	
-	.input-container input {
+	.input-fit-container input {
 		width: 100%;
 		height: 45px;
 		padding-left: 12px;
@@ -99,12 +100,12 @@
 		background: rgba(255,255,255,0);
 	}
 	
-	.tip-text {
+	.tip-fit-text {
 		position: absolute;
 		top: 12px;
 		left: 12px;
 		font-size: 14px;
-		transition: 0.3s ease;
+		transition: 0.2s ease;
 		color: #aaaaaa;
 		background: #ffffff;
 		opacity: 1;

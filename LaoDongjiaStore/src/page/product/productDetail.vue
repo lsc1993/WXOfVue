@@ -390,6 +390,7 @@
 		width: auto;
 		display: inline-block;
 		margin-right: 5%;
+		cursor: pointer;
 	}
 	
 	.product-standard-unchoosed {

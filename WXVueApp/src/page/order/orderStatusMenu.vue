@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="order-wrapper">
 		<tabHeader @tabClick="onTabClick" :tabText="tabTexts"></tabHeader>
 		<router-view></router-view>
 	</div>
@@ -38,4 +38,7 @@
 </script>
 
 <style>
+	.order-wrapper {
+		position: relative;
+	}
 </style>
