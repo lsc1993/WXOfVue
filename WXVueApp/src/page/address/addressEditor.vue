@@ -96,7 +96,7 @@
 			]),
 			loadAddress(){
 				//数组类型的数据传递的值是引用类型，采用赋值的方式防止修改了原有的地址
-				this.address.id = this.addrEdit.id;
+				/*this.address.id = this.addrEdit.id;
 				this.address.name = this.addrEdit.name;
 				this.address.tel = this.addrEdit.tel;
 				this.address.province = this.addrEdit.province;
@@ -104,8 +104,8 @@
 				this.address.region = this.addrEdit.region;
 				this.address.road = this.addrEdit.road;
 				this.address.address = this.addrEdit.address;
-				this.address.postcode = this.addrEdit.postcode;
-				return this.address;
+				this.address.postcode = this.addrEdit.postcode;*/
+				return this.addrEdit;
 			}
 		},
 		methods: {
