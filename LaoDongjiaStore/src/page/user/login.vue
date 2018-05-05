@@ -16,26 +16,29 @@
 							<p class="text-right">忘记密码</p>
 						</router-link>
 					</div>
-					<button class="login-button" @click="login()">登录</button>
+					<button id="login-btn" class="login-button login-button-enable" @click="login()">登录</button>
 				</div>
 			</div>
 		</div>
 		<toast :show="showToastTip" :message="tip"></toast>
+		<loading :show="showLoading"></loading>
 	</div>
 </template>
 
 <script>
 	import inputBox from "../../components/common/inputBox"
 	import toast from "../../components/common/toast"
+	import loading from "../../components/common/loading"
 	export default {
 		data () {
 			return {
 				showToastTip: false,
+				showLoading: false,
 				tip: ""
 			}
 		},
 		components: {
-			inputBox, toast
+			inputBox, toast, loading
 		},
 		methods: {
 			login() {
@@ -47,14 +50,34 @@
 				if (!this.checkPassword(password)) {
 					return;
 				}
+				$("#login-btn").prop("disabled", true);
+				$("#login-btn").removeClass("login-button-enable");
+				$("#login-btn").addClass("login-button-disable");
+				this.showLoading = true;
+				var self = this;
+				var formData = new FormData();
+				formData.append("account", account);
+				formData.append("password", password);
+				requestWithFormData("/user1/login", REQUEST_TYPE_POST, formData, function(data){
+					self.showToast(data.message);
+					self.showLoading = false;
+					$("#login-btn").prop("disabled", false);
+					$("#login-btn").removeClass("login-button-disable");
+					$("#login-btn").addClass("login-button-enable");
+					if (data.code == 200) {
+						self.$router.push("/");
+					}
+				},
+				function(){
+					self.showToast("服务器错误");
+					self.showLoading = false;
+					$("#login-btn").prop("disabled", false);
+					$("#login-btn").removeClass("login-button-disable");
+					$("#login-btn").addClass("login-button-enable");
+				});
 			},
 			checkAccount(account) {
-				if (!ACCOUNT_REG.test(account)) {
-					this.showToast(ACCOUNT_MATCH_RULE);
-					return false;
-				}
-				
-				if (account == "" || account.length < 1) {
+				if (account === "" || account.length < 1) {
 					this.showToast(ENTER_ACCOUNT);
 					return false;
 				}
@@ -72,8 +95,8 @@
 				return true;
 			},
 			checkPassword(password) {
-				if (!PASSWORD_REG.test(password)) {
-					this.showToast(PASSWORD_MATCH_RULE);
+				if (password === "" || password.length < 1) {
+					this.showToast(ENTER_PASSWORD);
 					return false;
 				}
 				
@@ -151,10 +174,17 @@
 	.login-button {
 		width: 350px;
 		height: 50px;
-		background: #d40f0f;
 		border: hidden;
 		border-radius: 5px;
 		color: #ffffff;
 		font-size: 16px;
+	}
+	
+	.login-button-enable {
+		background: #d40f0f;
+	}
+	
+	.login-button-disable {
+		background: #dedede;
 	}
 </style>

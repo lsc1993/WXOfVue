@@ -40,10 +40,10 @@ export default new Router({
     	component: shopcart
     },
     {
-    	path: '/user',
+    	path: '/user/',
     	component: user,
     	children: [
-    		{path: '/user/login', name: 'login', component: login},
+    		{path: 'login', name: 'login', component: login},
     		{path: '/user/register', name: 'register', component: register},
     		{path: '/user/changePass', name: 'changePass', component: changePass},
     		{path: '/user/mine', name: 'mine', component: mine},

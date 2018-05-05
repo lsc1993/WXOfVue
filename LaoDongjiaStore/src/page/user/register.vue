@@ -25,11 +25,12 @@
 							<p class="text-left">已有账号?直接登录</p>
 						</router-link>
 					</div>
-					<button class="register-button" @click="regeister()">注册</button>
+					<button id="regeister-btn" class="register-button register-button-enable" @click="regeister()">注册</button>
 				</div>
 			</div>
 		</div>
 		<toast :show="showToastTip" :message="tip"></toast>
+		<loading :show="showLoading"></loading>
 	</div>
 </template>
 
@@ -37,15 +38,17 @@
 	import inputBox from "../../components/common/inputBox"
 	import inputAutoFit from "../../components/common/inputAutoFit"
 	import toast from "../../components/common/toast"
+	import loading from "../../components/common/loading"
 	export default {
 		data () {
 			return {
 				showToastTip: false,
+				showLoading: false,
 				tip: ""
 			}
 		},
 		components: {
-			inputBox, inputAutoFit, toast
+			inputBox, inputAutoFit, toast, loading
 		},
 		methods: {
 			regeister() {
@@ -54,7 +57,7 @@
 					return;
 				}
 				var password = $("#password").val();
-				if (!this.checkPassword()) {
+				if (!this.checkPassword(password)) {
 					return;
 				}
 				var passConfirm = $("#pass-confirm").val();
@@ -62,6 +65,9 @@
 					this.showToast(PASSWORD_NOT_SAME);
 					return;
 				}
+				$("#regeister-btn").prop("disabled", true);
+				$("#regeister-btn").removeClass("register-button-enable");
+				$("#regeister-btn").addClass("register-button-disable");
 				var phone = $("#phone").val();
 				var data = {
 					"userName": account,
@@ -69,14 +75,26 @@
 					"password": password
 				};
 				data = JSON.stringify(data);
-				requestOnce("/user/register", REQUEST_TYPE_POST, data, 
+				this.showLoading = true;
+				var self = this;
+				requestOnce("/user1/register", REQUEST_TYPE_POST, data, 
 					function(data){
+						self.showLoading = false;
+						self.showToast(data.message);
+						$("#regeister-btn").prop("disabled", false);
+						$("#regeister-btn").removeClass("register-button-disable");
+						$("#regeister-btn").addClass("register-button-enable");
 						if (data.code == 200) {
-							
+							self.$router.push("/login");
 						}
 					},
 					function() {
-						
+						alert(FAIL);
+						self.showLoading = false;
+						$("#regeister-btn").prop("disabled", false);
+						$("#regeister-btn").removeClass("register-button-disable");
+						$("#regeister-btn").addClass("register-button-enable");
+						self.$router.push("login");
 					}
 				);
 			},
@@ -86,7 +104,7 @@
 					return false;
 				}
 				
-				if (account == "" || account.length < 1) {
+				if (account === "" || account.length < 1) {
 					this.showToast(ENTER_ACCOUNT);
 					return false;
 				}
@@ -109,7 +127,7 @@
 					return false;
 				}
 				
-				if (password == "" || password.length < 1) {
+				if (password === "" || password.length < 1) {
 					this.showToast(ENTER_PASSWORD);
 					return false;
 				}
@@ -188,11 +206,18 @@
 	.register-button {
 		width: 350px;
 		height: 50px;
-		background: #d40f0f;
 		border: hidden;
 		border-radius: 5px;
 		color: #ffffff;
 		font-size: 16px;
+	}
+	
+	.register-button-enable {
+		background: #d40f0f;
+	}
+	
+	.register-button-disable {
+		background: #dedede;
 	}
 	
 	.regeister-check-container {
