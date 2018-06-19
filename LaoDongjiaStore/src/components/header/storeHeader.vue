@@ -7,8 +7,8 @@
 					<p>老东家的风物馆</p>
 				</div>
 				<div class="menu-container hidden-xs">
-					<a><p class="divider-line" @click="titleLeftClick()">{{titleLeft}}</p></a>
-					<a><p @click="titleRightClick()">{{titleRight}}</p></a>
+					<router-link to="/user/login"><p class="divider-line">登录</p></router-link>
+					<router-link to="/user/register"><p>注册</p></router-link>
 					<router-link to="/shopcart">
 						<img src="../../../static/images/icon-shopcart.png" />
 					</router-link>
@@ -24,41 +24,6 @@
 </template>
 
 <script>
-	export default {
-		data () {
-			return {
-				titleLeft: "登录",
-				titleRight: "注册",
-				isLoginStatus: false
-			}
-		},
-		mounted: function(){
-			var token = $.cookie("userToken");
-			if (token != "" && token != null && token != undefined && token.length > 16) {
-				this.isLoginStatus = true;
-				this.titleLeft = "我的";
-				this.titleRight = "退出";
-			}
-		},
-		methods: {
-			titleLeftClick() {
-				if (this.isLoginStatus) {
-					this.$router.push("/user/mine");
-				} else {
-					this.$router.push("/user/login");
-				}
-			},
-			titleRightClick() {
-				if (this.isLoginStatus) {
-					this.$router.push("/user/login");
-					$.cookie("userToken", null, {path:"/"});
-					alert($.cookie("userToken"));
-				} else {
-					this.$router.push("/user/register");
-				}
-			}
-		}
-	}
 </script>
 
 <style>
