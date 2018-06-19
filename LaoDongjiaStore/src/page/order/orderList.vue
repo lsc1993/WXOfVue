@@ -37,21 +37,43 @@
 					</li>
 				</ul>
 			</div>
-		</div>
+			<div class="order-page-container">
+				<div class="order-page-button-list">
+					<button class="order-page-orient-button" @click="selectPage(0)"><img src="../../../static/images/icon-left-white.png"></button>
+					<ul>
+						<li v-for="item in pageList" :key="item.id">
+							<button @click="selectPage(item)">{{item}}</button>
+						</li>
+					</ul>
+					<button class="order-page-orient-button" @click="selectPage(-1)"><img src="../../../static/images/icon-right-white.png"></button>
+					<div class="order-page-overview">
+						<p>第{{currentSelectedPage}}页</p>
+						<p>共{{this.pageCount}}页</p>
+					</div>
+				</div>
+			</div>
+		</div>	
+		<toast :show="showToastTip" :message="tip"></toast>
 		<dialogTip :show="showDialog" :title="diaTitle" :content="diaContent"
-			 @close="removeDialog()" @confirm="removeDialog()"></dialogTip>
+			@close="removeDialog()" @confirm="removeDialog()"></dialogTip>
 	</div>
 </template>
 
 <script>
 	import dialogTip from "../../components/common/dialog"
+	import toast from "../../components/common/toast"
 	export default {
 		data () {
 			return {
 				drop: null,
+				tip: "",
 				showDialog: false,
+				showToastTip: false,
 				diaTitle: "提示",
 				diaContent: "",
+				pageCount: 10,
+				currentPage: 1,
+				pageList: [1, 2, 3, 4, 5],
 				orderList: [
 					{
 						"id": 1,
@@ -76,11 +98,13 @@
 				default: "waitSend"
 			}
 		},
-		mounted () {
-			this.dropUpLoad();
-		},
 		components: {
-			dialogTip
+			dialogTip, toast
+		},
+		computed: {
+			currentSelectedPage() {
+				return this.currentPage;
+			}
 		},
 		watch: {
 			orderStatus(){
@@ -93,73 +117,77 @@
 				} else if(this.orderStatus == "cancel"){
 					
 				}
-				if(this.drop != null){
-					this.orderList.splice(0, this.orderList.length);
-					this.drop.resettabload();
-				}
 			}
 		},
 		methods: {
-			remindOrder(index){
+			remindOrder(index) {
 				this.showDialogWin("已收到您的催单");
 			},
-			confirmOrder(index){
+			confirmOrder(index) {
 				
 			},
 			buyAgain(index){
 				this.$router.push("/product/" + this.orderList[index].pid);
 			},
-			showDialogWin(msg){
+			showDialogWin(msg) {
 				this.diaContent = msg;
 				this.showDialog = true;
 			},
 			removeDialog(){
 				this.showDialog = false;
 			},
-			dropUpLoad(){
+			selectPage(pos) {
+				if (pos == 0 && this.currentPage == 1) {
+					this.showToast("已经是第一页了");
+					return;
+				}
+				if (pos == -1 && this.currentPage == this.pageCount) {
+					this.showToast("已经是最后一页了");
+					return;
+				}
+				if (pos == this.currentPage) {
+					return;
+				}
+				var pagePos;
+				//向左选择页面
+				if (pos == 0) {
+					if (this.currentPage == this.pageList[0] && this.currentPage > 1){
+						for (var i = 0;i < this.pageList.length; ++i) {
+							this.pageList[i]--;
+						}
+						this.currentPage--;
+					} else {
+						this.currentPage--;
+					}
+					return;
+				}
+				//向右选择页面
+				if (pos == -1) {
+					if (this.currentPage == this.pageList[4] && this.currentPage < this.pageCount){
+						for (var i = 0;i < this.pageList.length; ++i) {
+							this.pageList[i]++;
+						}
+						this.currentPage++;
+					} else {
+						this.currentPage++;
+					}
+					return;
+				}
+				this.currentPage = pos;
+			},
+			showToast(message){
 				var self = this;
-				this.drop = $("#order-item").dropload({
-					scrollArea : window,
-					domDown : {
-			            domClass   : 'dropload-down',
-			            domRefresh : '<div class="dropload-refresh">上拉加载更多</div>',
-			            domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中...</div>',
-			            domNoData  : '<div class="dropload-noData">没有更多了</div>'
-			        },
-			        loadDownFn: function(me){
-			        	var item = {
-							"id": 1,
-							"no": "201708081256000023",
-							"pid": "1",
-							"name": "绿茶",
-							"imgurl": "../../../static/images/s_w453h453.png",
-							"standard": "50克",
-							"count": 3,
-							"pTotal": 300.00,
-							"deliveryCost": "0",
-							"total": 300,
-							"status": "待发货",
-							"pstatus": "上架"
-						};
-						setTimeout(function(){
-							if(self.orderList.length < 10){
-								self.orderList.push(item);
-								me.resetload();
-							}else {
-								me.lock();
-								me.noData();
-								me.resetload();
-							}
-						}, 1500);
-			        	
-			        }
-				});
+				this.tip = message;
+				this.showToastTip = true;
+				setTimeout(function(){
+					self.showToastTip = false;
+				},2000);
 			}
 		}
 	}
 </script>
 
-<style>
+<style>	
 	.order-list-mask {
 		position: relative;
 		min-height: 300px;
@@ -177,10 +205,11 @@
 	}
 	
 	.order-item-container ul li {
-		width: 100%;
+		width: 98%;
 		display: inline-block;
 		list-style: none;
-		margin-top: 10px;
+		margin: 20px auto;
+		padding: 5px;
 		box-shadow: 0 0 2px #cccccc;
 	}
 	
@@ -253,7 +282,70 @@
 	.order-item-operator button {
 		width: 90px;
 		height: 30px;
+		background: #d40f0f;
 		border: hidden;
 		border-radius: 3px;
+		color: #ffffff;
+	}
+	
+	.order-page-container {
+		width: 100%;
+	}
+	
+	.order-page-button-list {
+		width: auto;
+		margin: 0 auto;
+	}
+	
+	.order-page-button-list ul {
+		padding: 0;
+		display: inline-block;
+	}
+	
+	.order-page-button-list ul li {
+		width: auto;
+		display: inline-block;
+		margin-left: 5px;
+		margin-right: 5px;
+	}
+	
+	.order-page-list-button-select {
+		width: 30px;
+		height: 30px;
+		background: #a52a2a;
+		border: hidden;
+		color: #ffffff;
+		outline: none;
+	}
+	
+	.order-page-button-list button {
+		width: 30px;
+		height: 30px;
+		background: #d40f0f;
+		border: hidden;
+		color: #ffffff;
+		outline: none;
+	}
+
+	
+	.order-page-button-list button:hover {
+		cursor: pointer;
+		background: #a52a2a;
+	}
+
+	.order-page-button-list button img {
+		width: 100%;
+	}
+
+	.order-page-orient-button {
+		display: inline-block;
+	}
+	
+	.order-page-overview {
+		display: inline-block;
+	}
+	
+	.order-page-overview p {
+		display: inline-block;
 	}
 </style>

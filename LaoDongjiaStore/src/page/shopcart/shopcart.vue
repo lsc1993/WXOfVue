@@ -107,7 +107,7 @@
 
 <script>
 	import {mapMutations} from "vuex"
-	import toast from '../../components/common/toast'
+	import toast from "../../components/common/toast"
 	import storeHeader from "../../components/header/storeHeader"
 	import naviHeader from "../../components/header/naviHeader"
 	import storeFooter from "../../components/footer/storeFooter"

@@ -58,7 +58,7 @@
 					</div>
 				</div>
 				<div class="product-command-container">
-					<h4>猜你喜欢</h4>
+					<h4>商品详情</h4>
 					<ul>
 						<li v-for="(cImg, index) in productCommand" class="col-md-3 col-sm-3 col-xs-6">
 							<img :src="cImg.img" />

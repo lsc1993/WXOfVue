@@ -1,5 +1,5 @@
 <template>
-	<div class="wrapper">
+	<div class="order-menu-wrapper">
 		<div class="order-menu-container">
 			<div class="container">
 				<slideMenu></slideMenu>
@@ -16,7 +16,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="order-list-wrapper">
+					<div>
 						<orderList :orderStatus="status"></orderList>
 					</div>
 				</div>
@@ -71,6 +71,10 @@
 </script>
 
 <style>
+	.order-menu-wrapper {
+		position: relative;
+	}
+	
 	.order-menu-container {
 		position: relative;
 		width: 100%;
@@ -106,7 +110,7 @@
 		height: 50px;
 		background: #FFFFFF;
 		border-radius: 3px;
-		box-shadow: 2px 2px 1px #CCCCCC;
+		box-shadow: 0 0 2px #CCCCCC;
 		z-index: 1;
 	}
 	

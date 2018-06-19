@@ -28,11 +28,14 @@
 <style>
 	.toast-wrapper {
 		position: fixed;
-		bottom: 15%;
+		left: 0;
+		right: 0;
+		bottom: 10%;
 		width: 100%;
 		height: auto;
 		min-height: 20px;
 		display: table;
+		text-align: center;
 		transition: opacity .3s ease;
 		z-index: 100;
 	}
