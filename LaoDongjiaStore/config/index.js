@@ -32,11 +32,11 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-    	'/user': {
+    	'/user1': {
     		target: 'http://localhost:8080',
-    		changeOrigin: true,
+    		changeOrigin: true, //用于解决跨域问题
     		pathRewrite: {
-    			'^/user/': '/user/'
+    			'^/user1/': '/user/'
     		}
     	}
     },

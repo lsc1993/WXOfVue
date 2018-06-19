@@ -1,12 +1,12 @@
 /**
+ * 描述：通用的请求工具，基于ajax实现
  * @author liushuang
  * 2018-02-14
- * 描述：通用的请求工具，基于ajax实现
  */
 //==========================================================================
 
 domain = "http://localhost";
-requestUrl = "";
+requestUrl = domain + ":8088";
 imageUrl = domain + ":1993/ImageResource/";
 
 CONTENT_TYPE_JSON = "application/json; charset=utf-8";
@@ -31,7 +31,7 @@ REQUEST_TYPE_POST = "POST";
 function request(url, requestType, data, dataType, contentType, processData, successFn, failFn) {
 	$.ajax({
 		type: requestType,
-		url: url,
+		url: requestUrl + url,
 		data: data,
 		dataType: dataType,
 		contentType: contentType,
@@ -58,13 +58,13 @@ function requestOnce(url, requestType, data, successFn, failFn) {
 }
 
 /**
- * 用于发送带有文件的请求
+ * 用于发送表单类型数据
  * @param {Object} url
  * @param {Object} requestType
  * @param {Object} data
  * @param {Object} successFn
  * @param {Object} failFn
  */
-function requestWithMultiPart(url, requestType, data, successFn, failFn) {
+function requestWithFormData(url, requestType, data, successFn, failFn) {
 	request(url, requestType, data, DATA_TYPE_JSON, false, false, successFn, failFn);
 }
